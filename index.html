@@ -3,760 +3,635 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>雨鹿焙煎所｜二十年咖啡職人的沖煮系統</title>
-  <link rel="icon" href="logo.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>雨鹿焙煎所｜二十年咖啡職人</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root{
-      --navy:#0A2D5C;
-      --gold:#C5A059;
-      --brown:#3D2B1F;
-      --cream:#F5F0E8;
-      --dark:#111319;
-      --white:#FAFAF8;
-      --muted:rgba(250,250,248,0.68);
-      --line:rgba(197,160,89,0.22);
+      --bg-black:#05080f;
+      --bg-navy:#081a36;
+      --bg-blue:#0c2a59;
+      --gold:#c6a15a;
+      --gold-soft:rgba(198,161,90,0.22);
+      --white:#f5f2eb;
+      --text:rgba(245,242,235,0.92);
+      --muted:rgba(245,242,235,0.68);
+      --line:rgba(198,161,90,0.22);
+      --nav-bg:rgba(8,26,54,0.84);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{
-      background:var(--dark);
-      color:var(--white);
+      background:#071223;
+      color:var(--text);
       font-family:'Noto Sans TC',sans-serif;
       overflow-x:hidden;
-      line-height:1.8;
     }
 
     a{text-decoration:none;color:inherit}
-    img{max-width:100%}
-
-    .bg-stars{
-      position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;
-    }
-    .star{
-      position:absolute;
-      background:var(--gold);
-      border-radius:50%;
-      opacity:.18;
-      animation:twinkle alternate infinite ease-in-out;
-    }
-    @keyframes twinkle{
-      0%{opacity:.08;transform:scale(.6)}
-      100%{opacity:.8;transform:scale(1.18);box-shadow:0 0 10px rgba(197,160,89,.5)}
-    }
-
-    .ocean-currents{
-      position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; filter:blur(90px); opacity:.28;
-    }
-    .blob{
-      position:absolute; border-radius:50%; animation:drift 24s alternate infinite ease-in-out;
-    }
-    .blob-1{background:#10386c;width:55vw;height:55vw;top:-14%;left:-16%}
-    .blob-2{background:#061a36;width:45vw;height:45vw;right:-12%;bottom:-14%;animation-delay:-7s}
-    @keyframes drift{
-      100%{transform:translate(8%,9%) scale(1.08)}
-    }
-
-    nav{
-      position:fixed; top:0; left:0; right:0; z-index:50;
-      height:68px;
-      background:rgba(10,45,92,.78);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid var(--line);
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0 24px;
-    }
-
-    .nav-brand{
-      display:flex; align-items:center; gap:14px;
-    }
-
-    .nav-logo{
-      width:36px; height:36px; border:1px solid rgba(197,160,89,.45); border-radius:50%;
-      position:relative; flex:0 0 auto;
-    }
-    .nav-logo::before,.nav-logo::after{
-      content:""; position:absolute; background:rgba(197,160,89,.45);
-    }
-    .nav-logo::before{left:50%; top:5px; bottom:5px; width:1px; transform:translateX(-50%)}
-    .nav-logo::after{top:50%; left:5px; right:5px; height:1px; transform:translateY(-50%)}
-
-    .brand-text{
-      font-family:'Noto Serif TC',serif;
-      color:var(--gold);
-      letter-spacing:.16em;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .nav-links{
-      display:flex; gap:24px; flex-wrap:wrap;
-    }
-    .nav-links a{
-      font-size:12px;
-      letter-spacing:.12em;
-      color:rgba(250,250,248,.74);
-    }
-    .nav-links a:hover{color:var(--gold)}
-
-    .nav-btn{
-      border:1px solid var(--gold);
-      color:var(--gold);
-      padding:10px 16px;
-      font-size:12px;
-      letter-spacing:.12em;
-      transition:.25s ease;
-      white-space:nowrap;
-    }
-    .nav-btn:hover{
-      background:var(--gold);
-      color:var(--navy);
-    }
+    img{max-width:100%;display:block}
 
     .hero{
       min-height:100vh;
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 22% 45%, rgba(255,255,255,0.03) 0, transparent 36%),
+        linear-gradient(90deg, #04070d 0%, #06101f 26%, #081a36 58%, #0b2751 100%);
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.14) 22%, rgba(0,0,0,0.02) 52%, rgba(0,0,0,0) 100%);
+      pointer-events:none;
+    }
+
+    .stars,
+    .stars::before,
+    .stars::after{
+      position:absolute;
+      inset:0;
+      content:"";
+      background-repeat:repeat;
+      pointer-events:none;
+    }
+
+    .stars{
+      opacity:.52;
+      background-image:
+        radial-gradient(circle at 3% 12%, rgba(198,161,90,.95) 0 1.3px, transparent 1.8px),
+        radial-gradient(circle at 18% 76%, rgba(198,161,90,.8) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 34% 21%, rgba(198,161,90,.75) 0 1.2px, transparent 1.8px),
+        radial-gradient(circle at 49% 63%, rgba(198,161,90,.65) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 67% 14%, rgba(198,161,90,.8) 0 1.1px, transparent 1.8px),
+        radial-gradient(circle at 79% 72%, rgba(198,161,90,.75) 0 1.2px, transparent 1.8px),
+        radial-gradient(circle at 92% 34%, rgba(198,161,90,.9) 0 1px, transparent 1.6px);
+      animation: driftStars 18s linear infinite;
+    }
+
+    .stars::before{
+      opacity:.45;
+      background-image:
+        radial-gradient(circle at 8% 62%, rgba(255,255,255,.45) 0 .9px, transparent 1.5px),
+        radial-gradient(circle at 28% 41%, rgba(198,161,90,.65) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 58% 82%, rgba(255,255,255,.36) 0 .9px, transparent 1.4px),
+        radial-gradient(circle at 74% 24%, rgba(198,161,90,.65) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 95% 64%, rgba(255,255,255,.4) 0 .9px, transparent 1.5px);
+      animation: driftStarsReverse 24s linear infinite;
+    }
+
+    .stars::after{
+      opacity:.28;
+      filter:blur(.3px);
+      background-image:
+        radial-gradient(circle at 11% 28%, rgba(198,161,90,.75) 0 1.5px, transparent 2.2px),
+        radial-gradient(circle at 42% 89%, rgba(198,161,90,.55) 0 1.4px, transparent 2.2px),
+        radial-gradient(circle at 63% 46%, rgba(198,161,90,.6) 0 1.4px, transparent 2.2px),
+        radial-gradient(circle at 87% 12%, rgba(198,161,90,.7) 0 1.3px, transparent 2px);
+      animation: twinkle 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes driftStars{
+      from{transform:translateY(0)}
+      to{transform:translateY(14px)}
+    }
+    @keyframes driftStarsReverse{
+      from{transform:translateY(0)}
+      to{transform:translateY(-12px)}
+    }
+    @keyframes twinkle{
+      0%{opacity:.18}
+      100%{opacity:.36}
+    }
+
+    .topbar{
+      position:fixed;
+      top:0;left:0;right:0;
+      z-index:50;
+      height:80px;
+      padding:0 32px;
       display:flex;
       align-items:center;
-      position:relative;
-      padding:130px 24px 72px;
-      z-index:1;
+      justify-content:space-between;
+      background:var(--nav-bg);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(198,161,90,0.14);
     }
 
-    .container{
-      width:min(1120px,100%);
-      margin:0 auto;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      min-width:220px;
+    }
+
+    .brand-mark{
+      width:46px;height:46px;border:1px solid rgba(198,161,90,.55);border-radius:50%;
+      position:relative;flex-shrink:0;
+    }
+    .brand-mark::before,
+    .brand-mark::after{
+      content:"";position:absolute;left:50%;top:50%;background:rgba(198,161,90,.55);transform:translate(-50%,-50%);
+    }
+    .brand-mark::before{width:20px;height:1px}
+    .brand-mark::after{width:1px;height:20px}
+
+    .brand-name{
+      color:var(--gold);
+      font-family:'Noto Serif TC',serif;
+      font-size:15px;
+      font-weight:700;
+      letter-spacing:.14em;
+      white-space:nowrap;
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      gap:38px;
+    }
+
+    .nav a{
+      font-size:14px;
+      font-weight:600;
+      color:rgba(245,242,235,.78);
+      letter-spacing:.08em;
+    }
+
+    .nav a:hover{color:var(--gold)}
+
+    .nav-cta{
+      border:1px solid rgba(198,161,90,.85);
+      color:var(--gold);
+      padding:16px 28px;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.1em;
+      transition:.25s ease;
+      white-space:nowrap;
+    }
+
+    .nav-cta:hover{
+      background:var(--gold);
+      color:#091222;
+    }
+
+    .hero-inner{
       position:relative;
       z-index:2;
+      max-width:1440px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:132px 56px 48px;
+      display:grid;
+      grid-template-columns:minmax(0, 1.02fr) minmax(360px, .98fr);
+      align-items:center;
+      gap:40px;
     }
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.15fr .85fr;
-      gap:44px;
-      align-items:center;
+    .hero-copy{
+      max-width:720px;
+      padding-right:16px;
     }
 
     .eyebrow{
-      display:flex; align-items:center; gap:14px;
-      color:var(--gold);
+      display:flex;
+      align-items:center;
+      gap:18px;
       font-family:'Cormorant Garamond',serif;
-      text-transform:uppercase;
+      color:var(--gold);
+      font-size:18px;
       letter-spacing:.28em;
-      font-size:13px;
+      text-transform:uppercase;
       margin-bottom:26px;
     }
+
     .eyebrow::before{
       content:"";
-      width:52px; height:1px; background:var(--gold);
+      width:68px;
+      height:1px;
+      background:var(--gold);
+      flex-shrink:0;
     }
 
     h1{
       font-family:'Noto Serif TC',serif;
-      font-size:clamp(34px,6vw,66px);
-      line-height:1.25;
-      margin-bottom:18px;
-      letter-spacing:.04em;
+      font-size:clamp(46px, 5.5vw, 84px);
+      line-height:1.16;
+      letter-spacing:.01em;
+      color:var(--white);
+      font-weight:900;
+      margin-bottom:22px;
+      max-width:12ch;
     }
 
-    .hero-lead{
+    .hero-sub{
+      max-width:680px;
+      font-size:clamp(17px, 1.45vw, 24px);
+      line-height:1.9;
       color:var(--muted);
-      font-size:17px;
-      max-width:640px;
-      margin-bottom:32px;
-    }
-
-    .hero-points{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:16px;
       margin-bottom:34px;
     }
 
-    .point{
-      border:1px solid var(--line);
-      background:rgba(10,45,92,.18);
-      padding:18px 16px;
-    }
-    .point-label{
-      font-family:'Cormorant Garamond',serif;
-      color:var(--gold);
-      letter-spacing:.16em;
-      font-size:12px;
-      margin-bottom:6px;
-      text-transform:uppercase;
-    }
-    .point strong{
-      font-family:'Noto Serif TC',serif;
-      font-size:18px;
-      display:block;
-      margin-bottom:4px;
-    }
-    .point span{
-      font-size:13px;
-      color:var(--muted);
-      display:block;
-      line-height:1.7;
-    }
-
     .hero-actions{
-      display:flex; gap:14px; flex-wrap:wrap;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:34px;
     }
 
-    .btn-primary,.btn-secondary{
-      display:inline-flex; align-items:center; justify-content:center;
-      min-height:52px; padding:0 24px;
-      font-size:14px; letter-spacing:.12em;
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:62px;
+      padding:0 34px;
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:.08em;
       transition:.25s ease;
     }
 
     .btn-primary{
       background:var(--gold);
-      color:var(--navy);
-      font-weight:700;
+      color:#081223;
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
     }
     .btn-primary:hover{transform:translateY(-2px)}
+
     .btn-secondary{
-      border:1px solid var(--gold);
+      border:1px solid rgba(198,161,90,.8);
       color:var(--gold);
+      background:transparent;
     }
     .btn-secondary:hover{
-      background:rgba(197,160,89,.08);
+      background:rgba(198,161,90,.08);
     }
 
-    .hero-card{
-      border:1px solid rgba(197,160,89,.24);
-      background:linear-gradient(180deg,rgba(10,45,92,.52),rgba(10,45,92,.12));
-      padding:34px 30px;
-      position:relative;
-      overflow:hidden;
+    .hero-points{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      max-width:860px;
     }
 
-    .compass-wrap{
-      width:150px; height:150px;
-      border:1.5px solid var(--gold);
-      border-radius:50%;
-      margin:0 auto 24px;
-      position:relative;
-      animation:spinCompass 18s linear infinite;
+    .point{
+      border:1px solid var(--line);
+      background:rgba(9,22,46,.18);
+      padding:18px 20px;
+      min-height:132px;
+      backdrop-filter:blur(2px);
     }
-    .compass-wrap::before{
-      content:""; position:absolute; inset:13px;
-      border:1px solid rgba(197,160,89,.28); border-radius:50%;
-    }
-    .compass-wrap::after{
-      content:""; position:absolute; top:50%; left:50%;
-      width:8px; height:8px; background:var(--gold);
-      border-radius:50%; transform:translate(-50%,-50%);
-    }
-    .compass-line-h,.compass-line-v{
-      position:absolute; background:rgba(197,160,89,.4);
-    }
-    .compass-line-h{top:50%; left:10px; right:10px; height:1px; transform:translateY(-50%)}
-    .compass-line-v{left:50%; top:10px; bottom:10px; width:1px; transform:translateX(-50%)}
-    .compass-n,.compass-s,.compass-e,.compass-w{
-      position:absolute; color:var(--gold); font-family:'Cormorant Garamond',serif; font-size:14px; font-weight:600;
-    }
-    .compass-n{top:8px; left:50%; transform:translateX(-50%)}
-    .compass-s{bottom:8px; left:50%; transform:translateX(-50%)}
-    .compass-e{right:8px; top:50%; transform:translateY(-50%)}
-    .compass-w{left:8px; top:50%; transform:translateY(-50%)}
 
-    @keyframes spinCompass{to{transform:rotate(360deg)}}
-
-    .hero-card-tag{
-      text-align:center;
-      color:var(--gold);
+    .point-label{
       font-family:'Cormorant Garamond',serif;
+      color:var(--gold);
+      font-size:14px;
       letter-spacing:.22em;
       text-transform:uppercase;
-      font-size:12px;
-      margin-bottom:12px;
+      margin-bottom:14px;
     }
-    .hero-card h2{
-      text-align:center;
+
+    .point-title{
+      font-family:'Noto Serif TC',serif;
+      font-size:20px;
+      line-height:1.5;
+      color:var(--white);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    .point-text{
+      font-size:15px;
+      line-height:1.8;
+      color:var(--muted);
+    }
+
+    .hero-visual{
+      position:relative;
+      min-height:640px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .visual-glow{
+      position:absolute;
+      inset:14% 8% 12% 8%;
+      background:
+        radial-gradient(circle at 56% 46%, rgba(13,52,108,.5) 0%, rgba(13,52,108,.28) 30%, rgba(13,52,108,0) 70%);
+      filter:blur(12px);
+      pointer-events:none;
+    }
+
+    .compass-stage{
+      position:relative;
+      width:min(78vh, 640px);
+      aspect-ratio:1/1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .compass{
+      position:relative;
+      width:100%;
+      height:100%;
+      border-radius:50%;
+      border:1px solid rgba(198,161,90,.22);
+      opacity:.88;
+      box-shadow:
+        inset 0 0 120px rgba(4,7,13,.22),
+        0 0 80px rgba(9,32,70,.16);
+    }
+
+    .compass::before,
+    .compass::after{
+      content:"";
+      position:absolute;
+      inset:8%;
+      border-radius:50%;
+      border:1px solid rgba(198,161,90,.32);
+    }
+
+    .compass::after{
+      inset:18%;
+      border-color:rgba(198,161,90,.16);
+    }
+
+    .ring{
+      position:absolute;
+      border-radius:50%;
+      border:1px solid rgba(198,161,90,.13);
+    }
+    .ring.r1{width:86%;height:86%}
+    .ring.r2{width:62%;height:62%}
+    .ring.r3{width:42%;height:42%}
+
+    .axis,
+    .needle{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform-origin:center;
+      border-radius:999px;
+    }
+
+    .axis.horizontal{
+      width:72%;
+      height:1px;
+      background:linear-gradient(90deg, transparent 0%, rgba(198,161,90,.14) 14%, rgba(198,161,90,.42) 50%, rgba(198,161,90,.14) 86%, transparent 100%);
+      transform:translate(-50%,-50%) rotate(-18deg);
+    }
+
+    .axis.vertical{
+      width:1px;
+      height:72%;
+      background:linear-gradient(180deg, transparent 0%, rgba(198,161,90,.14) 14%, rgba(198,161,90,.42) 50%, rgba(198,161,90,.14) 86%, transparent 100%);
+      transform:translate(-50%,-50%) rotate(18deg);
+    }
+
+    .needle.main{
+      width:2px;
+      height:54%;
+      background:linear-gradient(180deg, rgba(198,161,90,.95) 0%, rgba(198,161,90,.2) 100%);
+      transform:translate(-50%,-54%) rotate(22deg);
+      opacity:.92;
+    }
+
+    .needle.cross{
+      width:2px;
+      height:48%;
+      background:linear-gradient(180deg, rgba(198,161,90,.65) 0%, rgba(198,161,90,.12) 100%);
+      transform:translate(-50%,-46%) rotate(-70deg);
+      opacity:.62;
+    }
+
+    .compass-center{
+      position:absolute;
+      width:14px;height:14px;border-radius:50%;
+      background:var(--gold);
+      box-shadow:0 0 0 8px rgba(198,161,90,.08);
+    }
+
+    .direction{
+      position:absolute;
+      font-family:'Cormorant Garamond',serif;
+      color:var(--gold);
+      font-size:28px;
+      letter-spacing:.08em;
+      opacity:.9;
+    }
+    .direction.n{top:10%;left:50%;transform:translateX(-50%)}
+    .direction.e{right:13%;top:50%;transform:translateY(-50%)}
+    .direction.s{bottom:10%;left:50%;transform:translateX(-50%)}
+    .direction.w{left:13%;top:50%;transform:translateY(-50%)}
+
+    .compass-caption{
+      position:absolute;
+      top:13%;
+      left:50%;
+      transform:translateX(-50%);
+      font-family:'Cormorant Garamond',serif;
+      color:rgba(198,161,90,.82);
+      font-size:16px;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .hero-note{
+      position:absolute;
+      right:5%;
+      bottom:7%;
+      max-width:420px;
+      padding:26px 30px;
+      border:1px solid rgba(198,161,90,.18);
+      background:rgba(8,21,43,.14);
+      backdrop-filter:blur(4px);
+    }
+
+    .hero-note p{
       font-family:'Noto Serif TC',serif;
       font-size:28px;
-      margin-bottom:12px;
-    }
-    .hero-card p{
+      line-height:1.7;
+      color:var(--white);
+      font-weight:700;
       text-align:center;
-      color:var(--muted);
-      font-size:14px;
-      margin-bottom:24px;
     }
 
-    .hero-quote{
-      border-top:1px solid rgba(197,160,89,.25);
-      margin-top:16px;
-      padding-top:22px;
-      color:rgba(250,250,248,.9);
-      font-size:15px;
-      text-align:center;
-    }
-    .hero-quote small{
+    .hero-note small{
       display:block;
-      margin-top:8px;
-      color:rgba(250,250,248,.55);
+      margin-top:12px;
+      font-size:15px;
       letter-spacing:.08em;
-    }
-
-    section{
-      position:relative;
-      z-index:1;
-    }
-
-    .section-block{
-      padding:90px 24px;
-    }
-
-    .section-inner{
-      width:min(1120px,100%);
-      margin:0 auto;
-    }
-
-    .section-head{
-      margin-bottom:42px;
-      max-width:760px;
-    }
-    .section-kicker{
-      color:var(--gold);
-      font-family:'Cormorant Garamond',serif;
-      font-size:13px;
-      letter-spacing:.26em;
-      text-transform:uppercase;
-      margin-bottom:14px;
-    }
-    .section-title{
-      font-family:'Noto Serif TC',serif;
-      font-size:clamp(28px,4vw,44px);
-      line-height:1.3;
-      margin-bottom:14px;
-    }
-    .section-desc{
       color:var(--muted);
-      font-size:16px;
-    }
-
-    .cream-section{
-      background:var(--cream);
-      color:var(--brown);
-    }
-    .cream-section .section-title{color:var(--navy)}
-    .cream-section .section-desc{color:rgba(61,43,31,.78)}
-
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:20px;
-    }
-
-    .info-card{
-      padding:26px 24px;
-      border-top:3px solid var(--gold);
-      border:1px solid rgba(10,45,92,.12);
-      background:#fffdf8;
-      min-height:100%;
-    }
-    .info-card .num{
-      font-family:'Cormorant Garamond',serif;
-      color:var(--gold);
-      letter-spacing:.12em;
-      font-size:13px;
-      text-transform:uppercase;
-      margin-bottom:8px;
-      font-weight:600;
-    }
-    .info-card h3{
-      font-family:'Noto Serif TC',serif;
-      color:var(--navy);
-      font-size:20px;
-      margin-bottom:10px;
-      line-height:1.4;
-    }
-    .info-card p{
-      color:rgba(61,43,31,.82);
-      font-size:14px;
-    }
-
-    .dark-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:22px;
-    }
-
-    .dark-card{
-      border:1px solid var(--line);
-      background:rgba(10,45,92,.16);
-      padding:28px 26px;
-    }
-    .dark-card h3{
-      font-family:'Noto Serif TC',serif;
-      color:var(--gold);
-      font-size:22px;
-      margin-bottom:12px;
-    }
-    .dark-card p{
-      color:var(--muted);
-      font-size:15px;
-    }
-
-    .timeline{
-      display:grid;
-      gap:18px;
-    }
-    .timeline-item{
-      display:grid;
-      grid-template-columns:120px 1fr;
-      gap:22px;
-      padding:20px 0;
-      border-bottom:1px solid rgba(10,45,92,.1);
-    }
-    .timeline-item:last-child{border-bottom:none}
-    .timeline-label{
-      font-family:'Cormorant Garamond',serif;
-      color:var(--gold);
-      letter-spacing:.2em;
-      text-transform:uppercase;
-      font-size:12px;
-      padding-top:4px;
-    }
-    .timeline-content h3{
-      font-family:'Noto Serif TC',serif;
-      color:var(--navy);
-      font-size:20px;
-      margin-bottom:6px;
-    }
-    .timeline-content p{
-      color:rgba(61,43,31,.82);
-      font-size:15px;
-    }
-
-    .cta-panel{
-      border:1px solid rgba(197,160,89,.26);
-      background:linear-gradient(180deg,rgba(10,45,92,.45),rgba(10,45,92,.18));
-      padding:42px 34px;
       text-align:center;
     }
-    .cta-panel h3{
-      font-family:'Noto Serif TC',serif;
-      font-size:30px;
-      margin-bottom:12px;
-    }
-    .cta-panel p{
-      max-width:760px;
-      margin:0 auto 24px;
-      color:var(--muted);
-      font-size:15px;
-    }
 
-    footer{
-      padding:42px 24px 56px;
-      text-align:center;
-      color:rgba(250,250,248,.55);
-      font-size:12px;
-      letter-spacing:.12em;
-      border-top:1px solid rgba(197,160,89,.12);
-      position:relative;
-      z-index:1;
+    @media (max-width: 1280px){
+      .topbar{padding:0 24px}
+      .nav{gap:24px}
+      .hero-inner{
+        grid-template-columns:minmax(0,1fr) minmax(320px,.9fr);
+        padding:124px 32px 40px;
+        gap:24px;
+      }
+      .hero-points{grid-template-columns:1fr}
+      .point{min-height:auto}
+      .hero-note{right:2%;bottom:5%;max-width:360px}
+      .hero-note p{font-size:24px}
     }
 
     @media (max-width: 980px){
-      .hero-grid,.grid-3,.dark-grid{
+      .topbar{height:72px;padding:0 18px}
+      .nav{display:none}
+      .nav-cta{padding:12px 18px;font-size:13px}
+      .hero-inner{
+        min-height:auto;
         grid-template-columns:1fr;
+        padding:104px 20px 36px;
+        gap:24px;
       }
-      .hero-points{
-        grid-template-columns:1fr;
+      .hero-copy{max-width:none;padding-right:0}
+      .eyebrow{font-size:14px;letter-spacing:.2em;gap:12px}
+      .eyebrow::before{width:40px}
+      h1{max-width:none;font-size:clamp(34px, 10vw, 58px);line-height:1.22}
+      .hero-sub{font-size:16px;line-height:1.8;margin-bottom:24px}
+      .hero-actions{margin-bottom:24px}
+      .btn{min-height:54px;padding:0 24px;font-size:16px}
+      .hero-points{grid-template-columns:1fr;gap:12px}
+      .hero-visual{min-height:420px}
+      .compass-stage{width:min(88vw, 480px)}
+      .hero-note{
+        position:relative;
+        right:auto;bottom:auto;
+        margin-top:18px;
+        max-width:none;
       }
+      .hero-note p{font-size:22px}
     }
 
-    @media (max-width: 768px){
-      nav{
-        height:auto;
-        padding:14px 16px;
-        align-items:flex-start;
-        gap:12px;
-        flex-wrap:wrap;
-      }
-      .nav-links{
-        width:100%;
-        overflow-x:auto;
-        gap:16px;
-        padding-bottom:2px;
-      }
+    @media (max-width: 560px){
+      .brand-name{font-size:13px;letter-spacing:.08em}
+      .brand-mark{width:40px;height:40px}
       .hero{
-        padding-top:132px;
+        background:
+          linear-gradient(180deg, #04070d 0%, #06101f 22%, #081a36 58%, #0b2751 100%);
       }
-      .timeline-item{
-        grid-template-columns:1fr;
-        gap:8px;
+      .hero::before{
+        background:
+          linear-gradient(180deg, rgba(0,0,0,.14) 0%, rgba(0,0,0,.06) 18%, rgba(0,0,0,0) 40%, rgba(0,0,0,.05) 100%);
       }
-      .btn-primary,.btn-secondary,.nav-btn{
-        width:100%;
-      }
-      .hero-actions{
-        display:grid;
-        grid-template-columns:1fr;
-      }
+      .hero-inner{padding:98px 16px 28px}
+      .eyebrow{font-size:12px}
+      h1{font-size:clamp(30px, 11vw, 44px)}
+      .hero-sub{font-size:15px}
+      .point{padding:16px}
+      .point-title{font-size:18px}
+      .point-text{font-size:14px}
+      .hero-visual{min-height:320px}
+      .compass-caption{font-size:12px;letter-spacing:.2em}
+      .direction{font-size:20px}
+      .hero-note{padding:18px 16px}
+      .hero-note p{font-size:18px}
+      .hero-note small{font-size:13px}
     }
   </style>
 </head>
 <body>
-  <div class="bg-stars" id="stars"></div>
-  <div class="ocean-currents">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-  </div>
+  <section class="hero" id="top">
+    <div class="stars"></div>
 
-  <nav>
-    <div class="nav-brand">
-      <div class="nav-logo"></div>
-      <div class="brand-text">雨鹿焙煎所</div>
-    </div>
-    <div class="nav-links">
-      <a href="#about">品牌理念</a>
-      <a href="#professional">職人資歷</a>
-      <a href="#course">課程內容</a>
-      <a href="#method">我們怎麼教</a>
-      <a href="#reserve">預約報名</a>
-    </div>
-    <a class="nav-btn" href="https://forms.gle/A4azZQsrGUA3qHjW7" target="_blank" rel="noopener">立即報名</a>
-  </nav>
+    <header class="topbar">
+      <a href="#top" class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">雨鹿焙煎所</span>
+      </a>
 
-  <header class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <div class="eyebrow">Rain Deer Roastery ・ Navigation Series</div>
-          <h1>不是把咖啡沖得複雜，<br>而是把一杯好咖啡的邏輯，教到你真的能做到。</h1>
-          <p class="hero-lead">
-            雨鹿焙煎所由資深二十年咖啡職人帶領。
-            我們不販售神話，也不把問題推給器材。
-            我們做的是把產地、烘焙、萃取與味覺判斷，整理成學得會、做得出來、能長期複製的沖煮系統。
-          </p>
+      <nav class="nav" aria-label="主選單">
+        <a href="#concept">品牌理念</a>
+        <a href="#experience">職人資歷</a>
+        <a href="#course">課程內容</a>
+        <a href="#method">我們怎麼教</a>
+      </nav>
 
-          <div class="hero-points">
-            <div class="point">
-              <div class="point-label">Experience</div>
-              <strong>20 年</strong>
-              <span>長期投入烘焙、沖煮與教學現場，累積的是可驗證的實戰判斷。</span>
-            </div>
-            <div class="point">
-              <div class="point-label">Focus</div>
-              <strong>手沖實戰</strong>
-              <span>從選豆、參數到風味診斷，不講玄學，直接處理學員最常失敗的環節。</span>
-            </div>
-            <div class="point">
-              <div class="point-label">Outcome</div>
-              <strong>穩定複製</strong>
-              <span>目標不是偶爾沖出一杯好喝，而是建立你自己的可重現沖煮系統。</span>
-            </div>
-          </div>
+      <a class="nav-cta" href="https://forms.gle/A4azZQsrGUA3qHjW7" target="_blank" rel="noopener noreferrer">立即報名</a>
+    </header>
 
-          <div class="hero-actions">
-            <a class="btn-primary" href="https://forms.gle/A4azZQsrGUA3qHjW7" target="_blank" rel="noopener">預約手沖實戰課程</a>
-            <a class="btn-secondary" href="#course">先看課程內容</a>
-          </div>
-        </div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="eyebrow">Rain Deer Roastery ・ Navigation Series</div>
 
-        <div class="hero-card">
-          <div class="hero-card-tag">The Coffee Compass</div>
-          <div class="compass-wrap" aria-hidden="true">
-            <span class="compass-n">N</span>
-            <span class="compass-s">S</span>
-            <span class="compass-e">E</span>
-            <span class="compass-w">W</span>
-            <div class="compass-line-h"></div>
-            <div class="compass-line-v"></div>
-          </div>
-          <h2>二十年職人的判斷，不是靈感，是路徑。</h2>
-          <p>
-            多數人沖不好，不是因為不夠努力，<br>
-            而是缺少一套能校正方向的羅盤。
-          </p>
-          <div class="hero-quote">
-            「咖啡最需要的，不是更多神祕感，<br>而是對細節真正有能力的理解。」
-            <small>— 雨鹿焙煎所・資深咖啡職人</small>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+        <h1>把一杯好咖啡，教成你真的做得到。</h1>
 
-  <section class="section-block cream-section" id="about">
-    <div class="section-inner">
-      <div class="section-head">
-        <div class="section-kicker">Brand Philosophy</div>
-        <h2 class="section-title">關於沖煮的真相，市場上其實常常講反了。</h2>
-        <p class="section-desc">
-          很多人把焦點放在器材、名詞和流派，卻沒有先理解一個本質問題：
-          你到底在控制什麼。真正讓一杯咖啡變好喝的，不是堆疊道具，而是理解風味形成的因果。
+        <p class="hero-sub">
+          由資深二十年咖啡職人帶領。從選豆、參數到味覺判斷，
+          幫你建立一套能理解、能操作、能長期複製的手沖系統。
         </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://forms.gle/A4azZQsrGUA3qHjW7" target="_blank" rel="noopener noreferrer">預約手沖實戰課</a>
+          <a class="btn btn-secondary" href="#course">先看課程內容</a>
+        </div>
+
+        <div class="hero-points">
+          <article class="point" id="experience">
+            <div class="point-label">Experience</div>
+            <div class="point-title">20 年職人實戰</div>
+            <p class="point-text">長期投入烘焙、沖煮與教學現場，靠的是可驗證的判斷，不是靈感。</p>
+          </article>
+
+          <article class="point" id="method">
+            <div class="point-label">Method</div>
+            <div class="point-title">教你判斷與修正</div>
+            <p class="point-text">不只告訴你怎麼沖，更直接處理多數人最常失敗的關鍵變數。</p>
+          </article>
+
+          <article class="point" id="course">
+            <div class="point-label">Outcome</div>
+            <div class="point-title">目標是穩定複製</div>
+            <p class="point-text">不是偶爾沖出一杯好喝，而是建立屬於你自己的沖煮系統。</p>
+          </article>
+        </div>
       </div>
 
-      <div class="grid-3">
-        <article class="info-card">
-          <div class="num">01 / 選豆</div>
-          <h3>每一杯的起點，不在手法，在豆子。</h3>
-          <p>產地、風土、處理法與烘焙度，決定這杯咖啡能走到哪裡。沒有先看懂原料，再多技巧都只是補救。</p>
-        </article>
-        <article class="info-card">
-          <div class="num">02 / 萃取</div>
-          <h3>手沖不是表演，是控制萃取方向。</h3>
-          <p>太酸、太薄、太苦、太悶，都不是抽象感受，而是對應到可調整的變數。學員該學的是判讀，不是背招。</p>
-        </article>
-        <article class="info-card">
-          <div class="num">03 / 系統</div>
-          <h3>真正有價值的，是穩定做出來。</h3>
-          <p>我們教的不是某一杯示範，而是一套你回家後還能繼續使用、持續修正、越沖越準的沖煮系統。</p>
-        </article>
-      </div>
-    </div>
-  </section>
+      <div class="hero-visual" id="concept" aria-hidden="true">
+        <div class="visual-glow"></div>
 
-  <section class="section-block" id="professional">
-    <div class="section-inner">
-      <div class="section-head">
-        <div class="section-kicker">Professional Background</div>
-        <h2 class="section-title">由資深二十年咖啡職人親自帶領，不靠話術建立信任。</h2>
-        <p class="section-desc">
-          二十年這件事，真正有價值的不是年資本身，而是長期在現場累積下來的辨識能力：
-          哪些問題來自豆子、哪些來自研磨、哪些來自沖煮習慣，哪些只是市場過度包裝。
-        </p>
-      </div>
+        <div class="compass-stage">
+          <div class="compass-caption">The Coffee Compass</div>
 
-      <div class="dark-grid">
-        <article class="dark-card">
-          <h3>從烘焙到沖煮，理解風味如何被建立</h3>
-          <p>不是只會教固定配方，而是能把一杯咖啡從原料到杯中的形成過程講清楚。這代表學員學到的不只是動作，而是判斷能力。</p>
-        </article>
-        <article class="dark-card">
-          <h3>從數萬杯實戰經驗中，整理出真正有效的教法</h3>
-          <p>不是把知識講得玄，而是把複雜問題拆成能操作的步驟。對學員來說，這才是真正有產值的專業。</p>
-        </article>
-      </div>
-    </div>
-  </section>
+          <div class="compass">
+            <div class="ring r1"></div>
+            <div class="ring r2"></div>
+            <div class="ring r3"></div>
 
-  <section class="section-block cream-section" id="course">
-    <div class="section-inner">
-      <div class="section-head">
-        <div class="section-kicker">Course</div>
-        <h2 class="section-title">手沖實戰課程，不只教怎麼沖，還教你怎麼判斷。</h2>
-        <p class="section-desc">
-          這門課不是帶你背一套漂亮流程，而是帶你建立完整的沖煮思維。學完之後，你會知道每個動作背後在控制什麼，以及喝到某個味道時，下一步該怎麼調。
-        </p>
-      </div>
+            <div class="axis horizontal"></div>
+            <div class="axis vertical"></div>
+            <div class="needle main"></div>
+            <div class="needle cross"></div>
+            <div class="compass-center"></div>
 
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-label">Chapter 01</div>
-          <div class="timeline-content">
-            <h3>認識咖啡豆：產地、風土與處理法</h3>
-            <p>先理解豆子的 DNA，知道不同產區與處理法，為什麼會帶來完全不同的風味方向。</p>
+            <span class="direction n">N</span>
+            <span class="direction e">E</span>
+            <span class="direction s">S</span>
+            <span class="direction w">W</span>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-label">Chapter 02</div>
-          <div class="timeline-content">
-            <h3>核心思維：你到底在控制什麼</h3>
-            <p>建立萃取率觀念，理解手沖所有動作，最終都在影響哪些物質被溶進杯中。</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-label">Chapter 03</div>
-          <div class="timeline-content">
-            <h3>三層金字塔：找到問題真正卡在哪一層</h3>
-            <p>學會先抓大問題，再談微調。避免多數人一開始就把時間浪費在錯的地方。</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-label">Chapter 04</div>
-          <div class="timeline-content">
-            <h3>器材與標準 SOP：建立你的基準線</h3>
-            <p>理解器材各自控制的變數，並建立一套可重複、可記錄、可修正的入門沖煮流程。</p>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-label">Chapter 05+</div>
-          <div class="timeline-content">
-            <h3>進階概念、實作練習與味覺訓練</h3>
-            <p>從 TDS、水質、濾紙差異，到風味辨識與診斷練習，逐步把感覺變成能說得清楚的能力。</p>
-          </div>
+
+        <div class="hero-note">
+          <p>二十年職人的判斷，不是靈感，是路徑。</p>
+          <small>咖啡最需要的，不是更多神祕感，而是對細節真正有能力的理解。</small>
         </div>
       </div>
     </div>
   </section>
-
-  <section class="section-block" id="method">
-    <div class="section-inner">
-      <div class="section-head">
-        <div class="section-kicker">Method</div>
-        <h2 class="section-title">我們怎麼教：不追求炫技，優先建立學員可複製的能力。</h2>
-        <p class="section-desc">
-          真正成熟的教學，不是把老師厲害的地方表演出來，而是把學員卡住的地方拆解開來。這也是我們設計課程時最在意的事情。
-        </p>
-      </div>
-
-      <div class="dark-grid">
-        <article class="dark-card">
-          <h3>先固定基準，再談風格</h3>
-          <p>學員最常犯的錯，是還沒有基準線就急著追求個人手法。我們先建立穩定，再帶你微調。</p>
-        </article>
-        <article class="dark-card">
-          <h3>每次只改一個變數</h3>
-          <p>這是所有有效練習的核心。你要知道是哪個調整造成變化，而不是憑直覺一起亂改。</p>
-        </article>
-        <article class="dark-card">
-          <h3>從風味回推參數</h3>
-          <p>喝到太酸、太薄、太苦、太悶，都有對應方向。學會這件事，才算真正開始進入手沖世界。</p>
-        </article>
-        <article class="dark-card">
-          <h3>把感覺轉成語言</h3>
-          <p>味覺不是天賦，而是可訓練的辨識系統。能說出差異，才有辦法持續修正與進步。</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-block" id="reserve">
-    <div class="section-inner">
-      <div class="cta-panel">
-        <div class="section-kicker" style="justify-content:center;">Reserve Your Seat</div>
-        <h3>準備好把「沖不好喝」這件事，真正解決掉了嗎？</h3>
-        <p>
-          如果你已經有手沖器材，也願意用一套更系統的方法理解咖啡，
-          這堂課會比你繼續零碎摸索更有效率。由二十年資歷咖啡職人親自帶領，帶你建立屬於自己的沖煮與感官系統。
-        </p>
-        <div class="hero-actions" style="justify-content:center;">
-          <a class="btn-primary" href="https://forms.gle/A4azZQsrGUA3qHjW7" target="_blank" rel="noopener">預約報名實戰課程</a>
-          <a class="btn-secondary" href="#about">回看品牌理念</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    © 2026 RAIN DEER ROASTERY ・ 雨鹿焙煎所
-  </footer>
-
-  <script>
-    function initStars() {
-      const stars = document.getElementById('stars');
-      for (let i = 0; i < 70; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        const size = Math.random() * 2.2 + 1;
-        star.style.width = size + 'px';
-        star.style.height = size + 'px';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        star.style.animationDelay = (Math.random() * 2) + 's';
-        stars.appendChild(star);
-      }
-    }
-    initStars();
-  </script>
 </body>
 </html>
