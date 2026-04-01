@@ -15,8 +15,8 @@
       --navy:#081b39;
       --blue:#0b2a59;
       --gold:#c5a059;
-      --gold-line:rgba(197,160,89,.22);
-      --gold-soft:rgba(197,160,89,.10);
+      --gold-line:rgba(197,160,89,.18);
+      --gold-soft:rgba(197,160,89,.08);
       --white:#f6f2ea;
       --text:rgba(246,242,234,.90);
       --muted:rgba(246,242,234,.66);
@@ -42,8 +42,8 @@
       min-height:100vh;
       overflow:hidden;
       background:
-        radial-gradient(circle at 72% 38%, rgba(11,42,89,.55) 0%, rgba(11,42,89,.18) 26%, rgba(11,42,89,0) 56%),
-        linear-gradient(90deg, #04070d 0%, #08101d 26%, #081b39 62%, #0b2a59 100%);
+        radial-gradient(circle at 78% 46%, rgba(11,42,89,.32) 0%, rgba(11,42,89,.12) 26%, rgba(11,42,89,0) 54%),
+        linear-gradient(90deg, #04070d 0%, #08101d 26%, #081b39 60%, #0b2a59 100%);
     }
 
     .hero::before{
@@ -51,8 +51,8 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.18) 18%, rgba(0,0,0,.05) 42%, rgba(0,0,0,0) 68%),
-        radial-gradient(circle at 20% 52%, rgba(255,255,255,.02) 0%, transparent 35%);
+        linear-gradient(90deg, rgba(0,0,0,.34) 0%, rgba(0,0,0,.22) 20%, rgba(0,0,0,.08) 44%, rgba(0,0,0,0) 70%),
+        radial-gradient(circle at 18% 52%, rgba(255,255,255,.02) 0%, transparent 35%);
       pointer-events:none;
       z-index:0;
     }
@@ -69,36 +69,36 @@
     }
 
     .stars{
-      opacity:.42;
+      opacity:.34;
       background-image:
         radial-gradient(circle at 4% 18%, rgba(197,160,89,.95) 0 1.2px, transparent 1.8px),
-        radial-gradient(circle at 12% 72%, rgba(197,160,89,.65) 0 1px, transparent 1.7px),
-        radial-gradient(circle at 23% 36%, rgba(197,160,89,.55) 0 1px, transparent 1.7px),
-        radial-gradient(circle at 37% 84%, rgba(197,160,89,.72) 0 1.1px, transparent 1.8px),
-        radial-gradient(circle at 58% 22%, rgba(197,160,89,.7) 0 1px, transparent 1.7px),
-        radial-gradient(circle at 76% 68%, rgba(197,160,89,.7) 0 1.1px, transparent 1.8px),
-        radial-gradient(circle at 92% 30%, rgba(197,160,89,.9) 0 1px, transparent 1.6px);
+        radial-gradient(circle at 12% 72%, rgba(197,160,89,.58) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 23% 36%, rgba(197,160,89,.50) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 37% 84%, rgba(197,160,89,.64) 0 1.1px, transparent 1.8px),
+        radial-gradient(circle at 58% 22%, rgba(197,160,89,.60) 0 1px, transparent 1.7px),
+        radial-gradient(circle at 76% 68%, rgba(197,160,89,.60) 0 1.1px, transparent 1.8px),
+        radial-gradient(circle at 92% 30%, rgba(197,160,89,.82) 0 1px, transparent 1.6px);
       animation:starFloat 16s linear infinite;
     }
 
     .stars::before{
-      opacity:.28;
+      opacity:.22;
       background-image:
-        radial-gradient(circle at 8% 58%, rgba(255,255,255,.44) 0 .9px, transparent 1.5px),
-        radial-gradient(circle at 31% 12%, rgba(197,160,89,.55) 0 1px, transparent 1.6px),
-        radial-gradient(circle at 49% 61%, rgba(255,255,255,.28) 0 .8px, transparent 1.4px),
-        radial-gradient(circle at 67% 14%, rgba(197,160,89,.5) 0 .95px, transparent 1.6px),
-        radial-gradient(circle at 88% 74%, rgba(255,255,255,.38) 0 .85px, transparent 1.5px);
+        radial-gradient(circle at 8% 58%, rgba(255,255,255,.34) 0 .9px, transparent 1.5px),
+        radial-gradient(circle at 31% 12%, rgba(197,160,89,.45) 0 1px, transparent 1.6px),
+        radial-gradient(circle at 49% 61%, rgba(255,255,255,.22) 0 .8px, transparent 1.4px),
+        radial-gradient(circle at 67% 14%, rgba(197,160,89,.40) 0 .95px, transparent 1.6px),
+        radial-gradient(circle at 88% 74%, rgba(255,255,255,.28) 0 .85px, transparent 1.5px);
       animation:starFloatReverse 24s linear infinite;
     }
 
     .stars::after{
-      opacity:.18;
+      opacity:.14;
       filter:blur(.4px);
       background-image:
-        radial-gradient(circle at 16% 26%, rgba(197,160,89,.68) 0 1.5px, transparent 2.2px),
-        radial-gradient(circle at 42% 90%, rgba(197,160,89,.48) 0 1.4px, transparent 2px),
-        radial-gradient(circle at 71% 48%, rgba(197,160,89,.55) 0 1.4px, transparent 2px);
+        radial-gradient(circle at 16% 26%, rgba(197,160,89,.58) 0 1.5px, transparent 2.2px),
+        radial-gradient(circle at 42% 90%, rgba(197,160,89,.40) 0 1.4px, transparent 2px),
+        radial-gradient(circle at 71% 48%, rgba(197,160,89,.46) 0 1.4px, transparent 2px);
       animation:twinkle 5s ease-in-out infinite alternate;
     }
 
@@ -111,8 +111,8 @@
       to{transform:translateY(-10px)}
     }
     @keyframes twinkle{
-      0%{opacity:.12}
-      100%{opacity:.22}
+      0%{opacity:.10}
+      100%{opacity:.18}
     }
 
     .topbar{
@@ -126,7 +126,7 @@
       justify-content:space-between;
       background:var(--nav-bg);
       backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(197,160,89,.14);
+      border-bottom:1px solid rgba(197,160,89,.12);
     }
 
     .brand{
@@ -140,7 +140,7 @@
       position:relative;
       width:38px;
       height:38px;
-      border:1px solid rgba(197,160,89,.52);
+      border:1px solid rgba(197,160,89,.48);
       border-radius:50%;
       flex:0 0 auto;
     }
@@ -150,7 +150,7 @@
       position:absolute;
       left:50%;
       top:50%;
-      background:rgba(197,160,89,.52);
+      background:rgba(197,160,89,.48);
       transform:translate(-50%,-50%);
     }
     .brand-mark::before{width:16px;height:1px}
@@ -175,14 +175,14 @@
       font-size:12px;
       font-weight:600;
       letter-spacing:.10em;
-      color:rgba(246,242,234,.78);
+      color:rgba(246,242,234,.76);
       white-space:nowrap;
     }
     .nav-links a:hover{color:var(--gold)}
 
     .nav-cta{
       padding:11px 18px;
-      border:1px solid rgba(197,160,89,.82);
+      border:1px solid rgba(197,160,89,.74);
       color:var(--gold);
       font-size:12px;
       font-weight:700;
@@ -198,18 +198,20 @@
     .hero-inner{
       position:relative;
       z-index:2;
-      width:min(1240px, 100%);
+      width:min(1220px, 100%);
       margin:0 auto;
       min-height:100vh;
       padding:104px 34px 34px;
       display:grid;
-      grid-template-columns:minmax(0, 1fr) minmax(320px, 430px);
+      grid-template-columns:minmax(0, 1fr) 320px;
       align-items:center;
-      gap:42px;
+      gap:46px;
     }
 
     .hero-copy{
-      max-width:700px;
+      max-width:680px;
+      position:relative;
+      z-index:2;
     }
 
     .eyebrow{
@@ -235,17 +237,17 @@
 
     h1{
       font-family:'Noto Serif TC',serif;
-      font-size:clamp(32px, 4.2vw, 58px);
-      line-height:1.28;
+      font-size:clamp(30px, 4vw, 52px);
+      line-height:1.46;
       letter-spacing:.02em;
       color:var(--white);
-      font-weight:900;
+      font-weight:700;
       margin-bottom:16px;
-      max-width:10.6ch;
+      max-width:11ch;
     }
 
     .hero-sub{
-      max-width:620px;
+      max-width:610px;
       color:var(--muted);
       font-size:15px;
       line-height:1.95;
@@ -279,7 +281,7 @@
     .btn-primary:hover{transform:translateY(-2px)}
 
     .btn-secondary{
-      border:1px solid rgba(197,160,89,.82);
+      border:1px solid rgba(197,160,89,.62);
       color:var(--gold);
       background:transparent;
     }
@@ -295,8 +297,8 @@
     }
 
     .point{
-      border:1px solid var(--gold-line);
-      background:rgba(8,27,57,.18);
+      border:1px solid rgba(197,160,89,.12);
+      background:rgba(8,27,57,.14);
       padding:14px 14px 13px;
       min-height:112px;
       backdrop-filter:blur(2px);
@@ -304,7 +306,7 @@
 
     .point-label{
       font-family:'Cormorant Garamond',serif;
-      color:var(--gold);
+      color:rgba(197,160,89,.86);
       text-transform:uppercase;
       letter-spacing:.20em;
       font-size:11px;
@@ -326,181 +328,102 @@
       line-height:1.8;
     }
 
-    .hero-visual{
+    .hero-aside{
       position:relative;
-      min-height:520px;
+      min-height:420px;
       display:flex;
       align-items:center;
       justify-content:center;
     }
 
-    .visual-orbit{
+    .mini-compass{
       position:absolute;
-      inset:-10% -5% -8% -5%;
+      right:10px;
+      top:50%;
+      transform:translateY(-50%);
+      width:140px;
+      height:140px;
       pointer-events:none;
+      opacity:.96;
     }
 
-    .visual-orbit span{
+    .mini-compass .compass-label{
       position:absolute;
-      border:1px solid rgba(197,160,89,.10);
-      border-radius:50%;
-    }
-    .visual-orbit .o1{width:440px;height:440px;right:12%;top:8%}
-    .visual-orbit .o2{width:320px;height:320px;right:22%;top:20%}
-    .visual-orbit .o3{width:220px;height:220px;right:32%;top:30%}
-
-    .compass-area{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      pointer-events:none;
-    }
-
-    .compass-field{
-      position:relative;
-      width:220px;
-      height:220px;
-      opacity:.9;
-    }
-
-    .compass-caption{
-      position:absolute;
-      top:-28px;
       left:50%;
+      bottom:-42px;
       transform:translateX(-50%);
       font-family:'Cormorant Garamond',serif;
       font-size:11px;
       letter-spacing:.24em;
       text-transform:uppercase;
-      color:rgba(197,160,89,.86);
+      color:rgba(197,160,89,.88);
       white-space:nowrap;
     }
 
-    .compass-rotor{
-      position:absolute;
-      inset:0;
-      animation:spinCompass 18s linear infinite;
-      transform-origin:center center;
+    .mini-compass .launch-compass{
+      width:140px;
+      height:140px;
+      border:1.5px solid var(--gold);
+      border-radius:50%;
+      position:relative;
+      animation:spinCompass 16s linear infinite;
     }
 
-    .compass-ring{
+    .mini-compass .launch-compass::before{
+      content:'';
       position:absolute;
-      inset:0;
-      border:1.2px solid rgba(197,160,89,.40);
+      inset:12px;
+      border:0.5px solid rgba(197,160,89,0.30);
       border-radius:50%;
     }
 
-    .compass-ring::before{
-      content:"";
+    .mini-compass .launch-compass::after{
+      content:'';
       position:absolute;
-      inset:16px;
-      border:1px solid rgba(197,160,89,.18);
-      border-radius:50%;
-    }
-
-    .compass-line-h,
-    .compass-line-v{
-      position:absolute;
-      background:rgba(197,160,89,.32);
-      left:50%;
       top:50%;
-      transform-origin:center center;
-    }
-
-    .compass-line-h{
-      width:174px;
-      height:1px;
-      transform:translate(-50%,-50%);
-    }
-
-    .compass-line-v{
-      width:1px;
-      height:174px;
-      transform:translate(-50%,-50%);
-    }
-
-    .compass-needle-a,
-    .compass-needle-b{
-      position:absolute;
       left:50%;
-      top:50%;
-      transform-origin:50% calc(100% - 6px);
-      border-radius:999px;
-    }
-
-    .compass-needle-a{
-      width:2px;
-      height:102px;
-      background:linear-gradient(180deg, rgba(197,160,89,.94) 0%, rgba(197,160,89,.18) 100%);
-      transform:translate(-50%,-88%) rotate(22deg);
-    }
-
-    .compass-needle-b{
-      width:2px;
-      height:84px;
-      background:linear-gradient(180deg, rgba(197,160,89,.56) 0%, rgba(197,160,89,.12) 100%);
-      transform:translate(-50%,-76%) rotate(-68deg);
-    }
-
-    .compass-center{
-      position:absolute;
-      width:8px;
-      height:8px;
-      border-radius:50%;
+      transform:translate(-50%,-50%);
+      width:6px;
+      height:6px;
       background:var(--gold);
-      left:50%;
-      top:50%;
-      transform:translate(-50%,-50%);
-      box-shadow:0 0 0 6px rgba(197,160,89,.08);
+      border-radius:50%;
+      box-shadow:0 0 12px rgba(197,160,89,.18);
     }
 
-    .dir{
+    .mini-compass .compass-n{
       position:absolute;
-      font-family:'Cormorant Garamond',serif;
+      top:6px;
+      left:50%;
+      transform:translateX(-50%);
+      font-size:13px;
       color:var(--gold);
-      font-size:14px;
+      font-family:'Cormorant Garamond',serif;
       font-weight:600;
       line-height:1;
     }
-    .dir.n{top:8px;left:50%;transform:translateX(-50%)}
-    .dir.s{bottom:8px;left:50%;transform:translateX(-50%)}
-    .dir.e{right:10px;top:50%;transform:translateY(-50%)}
-    .dir.w{left:10px;top:50%;transform:translateY(-50%)}
+
+    .mini-compass .compass-line-h{
+      position:absolute;
+      top:50%;
+      left:0;
+      right:0;
+      height:0.5px;
+      background:rgba(197,160,89,0.38);
+      transform:translateY(-50%);
+    }
+
+    .mini-compass .compass-line-v{
+      position:absolute;
+      left:50%;
+      top:0;
+      bottom:0;
+      width:0.5px;
+      background:rgba(197,160,89,0.38);
+      transform:translateX(-50%);
+    }
 
     @keyframes spinCompass{
-      from{transform:rotate(0deg)}
       to{transform:rotate(360deg)}
-    }
-
-    .hero-note{
-      position:relative;
-      margin-top:118px;
-      margin-left:auto;
-      width:min(100%, 390px);
-      border:1px solid rgba(197,160,89,.18);
-      background:rgba(7,16,31,.18);
-      backdrop-filter:blur(3px);
-      padding:24px 24px 20px;
-    }
-
-    .hero-note p{
-      font-family:'Noto Serif TC',serif;
-      font-size:14px;
-      line-height:1.95;
-      color:var(--white);
-      font-weight:700;
-      text-align:center;
-      margin-bottom:10px;
-    }
-
-    .hero-note small{
-      display:block;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.9;
-      text-align:center;
     }
 
     .section-block{
@@ -651,8 +574,8 @@
     }
 
     .cta-panel{
-      border:1px solid rgba(197,160,89,.24);
-      background:linear-gradient(180deg, rgba(8,27,57,.42), rgba(8,27,57,.16));
+      border:1px solid rgba(197,160,89,.20);
+      background:linear-gradient(180deg, rgba(8,27,57,.40), rgba(8,27,57,.16));
       padding:38px 28px;
       text-align:center;
     }
@@ -686,7 +609,7 @@
     @media (max-width: 1080px){
       .hero-inner{
         grid-template-columns:1fr;
-        gap:26px;
+        gap:20px;
         padding:100px 24px 30px;
         min-height:auto;
       }
@@ -696,15 +619,19 @@
       h1{
         max-width:none;
       }
-      .hero-visual{
-        min-height:360px;
-      }
-      .hero-note{
-        margin-top:70px;
-      }
       .hero-points{
         grid-template-columns:1fr;
         max-width:none;
+      }
+      .hero-aside{
+        min-height:160px;
+        justify-content:flex-end;
+      }
+      .mini-compass{
+        right:8px;
+        top:auto;
+        bottom:8px;
+        transform:none;
       }
     }
 
@@ -736,7 +663,8 @@
         width:34px;
       }
       h1{
-        font-size:clamp(28px, 8.6vw, 42px);
+        font-size:clamp(28px, 8.4vw, 42px);
+        line-height:1.52;
       }
       .hero-sub{
         font-size:14px;
@@ -749,27 +677,24 @@
       .btn{
         width:100%;
       }
-      .hero-visual{
-        min-height:300px;
+      .hero-aside{
+        min-height:120px;
       }
-      .compass-field{
-        width:170px;
-        height:170px;
+      .mini-compass{
+        width:104px;
+        height:104px;
+        right:0;
       }
-      .compass-line-h{width:132px}
-      .compass-line-v{height:132px}
-      .compass-needle-a{height:76px}
-      .compass-needle-b{height:62px}
-      .hero-note{
-        width:100%;
-        margin-top:48px;
-        padding:18px 16px;
+      .mini-compass .launch-compass{
+        width:104px;
+        height:104px;
       }
-      .hero-note p{
-        font-size:13px;
+      .mini-compass .launch-compass::before{
+        inset:9px;
       }
-      .hero-note small{
-        font-size:11px;
+      .mini-compass .compass-label{
+        font-size:10px;
+        bottom:-34px;
       }
       .grid-3,
       .dark-grid{
@@ -794,8 +719,11 @@
       }
       .hero{
         background:
-          radial-gradient(circle at 72% 36%, rgba(11,42,89,.45) 0%, rgba(11,42,89,.15) 28%, rgba(11,42,89,0) 58%),
+          radial-gradient(circle at 78% 30%, rgba(11,42,89,.24) 0%, rgba(11,42,89,.10) 24%, rgba(11,42,89,0) 54%),
           linear-gradient(180deg, #04070d 0%, #08101d 26%, #081b39 62%, #0b2a59 100%);
+      }
+      .mini-compass{
+        right:4px;
       }
     }
   </style>
@@ -823,13 +751,13 @@
 
     <div class="hero-inner">
       <div class="hero-copy">
-        <div class="eyebrow">Rain Deer Roastery ・ Navigation Series</div>
+        <div class="eyebrow">Raindeer Coffee ・ Navigation Series</div>
 
-        <h1>把一杯好咖啡，教成你真的做得到。</h1>
+        <h1>用簡單的器材，<br>沖出不簡單的咖啡。</h1>
 
         <p class="hero-sub">
-          雨鹿焙煎所由資深二十年咖啡職人帶領。從選豆、參數到味覺判斷，
-          幫你建立一套能理解、能操作、能長期複製的手沖系統。
+          雨鹿焙煎所由二十年資深咖啡職人帶領。從選豆、參數到味覺判斷，
+          幫你建立一套能理解、好操作、穩定易學的手沖系統。 
         </p>
 
         <div class="hero-actions">
@@ -853,40 +781,19 @@
           <article class="point">
             <div class="point-label">Outcome</div>
             <div class="point-title">建立穩定複製</div>
-            <p class="point-text">目標不是偶爾沖出一杯好喝，而是建立自己的沖煮系統。</p>
+            <p class="point-text">屬於自己的一套完整沖煮系統。</p>
           </article>
         </div>
       </div>
 
-      <div class="hero-visual" aria-hidden="true">
-        <div class="visual-orbit">
-          <span class="o1"></span>
-          <span class="o2"></span>
-          <span class="o3"></span>
-        </div>
-
-        <div class="compass-area">
-          <div class="compass-field">
-            <div class="compass-caption">The Coffee Compass</div>
-
-            <div class="compass-rotor">
-              <div class="compass-ring"></div>
-              <div class="compass-line-h"></div>
-              <div class="compass-line-v"></div>
-              <div class="compass-needle-a"></div>
-              <div class="compass-needle-b"></div>
-              <div class="compass-center"></div>
-              <span class="dir n">N</span>
-              <span class="dir e">E</span>
-              <span class="dir s">S</span>
-              <span class="dir w">W</span>
-            </div>
+      <div class="hero-aside" aria-hidden="true">
+        <div class="mini-compass">
+          <div class="launch-compass">
+            <span class="compass-n">N</span>
+            <div class="compass-line-h"></div>
+            <div class="compass-line-v"></div>
           </div>
-        </div>
-
-        <div class="hero-note">
-          <p>二十年職人的判斷，不是靈感，是路徑。</p>
-          <small>咖啡最需要的，不是更多神祕感，而是對細節真正有能力的理解。</small>
+          <div class="compass-label">The Coffee Compass</div>
         </div>
       </div>
     </div>
@@ -896,10 +803,10 @@
     <div class="section-inner">
       <div class="section-head">
         <div class="section-kicker">Brand Philosophy</div>
-        <h2 class="section-title">關於沖煮的真相，市場上其實常常講反了。</h2>
+        <h2 class="section-title">關於沖煮的真相，其實常常少講到一點。</h2>
         <p class="section-desc">
-          很多人把焦點放在器材、名詞和流派，卻沒有先理解一個本質問題：你到底在控制什麼。
-          真正讓一杯咖啡變好喝的，不是堆疊道具，而是理解風味形成的因果。
+          很多人把焦點放在器材、名詞和流派，卻沒有先理解一個本質問題：你在控制什麼參數。
+          想要沖出一杯好咖啡，不需要購買太多高貴器具，應該先理解風味如何形成。
         </p>
       </div>
 
@@ -913,12 +820,12 @@
         <article class="info-card">
           <div class="num">02 / 萃取</div>
           <h3>手沖不是表演，是控制萃取方向。</h3>
-          <p>太酸、太薄、太苦、太悶，都不是抽象感受，而是對應到可調整的變數。學的是判讀，不是背招。</p>
+          <p>太酸、太薄、太苦、太悶，除了抽象感受，還真實的對應可調整的變數。</p>
         </article>
 
         <article class="info-card">
           <div class="num">03 / 系統</div>
-          <h3>真正有價值的，是穩定做出來。</h3>
+          <h3>真正有價值的咖啡師，是穩定出杯。</h3>
           <p>我們教的不是某一杯示範，而是一套你回家後還能繼續使用、持續修正、越沖越準的沖煮系統。</p>
         </article>
       </div>
@@ -929,22 +836,22 @@
     <div class="section-inner">
       <div class="section-head">
         <div class="section-kicker">Professional Background</div>
-        <h2 class="section-title">由資深二十年咖啡職人親自帶領，不靠話術建立信任。</h2>
+        <h2 class="section-title">由資深二十年咖啡職人親自帶領，一步步帶你穩操實作。</h2>
         <p class="section-desc">
-          二十年真正有價值的不是年資本身，而是長期在現場累積下來的辨識能力：
-          哪些問題來自豆子、哪些來自研磨、哪些來自沖煮習慣，哪些只是市場過度包裝。
+          二十年長期在現場累積下來的辨識能力：
+          哪些問題來自咖啡豆，哪些來自研磨，哪些來自沖煮習慣，哪些只是市場過度包裝。
         </p>
       </div>
 
       <div class="dark-grid">
         <article class="dark-card">
           <h3>從烘焙到沖煮，理解風味如何被建立</h3>
-          <p>不是只會教固定配方，而是能把一杯咖啡從原料到杯中的形成過程講清楚。學到的不只是動作，而是判斷能力。</p>
+          <p>完整把一杯咖啡從原料到杯中的形成過程講清楚。</p>
         </article>
 
         <article class="dark-card">
           <h3>從大量實戰經驗中，整理出真正有效的教法</h3>
-          <p>不是把知識講得玄，而是把複雜問題拆成能操作的步驟。對學員來說，這才是有產值的專業。</p>
+          <p>把複雜的問題拆成能操作的步驟。才是有效益的專業。</p>
         </article>
       </div>
     </div>
@@ -956,7 +863,7 @@
         <div class="section-kicker">Course</div>
         <h2 class="section-title">手沖實戰課程，不只教怎麼沖，還教你怎麼判斷。</h2>
         <p class="section-desc">
-          這門課不是帶你背一套漂亮流程，而是帶你建立完整的沖煮思維。
+          這門課會帶你建立完整的沖煮思維，打破過往的片段式學習、迷茫摸索。
           學完之後，你會知道每個動作背後在控制什麼，以及喝到某個味道時，下一步該怎麼調。
         </p>
       </div>
@@ -1009,9 +916,9 @@
     <div class="section-inner">
       <div class="section-head">
         <div class="section-kicker">Method</div>
-        <h2 class="section-title">我們怎麼教：不追求炫技，優先建立學員可複製的能力。</h2>
+        <h2 class="section-title">我們怎麼教：從根本上理解，優先建立學員的穩定出杯能力。</h2>
         <p class="section-desc">
-          真正成熟的教學，不是把老師厲害的地方表演出來，而是把學員卡住的地方拆解開來。
+          從基礎把學員卡住的地方拆解開來。
           這也是我們設計課程時最在意的事情。
         </p>
       </div>
@@ -1034,7 +941,7 @@
 
         <article class="dark-card">
           <h3>把感覺轉成語言</h3>
-          <p>味覺不是天賦，而是可訓練的辨識系統。能說出差異，才有辦法持續修正與進步。</p>
+          <p>味覺不是遙不可及的天賦，絕對可以訓練成感官系統。能說出差異，才有辦法持續修正與進步。</p>
         </article>
       </div>
     </div>
@@ -1060,7 +967,7 @@
   </section>
 
   <footer>
-    © 2026 RAIN DEER ROASTERY ・ 雨鹿焙煎所
+    © 2026 RAINDEER COFFEE ・ 雨鹿焙煎所
   </footer>
 </body>
 </html>
