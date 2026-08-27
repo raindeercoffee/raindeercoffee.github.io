@@ -4,7 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>雨鹿焙煎所｜二十年咖啡職人的沖煮系統</title>
-  <link rel="icon" href="logo.png" type="image/png" />
+  <meta name="description" content="雨鹿焙煎所：二十年資深咖啡職人領路。少量嚴選熟豆、實體手沖課，帶你建立一套越沖越準的咖啡沖煮系統。" />
+  <link rel="canonical" href="https://raindeercoffee.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="雨鹿焙煎所 Raindeer Coffee" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:title" content="雨鹿焙煎所｜二十年咖啡職人的沖煮系統" />
+  <meta property="og:description" content="雨鹿焙煎所：二十年資深咖啡職人領路。少量嚴選熟豆、實體手沖課，帶你建立一套越沖越準的咖啡沖煮系統。" />
+  <meta property="og:url" content="https://raindeercoffee.com/" />
+  <meta property="og:image" content="https://raindeercoffee.com/assets/og-cover.png?v=1" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="雨鹿焙煎所｜二十年咖啡職人的沖煮系統" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="雨鹿焙煎所｜二十年咖啡職人的沖煮系統" />
+  <meta name="twitter:description" content="雨鹿焙煎所：二十年資深咖啡職人領路。少量嚴選熟豆、實體手沖課，帶你建立一套越沖越準的咖啡沖煮系統。" />
+  <meta name="twitter:image" content="https://raindeercoffee.com/assets/og-cover.png?v=1" />
+  <link rel="icon" href="assets/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+  <meta name="theme-color" content="#081b39" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -891,7 +911,7 @@
       </div>
 
       <p class="section-desc" style="margin-top:26px;font-size:13px;">
-        線上下單已開通，綠界安全金流（信用卡／ATM／超商）。單筆買豆滿 NT$1,000 免運，未滿千為超商店到店運費 NT$60。數量有限，豆單可能異動；若下單後遇品項完售，我們會為您挑選風味相近的豆子出貨，若不符預期請於下單時告知取消。更多咖啡分享，歡迎
+        線上刷卡付款即將開通（綠界安全金流：信用卡／ATM／超商）。屆時單筆買豆滿 NT$1,000 免運，未滿千為超商店到店運費 NT$60。數量有限，豆單可能異動；若下單後遇品項完售，我們會為您挑選風味相近的豆子出貨，若不符預期請於下單時告知取消。更多咖啡分享，歡迎
         <a href="https://blog.raindeercoffee.com" style="color:var(--gold);border-bottom:1px solid var(--gold-line);">追蹤部落格</a>。
       </p>
     </div>
@@ -1149,6 +1169,9 @@
   "use strict";
   // 綠界收銀員（Cloudflare Worker）網址
   var CART_API = "https://raindeer-ecpay.rivaloveleon.workers.dev";
+  // 付款開關：綠界金流審核通過前設 false，結帳只顯示「即將開通」不進綠界；
+  // 通過後改 true 再 push，即可真的收款（外觀與購物車完全不受影響）。
+  var PAYMENT_LIVE = false;
   // 顯示用價目（權威價格在後端，結帳金額由收銀員重算，避免被竄改）
   // service:true = 服務（如課程），不需宅配地址
   var CATALOG = {
@@ -1262,8 +1285,8 @@
       +'<label>Email *（收訂單通知）</label><input id="f_email" required type="email">'
       +'<label>'+(hasPhysical()?'超商取貨門市 *（7-11 或全家，哪一家）':'取貨資訊（只報課可不填）')+'</label><input id="f_addr" placeholder="'+(hasPhysical()?'例：7-11 大安門市':'')+'"'+(hasPhysical()?' required':'')+'>'
       +'<label>備註（可留空，例如：某支完售可否換相近風味）</label><textarea id="f_note"></textarea>'
-      +'<button class="cart-cta" id="checkoutBtn" type="submit">前往綠界安全付款 · NT$'+total+'</button>'
-      +'<div class="cart-note">付款由綠界（ECPay）處理，支援信用卡／ATM／超商。送出後會跳轉到綠界付款頁。</div>'
+      +'<button class="cart-cta" id="checkoutBtn" type="submit">'+(PAYMENT_LIVE?('前往綠界安全付款 · NT$'+total):'線上付款即將開通 ☕')+'</button>'
+      +'<div class="cart-note">'+(PAYMENT_LIVE?'付款由綠界（ECPay）處理，支援信用卡／ATM／超商。送出後會跳轉到綠界付款頁。':'線上刷卡付款即將開通，敬請期待！可先加入購物車、逛逛豆單。')+'</div>'
       +'</form>';
     document.getElementById('toForm').addEventListener('click', function(){
       document.getElementById('cartForm').classList.add('show'); this.style.display='none';
@@ -1279,6 +1302,10 @@
   // 4) 結帳：把品項與收件資料交給綠界收銀員，收銀員重算金額＋簽章後跳綠界
   function checkout(e){
     e.preventDefault();
+    if(!PAYMENT_LIVE){
+      alert('🦌 線上付款即將開通，敬請期待！\n目前可先加入購物車、看看豆單與課程，開賣會第一時間公告。');
+      return;
+    }
     var btn=document.getElementById('checkoutBtn');
     var items=[]; for(var k in cart){ items.push({sku:k, qty:cart[k]}); }
     var customer={
