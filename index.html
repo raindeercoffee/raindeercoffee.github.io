@@ -763,8 +763,8 @@
   為你建立一套能理解、好操作、穩定易學的手沖系統。
 </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="https://p.ecpay.com.tw/F7CF029" target="_blank" rel="noopener noreferrer">報名實體手沖課 · NT$2,500</a>
-          <a class="btn btn-secondary" href="#course">先看課程內容</a>
+          <button class="btn btn-primary add-course" type="button">職人手沖課</button>
+          <a class="btn btn-secondary" href="#course">課程內容</a>
         </div>
 
         <div class="hero-points">
@@ -890,7 +890,7 @@
       </div>
 
       <p class="section-desc" style="margin-top:26px;font-size:13px;">
-        線上下單（綠界安全金流：信用卡／ATM／超商）預計九月上線。數量有限，豆單可能異動；若下單後遇品項完售，我們會為您挑選風味相近的豆子出貨，若不符預期請於下單時告知取消。想收到開賣通知，歡迎先
+        線上下單已開通，綠界安全金流（信用卡／ATM／超商）。單筆買豆滿 NT$1,000 免運，未滿千為超商店到店運費 NT$60。數量有限，豆單可能異動；若下單後遇品項完售，我們會為您挑選風味相近的豆子出貨，若不符預期請於下單時告知取消。更多咖啡分享，歡迎
         <a href="https://blog.raindeercoffee.com" style="color:var(--gold);border-bottom:1px solid var(--gold-line);">追蹤部落格</a>。
       </p>
     </div>
@@ -1055,12 +1055,12 @@
           這堂課會比你繼續零碎摸索更有效率。由二十年資歷咖啡職人親自帶領，
           帶你建立屬於自己的沖煮與感官實驗室。
         </p>
-        <p style="margin:6px auto 22px;font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:22px;font-weight:600;letter-spacing:.03em;">
-          實體課 · 2 小時 · NT$2,500 / 人
+        <p style="margin:6px auto 22px;font-family:'Noto Serif TC',serif;color:var(--gold);font-size:22px;font-weight:600;letter-spacing:.03em;">
+          為自己沖一杯好咖啡
         </p>
 
         <div class="hero-actions" style="justify-content:center; margin-bottom:0;">
-          <a class="btn btn-primary" href="https://p.ecpay.com.tw/F7CF029" target="_blank" rel="noopener noreferrer">報名實體手沖課 · NT$2,500</a>
+          <button class="btn btn-primary add-course" type="button">購買職人手沖課</button>
           <a class="btn btn-secondary" href="#about">回看品牌理念</a>
         </div>
       </div>
@@ -1070,5 +1070,238 @@
   <footer>
     © 2026 RAINDEER COFFEE ・ 雨鹿焙煎所
   </footer>
+<!-- ===== 買豆購物車 + 綠界金流（前端） ===== -->
+<style>
+  #buy .dark-card{display:flex;flex-direction:column;}
+  button.btn.add-course{border:none;cursor:pointer;font-family:'Noto Sans TC',sans-serif;}
+  .add-cart{
+    margin-top:16px;align-self:flex-start;min-height:42px;padding:0 20px;
+    border:1px solid rgba(197,160,89,.62);color:var(--gold);background:transparent;
+    font-size:12px;font-weight:700;letter-spacing:.12em;cursor:pointer;transition:.2s ease;
+    font-family:'Noto Sans TC',sans-serif;
+  }
+  .add-cart:hover{background:rgba(197,160,89,.10);}
+  .add-cart.added{color:var(--navy);background:var(--gold);}
+  #cartFab{
+    position:fixed;right:22px;bottom:22px;z-index:120;width:60px;height:60px;border-radius:50%;
+    background:var(--gold);color:var(--navy);border:none;cursor:pointer;font-size:24px;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;transition:.2s ease;
+  }
+  #cartFab:hover{transform:translateY(-3px);}
+  #cartFab .badge{
+    position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;
+    background:#b23b3b;color:#fff;font-size:12px;font-weight:700;display:none;align-items:center;justify-content:center;font-family:sans-serif;
+  }
+  #cartOverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:130;display:none;}
+  #cartOverlay.open{display:block;}
+  #cartDrawer{
+    position:fixed;top:0;right:0;height:100%;width:min(420px,92vw);z-index:140;background:var(--navy);
+    color:var(--cream);transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;
+    box-shadow:-10px 0 40px rgba(0,0,0,.4);
+  }
+  #cartDrawer.open{transform:translateX(0);}
+  .cart-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--gold-line);}
+  .cart-head h3{font-family:'Noto Serif TC',serif;color:var(--gold);font-size:18px;margin:0;letter-spacing:.06em;}
+  .cart-close{background:none;border:none;color:var(--muted);font-size:28px;cursor:pointer;line-height:1;}
+  .cart-body{flex:1;overflow-y:auto;padding:8px 22px;}
+  .cart-item{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid rgba(197,160,89,.12);}
+  .ci-main{flex:1;}
+  .ci-name{font-size:14px;color:var(--cream);margin-bottom:4px;}
+  .ci-sub{font-size:11px;color:var(--muted);}
+  .ci-price{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:16px;white-space:nowrap;}
+  .qty{display:inline-flex;align-items:center;margin-top:8px;border:1px solid var(--gold-line);}
+  .qty button{width:28px;height:28px;background:none;border:none;color:var(--gold);cursor:pointer;font-size:16px;}
+  .qty span{width:34px;text-align:center;font-size:14px;}
+  .ci-remove{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;text-decoration:underline;margin-top:6px;display:block;}
+  .cart-empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:14px;line-height:1.8;}
+  .cart-foot{border-top:1px solid var(--gold-line);padding:18px 22px;}
+  .cart-foot .row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px;}
+  .cart-foot .total{font-size:15px;color:var(--cream);font-weight:700;margin:10px 0 4px;display:flex;justify-content:space-between;align-items:baseline;}
+  .cart-foot .total b{color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:24px;}
+  .cart-form{display:none;margin-top:6px;}
+  .cart-form.show{display:block;}
+  .cart-form label{display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;letter-spacing:.04em;}
+  .cart-form input,.cart-form textarea{
+    width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gold-line);color:var(--cream);
+    padding:10px;font-size:13px;font-family:inherit;border-radius:2px;box-sizing:border-box;
+  }
+  .cart-form textarea{resize:vertical;min-height:52px;}
+  .cart-cta{width:100%;min-height:50px;background:var(--gold);color:var(--navy);border:none;font-size:14px;
+    font-weight:700;letter-spacing:.10em;cursor:pointer;margin-top:16px;font-family:'Noto Sans TC',sans-serif;}
+  .cart-cta:disabled{opacity:.45;cursor:not-allowed;}
+  .cart-note{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.7;}
+</style>
+
+<button id="cartFab" aria-label="購物車">🛒<span class="badge" id="cartBadge">0</span></button>
+<div id="cartOverlay"></div>
+<aside id="cartDrawer" aria-label="購物車">
+  <div class="cart-head"><h3>購物車</h3><button class="cart-close" id="cartCloseBtn" aria-label="關閉">&times;</button></div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-foot" id="cartFoot"></div>
+</aside>
+
+<script>
+(function(){
+  "use strict";
+  // 綠界收銀員（Cloudflare Worker）網址
+  var CART_API = "https://raindeer-ecpay.rivaloveleon.workers.dev";
+  // 顯示用價目（權威價格在後端，結帳金額由收銀員重算，避免被竄改）
+  // service:true = 服務（如課程），不需宅配地址
+  var CATALOG = {
+    "職人1號":{name:"職人1號 Women Power",price:300,unit:"100g"},
+    "職人2號":{name:"職人2號 Danche Hill",price:300,unit:"100g"},
+    "職人3號":{name:"職人3號 Hamasho",price:300,unit:"100g"},
+    "職人4號":{name:"職人4號 Long Miles",price:300,unit:"100g"},
+    "職人5號":{name:"職人5號 Muchoki",price:300,unit:"100g"},
+    "職人6號":{name:"職人6號 La Orquidea 蘭花",price:300,unit:"100g"},
+    "職人7號":{name:"職人7號 Sacuanjoche",price:300,unit:"100g"},
+    "限定1號":{name:"限定1號 Cantar Don Tito",price:1680,unit:"100g"},
+    "限定2號":{name:"限定2號 La Piramide AAA",price:300,unit:"100g"},
+    "手沖課":{name:"實體手沖課 2小時",price:2500,unit:"人",service:true}
+  };
+  function hasPhysical(){ for(var k in cart){ if(CATALOG[k] && !CATALOG[k].service) return true; } return false; }
+  // 運費規則：單買豆滿千免運，未滿千收 SHIP_FEE（超商店到店）；課程不計運費
+  var SHIP_FEE = 60;
+  var FREE_SHIP_MIN = 1000;
+  function physicalSubtotal(){ var s=0; for(var k in cart){ if(CATALOG[k] && !CATALOG[k].service) s+=CATALOG[k].price*cart[k]; } return s; }
+  function shipping(){ var ps=physicalSubtotal(); if(ps<=0) return 0; return ps>=FREE_SHIP_MIN?0:SHIP_FEE; }
+
+  var KEY = "raindeer_cart";
+  var cart = load();
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(cart)); }catch(e){} }
+  function count(){ var n=0; for(var k in cart){ n+=cart[k]; } return n; }
+  function subtotal(){ var s=0; for(var k in cart){ if(CATALOG[k]) s+=CATALOG[k].price*cart[k]; } return s; }
+
+  // 1) 幫買豆區每張卡加「加入購物車」鈕（不改動卡片內容）
+  function enhanceCards(){
+    var cards = document.querySelectorAll('#buy .dark-card');
+    cards.forEach(function(card){
+      var lbl = card.querySelector('.point-label');
+      if(!lbl) return;
+      var sku = lbl.textContent.trim();
+      if(!CATALOG[sku]) return;
+      if(card.querySelector('.add-cart')) return;
+      card.setAttribute('data-sku', sku);
+      var btn = document.createElement('button');
+      btn.className = 'add-cart';
+      btn.type = 'button';
+      btn.textContent = '加入購物車';
+      btn.addEventListener('click', function(){
+        cart[sku] = (cart[sku]||0)+1; save(); render();
+        btn.textContent = '已加入 ✓'; btn.classList.add('added');
+        setTimeout(function(){ btn.textContent='加入購物車'; btn.classList.remove('added'); }, 1200);
+        openDrawer();
+      });
+      card.appendChild(btn);
+    });
+  }
+
+  // 2) 抽屜開關
+  var fab=document.getElementById('cartFab'), badge=document.getElementById('cartBadge'),
+      overlay=document.getElementById('cartOverlay'), drawer=document.getElementById('cartDrawer'),
+      body=document.getElementById('cartBody'), foot=document.getElementById('cartFoot');
+  function openDrawer(){ overlay.classList.add('open'); drawer.classList.add('open'); }
+  function closeDrawer(){ overlay.classList.remove('open'); drawer.classList.remove('open'); }
+  fab.addEventListener('click', openDrawer);
+  overlay.addEventListener('click', closeDrawer);
+  document.getElementById('cartCloseBtn').addEventListener('click', closeDrawer);
+
+  // 3) 渲染
+  function render(){
+    var n=count();
+    badge.textContent=n; badge.style.display = n>0 ? 'flex' : 'none';
+    if(n===0){
+      body.innerHTML='<div class="cart-empty">購物車是空的<br>到上面挑幾支豆子吧 ☕</div>';
+      foot.innerHTML=''; return;
+    }
+    var html='';
+    for(var k in cart){
+      if(!CATALOG[k]) continue;
+      var it=CATALOG[k], q=cart[k];
+      html+='<div class="cart-item"><div class="ci-main"><div class="ci-name">'+it.name+'</div>'
+        +'<div class="ci-sub">NT$'+it.price+' / '+(it.unit||'100g')+'</div>'
+        +'<div class="qty"><button data-dec="'+k+'">−</button><span>'+q+'</span><button data-inc="'+k+'">+</button></div>'
+        +'<button class="ci-remove" data-del="'+k+'">移除</button></div>'
+        +'<div class="ci-price">NT$'+(it.price*q)+'</div></div>';
+    }
+    body.innerHTML=html;
+    var sub=subtotal(), ship=shipping(), total=sub+ship;
+    var shipHint = physicalSubtotal()>0 && ship>0 ? '<div class="cart-note" style="margin:2px 0 8px;">買豆滿 NT$'+FREE_SHIP_MIN+' 免運（目前差 NT$'+(FREE_SHIP_MIN-physicalSubtotal())+'）</div>' : '';
+    foot.innerHTML=
+      '<div class="row"><span>小計</span><span>NT$'+sub+'</span></div>'
+      +'<div class="row"><span>運費（超商店到店）</span><span>'+(ship>0?('NT$'+ship):'免運')+'</span></div>'
+      +shipHint
+      +'<div class="total"><span>合計</span><b>NT$'+total+'</b></div>'
+      +'<button class="cart-cta" id="toForm">前往結帳</button>'
+      +'<form class="cart-form" id="cartForm">'
+      +'<label>收件人姓名 *</label><input id="f_name" required>'
+      +'<label>手機 *</label><input id="f_phone" required inputmode="tel">'
+      +'<label>Email *（收訂單通知）</label><input id="f_email" required type="email">'
+      +'<label>'+(hasPhysical()?'超商取貨門市 *（7-11 或全家，哪一家）':'取貨資訊（只報課可不填）')+'</label><input id="f_addr" placeholder="'+(hasPhysical()?'例：7-11 大安門市':'')+'"'+(hasPhysical()?' required':'')+'>'
+      +'<label>備註（可留空，例如：某支完售可否換相近風味）</label><textarea id="f_note"></textarea>'
+      +'<button class="cart-cta" id="checkoutBtn" type="submit">前往綠界安全付款 · NT$'+total+'</button>'
+      +'<div class="cart-note">付款由綠界（ECPay）處理，支援信用卡／ATM／超商。送出後會跳轉到綠界付款頁。</div>'
+      +'</form>';
+    document.getElementById('toForm').addEventListener('click', function(){
+      document.getElementById('cartForm').classList.add('show'); this.style.display='none';
+      document.getElementById('f_name').focus();
+    });
+    body.querySelectorAll('[data-inc]').forEach(function(b){ b.onclick=function(){ cart[b.dataset.inc]++; save(); render(); }; });
+    body.querySelectorAll('[data-dec]').forEach(function(b){ b.onclick=function(){ var k=b.dataset.dec; cart[k]--; if(cart[k]<=0) delete cart[k]; save(); render(); }; });
+    body.querySelectorAll('[data-del]').forEach(function(b){ b.onclick=function(){ delete cart[b.dataset.del]; save(); render(); }; });
+    document.getElementById('cartForm').addEventListener('submit', checkout);
+  }
+
+  // 4) 結帳：把品項與收件資料交給綠界收銀員，收銀員重算金額＋簽章後跳綠界
+  function checkout(e){
+    e.preventDefault();
+    var btn=document.getElementById('checkoutBtn');
+    var items=[]; for(var k in cart){ items.push({sku:k, qty:cart[k]}); }
+    var customer={
+      name:val('f_name'), phone:val('f_phone'), email:val('f_email'),
+      address:val('f_addr'), note:val('f_note')
+    };
+    if(!CART_API){
+      alert('金流即將開通，先別急 ☕\n（購物車功能已就緒，等綠界收銀員上線就能付款）');
+      return;
+    }
+    btn.disabled=true; btn.textContent='前往綠界中…';
+    fetch(CART_API.replace(/\/$/,'')+'/api/checkout', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:items, customer:customer})
+    }).then(function(r){ return r.json(); }).then(function(data){
+      if(!data || !data.action || !data.params){ throw new Error(data && data.error || '結帳失敗'); }
+      var f=document.createElement('form'); f.method='POST'; f.action=data.action;
+      Object.keys(data.params).forEach(function(key){
+        var i=document.createElement('input'); i.type='hidden'; i.name=key; i.value=data.params[key]; f.appendChild(i);
+      });
+      document.body.appendChild(f); f.submit();
+    }).catch(function(err){
+      btn.disabled=false; btn.textContent='前往綠界安全付款';
+      alert('結帳暫時卡住了：'+err.message+'\n請稍後再試，或用官網課程的方式聯絡我們。');
+    });
+  }
+  function val(id){ var el=document.getElementById(id); return el?el.value.trim():''; }
+
+  // 手沖課「報名」鈕 → 加入購物車
+  function bindCourse(){
+    document.querySelectorAll('.add-course').forEach(function(btn){
+      if(btn._bound) return; btn._bound=true;
+      btn.addEventListener('click', function(){
+        cart["手沖課"]=(cart["手沖課"]||0)+1; save(); render();
+        var old=btn.textContent; btn.textContent='已加入購物車 ✓';
+        setTimeout(function(){ btn.textContent=old; }, 1200);
+        openDrawer();
+      });
+    });
+  }
+
+  // 啟動
+  function boot(){ enhanceCards(); bindCourse(); render(); }
+  if(document.readyState!=='loading'){ boot(); }
+  else document.addEventListener('DOMContentLoaded', boot);
+})();
+</script>
 </body>
 </html>
