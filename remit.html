@@ -99,7 +99,7 @@
     + '<div class="amt-box"><div class="amt-top"><span style="color:var(--gold);font-size:12px;">應付金額</span>'
       + '<button class="copy sm" id="copyAmt">複製金額</button></div>'
       + '<div class="amt">NT$ '+Number(o.total).toLocaleString()+'</div></div>'
-    + '<div class="sec"><div class="lbl">選擇轉帳銀行 <span style="color:var(--gold)">(挑跟你同一家 → 免手續費)</span></div>'
+    + '<div class="sec"><div class="lbl">轉帳銀行</div>'
       + '<select id="bank">'+bankOpts+'</select></div>'
     + '<div class="acct-box">'
       + '<div class="ab-row"><span class="k">戶名</span><span class="v">'+HOLDER+'</span></div>'
@@ -123,6 +123,7 @@
     lines.push("轉入 "+b.bank+"("+b.code+")");
     if(cust.name||cust.phone) lines.push("收件 "+(cust.name||"")+" "+(cust.phone||""));
     if(cust.address) lines.push("取貨 "+cust.address);
+    if(cust.note) lines.push(cust.note);
     lines.push("匯款末五碼:（請填)");
     return lines.join("\n");
   }

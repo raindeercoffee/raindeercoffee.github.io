@@ -1239,8 +1239,8 @@
   document.getElementById('cartCloseBtn').addEventListener('click', closeDrawer);
 
   function captureCartView(){
-    var form=document.getElementById('cartForm'), values={}, ids=['f_name','f_phone','f_email','f_store','f_storeName','f_storeCode','f_note'];
-    ids.forEach(function(id){ var el=document.getElementById(id); if(el) values[id]=el.value; });
+    var form=document.getElementById('cartForm'), values={}, ids=['f_name','f_phone','f_email','f_store','f_storeName','f_storeCode','f_swap'];
+    ids.forEach(function(id){ var el=document.getElementById(id); if(el) values[id]=(el.type==='checkbox'?el.checked:el.value); });
     return {formOpen:!!(form && form.classList.contains('show')), values:values, scrollTop:cartScroll.scrollTop};
   }
   function restoreCartView(view){
@@ -1250,7 +1250,7 @@
       if(form){
         form.classList.add('show');
         document.getElementById('toForm').style.display='none';
-        Object.keys(view.values).forEach(function(id){ var el=document.getElementById(id); if(el) el.value=view.values[id]; });
+        Object.keys(view.values).forEach(function(id){ var el=document.getElementById(id); if(el){ if(el.type==='checkbox') el.checked=view.values[id]; else el.value=view.values[id]; } });
       }
     }
     requestAnimationFrame(function(){ cartScroll.scrollTop=view.scrollTop; });
@@ -1293,7 +1293,9 @@
           +'<label>門市店名 *</label><input id="f_storeName" placeholder="例：大安門市" required>'
           +'<label>門市店號 *（店到店必填）</label><input id="f_storeCode" placeholder="例：123456" required inputmode="numeric">'
         : '')
-      +'<label>備註（可留空，例如：某支完售可否換相近風味）</label><textarea id="f_note"></textarea>'
+      +'<label style="display:flex;align-items:flex-start;gap:8px;margin-top:14px;cursor:pointer;line-height:1.6;">'
+        +'<input type="checkbox" id="f_swap" style="width:auto;padding:0;margin:1px 0 0;flex:none;border:none;background:none;-webkit-appearance:checkbox;appearance:checkbox;accent-color:var(--gold);">'
+        +'<span>若有豆子完售，我同意換成風味相近的豆子（不同意請不要勾選，我們會先聯絡你）</span></label>'
       +'<button class="cart-cta" id="checkoutBtn" type="submit">前往結帳（銀行匯款）· NT$'+total+'</button>'
       +'<div class="cart-note">下一步會顯示應付金額與匯款帳號（可一鍵複製），轉帳後用 LINE 回報末五碼即可完成。</div>'
       +'</form>';
@@ -1328,7 +1330,7 @@
       no: genOrderNo(),
       createdAt: new Date().toISOString(),
       items: items, subtotal: sub, ship: ship, total: total,
-      customer: { name:name, phone:phone, email:email, store:store, storeName:storeName, storeCode:storeCode, address:address, note:val('f_note') }
+      customer: { name:name, phone:phone, email:email, store:store, storeName:storeName, storeCode:storeCode, address:address, note:(document.getElementById('f_swap')&&document.getElementById('f_swap').checked)?'遇完售可換相近風味':'遇完售不換，請先聯絡我' }
     };
     try{ localStorage.setItem('raindeer_last_order', JSON.stringify(order)); }catch(err){}
     location.href = 'remit.html';
