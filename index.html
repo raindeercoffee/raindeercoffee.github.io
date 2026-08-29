@@ -1143,10 +1143,14 @@
   .cart-form{display:none;margin-top:6px;}
   .cart-form.show{display:block;}
   .cart-form label{display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;letter-spacing:.04em;}
-  .cart-form input,.cart-form textarea{
+  .cart-form input,.cart-form select,.cart-form textarea{
     width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gold-line);color:var(--cream);
     padding:10px;font-size:13px;font-family:inherit;border-radius:2px;box-sizing:border-box;
   }
+  .cart-form select{-webkit-appearance:none;appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23c5a059' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;background-position:right 10px center;padding-right:30px;}
+  .cart-form select option{background:var(--navy);color:var(--cream);}
   .cart-form textarea{resize:vertical;min-height:52px;}
   .cart-cta{width:100%;min-height:50px;background:var(--gold);color:var(--navy);border:none;font-size:14px;
     font-weight:700;letter-spacing:.10em;cursor:pointer;margin-top:16px;font-family:'Noto Sans TC',sans-serif;}
@@ -1235,7 +1239,7 @@
   document.getElementById('cartCloseBtn').addEventListener('click', closeDrawer);
 
   function captureCartView(){
-    var form=document.getElementById('cartForm'), values={}, ids=['f_name','f_phone','f_email','f_addr','f_note'];
+    var form=document.getElementById('cartForm'), values={}, ids=['f_name','f_phone','f_email','f_store','f_storeName','f_storeCode','f_note'];
     ids.forEach(function(id){ var el=document.getElementById(id); if(el) values[id]=el.value; });
     return {formOpen:!!(form && form.classList.contains('show')), values:values, scrollTop:cartScroll.scrollTop};
   }
@@ -1283,7 +1287,12 @@
       +'<label>收件人姓名 *</label><input id="f_name" required>'
       +'<label>手機 *</label><input id="f_phone" required inputmode="tel">'
       +'<label>Email *（收訂單通知）</label><input id="f_email" required type="email">'
-      +'<label>'+(hasPhysical()?'超商取貨門市 *（7-11 或全家，哪一家）':'取貨資訊（只報課可不填）')+'</label><input id="f_addr" placeholder="'+(hasPhysical()?'例：7-11 大安門市':'')+'"'+(hasPhysical()?' required':'')+'>'
+      +(hasPhysical()
+        ? '<label>超商 *（店到店取貨）</label>'
+          +'<select id="f_store" required><option value="">請選擇超商</option><option>7-11</option><option>全家</option><option>萊爾富</option></select>'
+          +'<label>門市店名 *</label><input id="f_storeName" placeholder="例：大安門市" required>'
+          +'<label>門市店號 *（店到店必填）</label><input id="f_storeCode" placeholder="例：123456" required inputmode="numeric">'
+        : '')
       +'<label>備註（可留空，例如：某支完售可否換相近風味）</label><textarea id="f_note"></textarea>'
       +'<button class="cart-cta" id="checkoutBtn" type="submit">前往結帳（銀行匯款）· NT$'+total+'</button>'
       +'<div class="cart-note">下一步會顯示應付金額與匯款帳號（可一鍵複製），轉帳後用 LINE 回報末五碼即可完成。</div>'
@@ -1302,18 +1311,24 @@
   // 4) 結帳（銀行匯款）：把訂單與收件資料存本機，跳轉到匯款頁 remit.html
   function checkout(e){
     e.preventDefault();
-    var name=val('f_name'), phone=val('f_phone'), email=val('f_email'), addr=val('f_addr');
-    if(!name || !phone || !email || (hasPhysical() && !addr)){
-      alert('麻煩把收件資料填完整（姓名、手機、Email' + (hasPhysical()?'、超商門市':'') + '）再結帳唷 ☕');
+    var name=val('f_name'), phone=val('f_phone'), email=val('f_email');
+    var store=val('f_store'), storeName=val('f_storeName'), storeCode=val('f_storeCode');
+    if(!name || !phone || !email){
+      alert('麻煩把收件資料填完整（姓名、手機、Email）再結帳唷 ☕');
       return;
     }
+    if(hasPhysical() && (!store || !storeName || !storeCode)){
+      alert('麻煩選超商、填門市店名與店號（店到店寄件需要）再結帳唷 ☕');
+      return;
+    }
+    var address = hasPhysical() ? (store+'・'+storeName+'・店號 '+storeCode) : '';
     var items=[]; for(var k in cart){ if(CATALOG[k]) items.push({name:CATALOG[k].name, qty:cart[k], price:CATALOG[k].price}); }
     var sub=subtotal(), ship=shipping(), total=sub+ship;
     var order={
       no: genOrderNo(),
       createdAt: new Date().toISOString(),
       items: items, subtotal: sub, ship: ship, total: total,
-      customer: { name:name, phone:phone, email:email, address:addr, note:val('f_note') }
+      customer: { name:name, phone:phone, email:email, store:store, storeName:storeName, storeCode:storeCode, address:address, note:val('f_note') }
     };
     try{ localStorage.setItem('raindeer_last_order', JSON.stringify(order)); }catch(err){}
     location.href = 'remit.html';
