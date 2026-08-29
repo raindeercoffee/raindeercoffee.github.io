@@ -1285,8 +1285,8 @@
       +'<label>Email *（收訂單通知）</label><input id="f_email" required type="email">'
       +'<label>'+(hasPhysical()?'超商取貨門市 *（7-11 或全家，哪一家）':'取貨資訊（只報課可不填）')+'</label><input id="f_addr" placeholder="'+(hasPhysical()?'例：7-11 大安門市':'')+'"'+(hasPhysical()?' required':'')+'>'
       +'<label>備註（可留空，例如：某支完售可否換相近風味）</label><textarea id="f_note"></textarea>'
-      +'<button class="cart-cta" id="checkoutBtn" type="submit">'+(PAYMENT_LIVE?('前往綠界安全付款 · NT$'+total):'線上付款即將開通 ☕')+'</button>'
-      +'<div class="cart-note">'+(PAYMENT_LIVE?'付款由綠界（ECPay）處理，支援信用卡／ATM／超商。送出後會跳轉到綠界付款頁。':'線上刷卡付款即將開通，敬請期待！可先加入購物車、逛逛豆單。')+'</div>'
+      +'<button class="cart-cta" id="checkoutBtn" type="submit">前往結帳（銀行匯款）· NT$'+total+'</button>'
+      +'<div class="cart-note">下一步會顯示應付金額與匯款帳號（可一鍵複製），轉帳後用 LINE 回報末五碼即可完成。</div>'
       +'</form>';
     document.getElementById('toForm').addEventListener('click', function(){
       document.getElementById('cartForm').classList.add('show'); this.style.display='none';
@@ -1299,38 +1299,29 @@
     restoreCartView(view);
   }
 
-  // 4) 結帳：把品項與收件資料交給綠界收銀員，收銀員重算金額＋簽章後跳綠界
+  // 4) 結帳（銀行匯款）：把訂單與收件資料存本機，跳轉到匯款頁 remit.html
   function checkout(e){
     e.preventDefault();
-    if(!PAYMENT_LIVE){
-      alert('🦌 線上付款即將開通，敬請期待！\n目前可先加入購物車、看看豆單與課程，開賣會第一時間公告。');
+    var name=val('f_name'), phone=val('f_phone'), email=val('f_email'), addr=val('f_addr');
+    if(!name || !phone || !email || (hasPhysical() && !addr)){
+      alert('麻煩把收件資料填完整（姓名、手機、Email' + (hasPhysical()?'、超商門市':'') + '）再結帳唷 ☕');
       return;
     }
-    var btn=document.getElementById('checkoutBtn');
-    var items=[]; for(var k in cart){ items.push({sku:k, qty:cart[k]}); }
-    var customer={
-      name:val('f_name'), phone:val('f_phone'), email:val('f_email'),
-      address:val('f_addr'), note:val('f_note')
+    var items=[]; for(var k in cart){ if(CATALOG[k]) items.push({name:CATALOG[k].name, qty:cart[k], price:CATALOG[k].price}); }
+    var sub=subtotal(), ship=shipping(), total=sub+ship;
+    var order={
+      no: genOrderNo(),
+      createdAt: new Date().toISOString(),
+      items: items, subtotal: sub, ship: ship, total: total,
+      customer: { name:name, phone:phone, email:email, address:addr, note:val('f_note') }
     };
-    if(!CART_API){
-      alert('金流即將開通，先別急 ☕\n（購物車功能已就緒，等綠界收銀員上線就能付款）');
-      return;
-    }
-    btn.disabled=true; btn.textContent='前往綠界中…';
-    fetch(CART_API.replace(/\/$/,'')+'/api/checkout', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({items:items, customer:customer})
-    }).then(function(r){ return r.json(); }).then(function(data){
-      if(!data || !data.action || !data.params){ throw new Error(data && data.error || '結帳失敗'); }
-      var f=document.createElement('form'); f.method='POST'; f.action=data.action;
-      Object.keys(data.params).forEach(function(key){
-        var i=document.createElement('input'); i.type='hidden'; i.name=key; i.value=data.params[key]; f.appendChild(i);
-      });
-      document.body.appendChild(f); f.submit();
-    }).catch(function(err){
-      btn.disabled=false; btn.textContent='前往綠界安全付款';
-      alert('結帳暫時卡住了：'+err.message+'\n請稍後再試，或用官網課程的方式聯絡我們。');
-    });
+    try{ localStorage.setItem('raindeer_last_order', JSON.stringify(order)); }catch(err){}
+    location.href = 'remit.html';
+  }
+  function genOrderNo(){
+    var d=new Date(), p=function(n){return (n<10?'0':'')+n;};
+    var r=Math.floor(1000+Math.random()*9000);
+    return 'RD'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+r;
   }
   function val(id){ var el=document.getElementById(id); return el?el.value.trim():''; }
 

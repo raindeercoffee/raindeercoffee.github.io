@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>匯款結帳 · 雨鹿焙煎所</title>
+<meta name="robots" content="noindex">
+<style>
+  :root{ --navy:#081b39; --navy2:#0e2547; --gold:#c5a059; --cream:#f4ecdb; --blue:#8ea3c4; --line:#06c755; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#050f21;color:var(--cream);font-family:-apple-system,"PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.6;}
+  .wrap{max-width:460px;margin:0 auto;padding:18px 14px 40px;}
+  .card{background:var(--navy);border-radius:20px;overflow:hidden;box-shadow:0 0 0 .5px rgba(197,160,89,.4);}
+  .head{padding:18px 20px 14px;border-bottom:1px solid rgba(197,160,89,.25);display:flex;align-items:center;gap:10px;}
+  .logo{width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:18px;}
+  .brand{font-size:15px;font-weight:600;}
+  .step{color:var(--gold);font-size:11px;}
+  .sec{padding:14px 20px 2px;}
+  .lbl{color:var(--blue);font-size:12px;margin-bottom:8px;}
+  .row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;}
+  .row .n{color:#d7e0ef;}
+  .row .g{color:var(--blue);}
+  .amt-box{margin:12px 20px;padding:14px 16px;background:rgba(197,160,89,.12);border:1px solid rgba(197,160,89,.4);border-radius:12px;}
+  .amt-top{display:flex;align-items:center;justify-content:space-between;}
+  .amt{color:var(--cream);font-size:30px;font-weight:600;letter-spacing:.5px;margin-top:2px;}
+  select,input,textarea{width:100%;background:var(--navy2);color:var(--cream);border:1px solid rgba(197,160,89,.4);border-radius:10px;padding:11px 12px;font-size:14px;font-family:inherit;}
+  select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23c5a059' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");background-repeat:no-repeat;background-position:right 12px center;}
+  .acct-box{margin:12px 20px 4px;padding:14px 16px;background:var(--navy2);border-radius:12px;}
+  .ab-row{display:flex;justify-content:space-between;padding:4px 0;}
+  .ab-row .k{color:var(--blue);font-size:12px;}
+  .ab-row .v{color:var(--cream);font-size:13px;}
+  .acct-main{display:flex;align-items:center;justify-content:space-between;padding:6px 0 2px;border-top:1px solid rgba(255,255,255,.06);margin-top:4px;}
+  .acct-num{color:var(--cream);font-size:19px;letter-spacing:1px;font-weight:600;}
+  .copy{border:none;cursor:pointer;color:var(--navy);background:var(--gold);font-size:11px;padding:6px 11px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;}
+  .copy.sm{font-size:11px;padding:4px 10px;}
+  .hint{color:var(--gold);font-size:12px;padding:2px 20px 0;}
+  .msg{margin:6px 20px 0;padding:12px 14px;background:var(--navy2);border-radius:12px;border:1px dashed rgba(197,160,89,.35);}
+  .msg pre{margin:0 0 8px;white-space:pre-wrap;word-break:break-word;color:#d7e0ef;font-size:12.5px;font-family:inherit;}
+  .btn-line{margin:12px 20px 6px;text-decoration:none;text-align:center;cursor:pointer;background:var(--line);color:#fff;font-size:15px;font-weight:600;padding:14px 0;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .foot{padding:6px 20px 22px;text-align:center;}
+  .ordno{color:#6f84a6;font-size:11px;}
+  .back{display:block;text-align:center;color:var(--gold);font-size:13px;margin-top:16px;text-decoration:none;}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--gold);color:var(--navy);font-size:13px;font-weight:600;padding:9px 18px;border-radius:20px;opacity:0;transition:opacity .2s;pointer-events:none;}
+  .toast.show{opacity:1;}
+  .empty{padding:30px 24px;text-align:center;color:var(--blue);font-size:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="head">
+      <div class="logo">☕</div>
+      <div>
+        <div class="brand">雨鹿焙煎所</div>
+        <div class="step">匯款結帳 · 步驟 2/2</div>
+      </div>
+    </div>
+
+    <div id="content"></div>
+  </div>
+  <a class="back" href="index.html#buy">← 回官網繼續逛豆單</a>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var HOLDER = "林舜婷";
+  var LINE_URL = "https://line.me/R/ti/p/@246cqzgi";
+  var BANKS = [
+    {bank:"國泰世華銀行", code:"013", acct:"263506062919"},
+    {bank:"玉山銀行",     code:"808", acct:"0129979157410"},
+    {bank:"中國信託銀行", code:"822", acct:"112540233199"},
+    {bank:"LINE Bank 連線銀行", code:"824", acct:"111015172691"},
+    {bank:"中華郵政",     code:"700", acct:"00216540088755"}
+  ];
+
+  function esc(s){ return String(s==null?"":s).replace(/[<>&]/g,function(c){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[c];}); }
+  function order(){ try{ return JSON.parse(localStorage.getItem("raindeer_last_order")); }catch(e){ return null; } }
+
+  var o = order();
+  var c = document.getElementById("content");
+
+  if(!o || !o.total){
+    c.innerHTML = '<div class="empty">找不到訂單資料 🥲<br>請回官網重新把商品加入購物車、按「前往結帳」。</div>';
+    return;
+  }
+
+  var itemsHtml = "";
+  (o.items||[]).forEach(function(it){
+    itemsHtml += '<div class="row"><span class="n">'+esc(it.name)+' ×'+it.qty+'</span><span class="n">NT$'+(it.price*it.qty)+'</span></div>';
+  });
+  var shipHtml = '<div class="row"><span class="g">運費</span><span class="g">'+(o.ship>0?('NT$'+o.ship):'免運')+'</span></div>';
+
+  var bankOpts = BANKS.map(function(b,i){ return '<option value="'+i+'">'+b.bank+' ('+b.code+')</option>'; }).join("");
+
+  c.innerHTML =
+    '<div class="sec"><div class="lbl">你的訂單</div>'+itemsHtml+shipHtml+'</div>'
+    + '<div class="amt-box"><div class="amt-top"><span style="color:var(--gold);font-size:12px;">應付金額</span>'
+      + '<button class="copy sm" id="copyAmt">複製金額</button></div>'
+      + '<div class="amt">NT$ '+Number(o.total).toLocaleString()+'</div></div>'
+    + '<div class="sec"><div class="lbl">選擇轉帳銀行 <span style="color:var(--gold)">(挑跟你同一家 → 免手續費)</span></div>'
+      + '<select id="bank">'+bankOpts+'</select></div>'
+    + '<div class="acct-box">'
+      + '<div class="ab-row"><span class="k">戶名</span><span class="v">'+HOLDER+'</span></div>'
+      + '<div class="ab-row"><span class="k">銀行代碼</span><span class="v" id="vCode"></span></div>'
+      + '<div class="acct-main"><div><div class="k" style="color:var(--blue);font-size:11px;">帳號</div>'
+        + '<div class="acct-num" id="vAcct"></div></div>'
+        + '<button class="copy" id="copyAcct">複製帳號</button></div></div>'
+    + '<div class="hint" style="padding-top:10px;">轉帳後,把下面這段「回報訊息」複製,點綠色鈕用 LINE 傳給我們就完成 👇</div>'
+    + '<div class="msg"><pre id="report"></pre><button class="copy" id="copyMsg" style="width:100%;justify-content:center;padding:9px 0;">複製回報訊息</button></div>'
+    + '<a class="btn-line" href="'+LINE_URL+'" target="_blank" rel="noopener">用 LINE 敲我們 · 回報匯款</a>'
+    + '<div class="foot"><div class="ordno">訂單編號 '+esc(o.no)+'</div></div>';
+
+  var sel = document.getElementById("bank");
+  var cust = o.customer||{};
+  function buildReport(){
+    var b = BANKS[+sel.value];
+    var lines = [];
+    lines.push("【雨鹿匯款回報】");
+    lines.push("訂單 "+o.no);
+    (o.items||[]).forEach(function(it){ lines.push("・"+it.name+" ×"+it.qty); });
+    lines.push("金額 NT$"+o.total);
+    lines.push("轉入 "+b.bank+"("+b.code+")");
+    if(cust.name||cust.phone) lines.push("收件 "+(cust.name||"")+" "+(cust.phone||""));
+    if(cust.address) lines.push("取貨 "+cust.address);
+    lines.push("匯款末五碼:（請填)");
+    return lines.join("\n");
+  }
+  function refresh(){
+    var b = BANKS[+sel.value];
+    document.getElementById("vCode").textContent = b.code;
+    document.getElementById("vAcct").textContent = b.acct;
+    document.getElementById("report").textContent = buildReport();
+  }
+  sel.addEventListener("change", refresh);
+  refresh();
+
+  var toast = document.getElementById("toast");
+  function flash(t){ toast.textContent=t; toast.classList.add("show"); setTimeout(function(){ toast.classList.remove("show"); },1400); }
+  function copy(txt,label){ try{ navigator.clipboard.writeText(txt); }catch(e){}; flash(label+" 已複製"); }
+
+  document.getElementById("copyAmt").onclick = function(){ copy(String(o.total), "金額"); };
+  document.getElementById("copyAcct").onclick = function(){ copy(BANKS[+sel.value].acct, "帳號"); };
+  document.getElementById("copyMsg").onclick = function(){ copy(buildReport(), "回報訊息"); };
+})();
+</script>
+</body>
+</html>
