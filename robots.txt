@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /sacred-tarot/garden/admin.html
+
+Sitemap: https://raindeercoffee.com/sacred-tarot/sitemap.xml
