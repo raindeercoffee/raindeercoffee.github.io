@@ -25,6 +25,61 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
   <meta name="theme-color" content="#081b39" />
+  <!-- 給 Google 與 AI 看的身分證（結構化資料），畫面上看不到 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://raindeercoffee.com/#org",
+        "name": "雨鹿焙煎所",
+        "alternateName": "Raindeer Coffee",
+        "url": "https://raindeercoffee.com/",
+        "logo": "https://raindeercoffee.com/logo.png",
+        "image": "https://raindeercoffee.com/assets/og-cover.png",
+        "description": "雨鹿焙煎所由累積二十年手沖實戰的咖啡職人帶領。販售少量嚴選的小農熟豆（每包 100g，職人系列 NT$300），並開設實體手沖課（2 小時，NT$2,500／人）。我們相信儀器只是判斷的方式之一，沖煮最後要回歸自己的五感；從選豆、參數到味覺判斷，帶你建立一套越沖越準的咖啡沖煮系統。",
+        "sameAs": ["https://blog.raindeercoffee.com"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://raindeercoffee.com/#website",
+        "name": "雨鹿焙煎所",
+        "alternateName": "Raindeer Coffee",
+        "url": "https://raindeercoffee.com/",
+        "inLanguage": "zh-TW",
+        "publisher": { "@id": "https://raindeercoffee.com/#org" }
+      },
+      {
+        "@type": "Course",
+        "@id": "https://raindeercoffee.com/#course",
+        "name": "職人手沖課（實體課）",
+        "description": "由累積二十年手沖實戰的咖啡職人親自帶領的實體手沖課。從認識咖啡豆的產地、風土與處理法，到萃取觀念、找出問題卡在哪一層、器材與標準 SOP，最後打開五感、訓練味覺。儀器是一種判斷的方式，但當你喝到的和儀器不一樣時，還是要回到自己的感官來調整。帶你建立一套回家後還能繼續使用與修正的沖煮系統。",
+        "url": "https://raindeercoffee.com/#course",
+        "inLanguage": "zh-TW",
+        "provider": { "@id": "https://raindeercoffee.com/#org" },
+        "offers": {
+          "@type": "Offer",
+          "category": "Paid",
+          "price": "2500",
+          "priceCurrency": "TWD"
+        },
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "Onsite",
+          "courseWorkload": "PT2H"
+        },
+        "syllabusSections": [
+          { "@type": "Syllabus", "name": "認識咖啡豆：產地、風土與處理法" },
+          { "@type": "Syllabus", "name": "核心思維：你到底在控制什麼" },
+          { "@type": "Syllabus", "name": "三層金字塔：找到問題真正卡在哪一層" },
+          { "@type": "Syllabus", "name": "器材與標準 SOP：建立你的基準線" },
+          { "@type": "Syllabus", "name": "打開五感：實作練習與味覺訓練" }
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -1024,8 +1079,8 @@
         <div class="timeline-item">
           <div class="timeline-label">Chapter 05+</div>
           <div class="timeline-content">
-            <h3>進階概念、實作練習與味覺訓練</h3>
-            <p>從 TDS、水質、濾紙差異，到風味辨識與診斷練習，逐步把感覺變成能說得清楚的能力。</p>
+            <h3>打開五感：實作練習與味覺訓練</h3>
+            <p>儀器是一種判斷的方式，但最後還是要回到自己的感官。當你喝到的和儀器不一樣，就要相信自己的味覺來調整。透過實作與風味辨識練習，逐步把感覺變成能說得清楚的能力。</p>
           </div>
         </div>
       </div>
