@@ -316,7 +316,7 @@ function scheduleSoundFade(restart = false) {
   const now = context.currentTime;
   const minutes = Number($('#sound-timer').value);
   if (restart || audio.deadline === undefined) audio.deadline = minutes ? now + minutes * 60 : null;
-  const target = Number($('#volume').value) / 100 * .045;
+  const target = Number($('#volume').value) / 100;
   gain.gain.cancelScheduledValues(now);
   gain.gain.setValueAtTime(gain.gain.value, now);
   if (audio.deadline === null) { gain.gain.linearRampToValueAtTime(target, now + .25); return; }

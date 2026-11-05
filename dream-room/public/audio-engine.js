@@ -134,10 +134,10 @@ export function createAmbientBuffer(context, kind) {
 
   const buffer = context.createBuffer(1, length, SAMPLE_RATE);
   finishLoop(raw, buffer.getChannelData(0), overlap);
-  // 原影片環境聲較輕，白噪音保持相近音量，避免換音突然變大。
+  // 與響度校正後的原聲保持相近音量，避免換音突然變大。
   if (kind === 'noise') {
     const samples = buffer.getChannelData(0);
-    for (let i = 0; i < samples.length; i++) samples[i] *= .046875;
+    for (let i = 0; i < samples.length; i++) samples[i] *= .3125;
   }
   return buffer;
 }

@@ -30,7 +30,7 @@ button:disabled { cursor:wait; opacity:.55; }
 .lobby-footnote { text-align:center; margin-top:18px; font-size:11px; }
 /* 調整僅套用首頁，房內沿用原本字級與顏色。 */
 body:not(.in-room) .brand { font-size:calc(20px * var(--home-item-scale,1)); color:var(--home-item-color,#eef0e8); }
-.lobby .intro h1 { font-size:calc(clamp(25px,4.2vw,45px) * var(--home-item-scale,1)); color:var(--home-item-color,#eef0e8); }
+.lobby .intro h1 { font-size:24px; color:var(--home-item-color,#eef0e8); }
 .lobby .room-card h2 { font-size:calc(25px * var(--home-item-scale,1)); color:var(--home-item-color,#eef0e8); }
 .lobby .room-card p { font-size:calc(12px * var(--home-item-scale,1)); color:var(--home-item-color,#eef0e8); }
 .lobby .count { font-size:calc(13px * var(--home-item-scale,1)); color:var(--home-item-color,#eef0e8); }
