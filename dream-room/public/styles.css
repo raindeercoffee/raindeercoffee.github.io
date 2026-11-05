@@ -1,6 +1,9 @@
+@font-face { font-family:'Noto Sans TC'; font-style:normal; font-weight:400; font-display:swap; src:url('./assets/fonts/noto-sans-tc-ui.ttf') format('truetype'); }
+@font-face { font-family:'Noto Serif TC'; font-style:normal; font-weight:400; font-display:swap; src:url('./assets/fonts/noto-serif-tc-ui.ttf') format('truetype'); }
+html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
 :root { color-scheme:dark; --ink:#eef0e8; --muted:#b6c4c7; --edge:#5d738a66; }
 * { box-sizing:border-box; }
-body { margin:0; min-height:100vh; min-height:100dvh; font-family:-apple-system,BlinkMacSystemFont,'Noto Sans TC','PingFang TC',sans-serif; color:var(--ink); background:radial-gradient(circle at 25% 18%,#253e50 0,#14243d 35%,#0c1525 90%); }
+body { margin:0; min-height:100vh; min-height:100dvh; font-family:'Noto Sans TC',-apple-system,BlinkMacSystemFont,'PingFang TC',sans-serif; color:var(--ink); background:radial-gradient(circle at 25% 18%,#253e50 0,#14243d 35%,#0c1525 90%); }
 button,input,select { font:inherit; }
 button { cursor:pointer; }
 button:focus-visible,input:focus-visible,select:focus-visible { outline:2px solid #e0d9c9; outline-offset:4px; }
@@ -60,7 +63,7 @@ body:not(.in-room) .brand { font-size:calc(20px * var(--home-item-scale,1)); col
 .visitor img { width:100%; height:100%; object-fit:contain; clip-path:circle(46% at 50% 49%); }
 .visitor img[src$='/ball-4.png'] { clip-path:circle(46% at 47% 49%); }
 .visitor-slot.sleeping .visitor { transform:translateY(13%); }
-.visitor-slot.floating .visitor-anchor { animation:drift calc(var(--drift-duration,20s) * 1.6) ease-in-out infinite; animation-delay:var(--drift-delay,0s); }
+.visitor-slot.floating .visitor-anchor { animation:drift calc(var(--drift-duration,20s) * .65) ease-in-out infinite; animation-delay:var(--drift-delay,0s); }
 .visitor-slot.floating:nth-child(even) .visitor-anchor { animation-name:drift-return; }
 .visitor-slot.reconnecting { opacity:.42; }
 .dream-bed { position:absolute; width:158%; height:90%; left:-29%; top:56%; background:url('./assets/cloud-light-v2.png') center/contain no-repeat; opacity:.43; filter:blur(.7px); transition:opacity 2s; pointer-events:none; }

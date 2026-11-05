@@ -151,7 +151,7 @@ function actualClientFunction(name) {
 
 test('client actual asset, icon, room-list, connect and leave paths follow root or canonical subpath', async () => {
   assert.match(appSource, /^import \{ createAmbientBuffer \} from '\.\/audio-engine\.js';/);
-  const header = appSource.slice(0, appSource.indexOf('const SEATS =')).replace(/^import[^\n]*\n/, '');
+  const header = appSource.slice(0, appSource.indexOf('const SEATS =')).replace(/^import[^\n]*\n/gm, '');
   const functions = ['setButtonIcon', 'socketUrl', 'refreshCounts', 'sendExplicitLeave'].map(actualClientFunction).join('\n');
   for (const [href, base] of [
     ['http://127.0.0.1:8787/?entry=1', 'http://127.0.0.1:8787/'],

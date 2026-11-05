@@ -1,4 +1,5 @@
 import { createAmbientBuffer } from './audio-engine.js';
+import { createSeamlessLoop } from './audio-loop.js';
 
 // 三段聲音完整提取自使用者提供的影片；白噪音由瀏覽器合成。
 // 聲音檔路徑相對於夢屋入口，根目錄與子路徑都能使用。
@@ -369,7 +370,8 @@ async function toggleNoise() {
     if (sound.url) {
       const res = await fetch(appUrl(sound.url), { signal: controller.signal });
       if (!res.ok) throw new Error('Sound unavailable');
-      source.buffer = await context.decodeAudioData(await res.arrayBuffer());
+      const decoded = await context.decodeAudioData(await res.arrayBuffer());
+      source.buffer = createSeamlessLoop(context, decoded);
       source.connect(gain);
     } else {
       source.buffer = createAmbientBuffer(context, sound.id);
