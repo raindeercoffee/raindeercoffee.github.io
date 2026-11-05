@@ -1,0 +1,49 @@
+/* 滿版星空；格線只分配操作位置，讓控制之間保留間隔。 */
+.sr-only,.in-room .brand span,.in-room .quiet-tag { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; clip-path:inset(50%)!important; white-space:nowrap!important; border:0!important; }
+body.in-room { height:100dvh; min-height:0; }
+.in-room #app { position:relative; height:100%; min-height:0; }
+.in-room .site-header { position:absolute; top:env(safe-area-inset-top,0px); left:calc(16px + env(safe-area-inset-left,0px)); z-index:4; height:44px; max-width:none; margin:0; padding:0; }
+.in-room .brand { justify-content:center; height:44px; font-size:17px; gap:0; color:#f2f3ed; text-shadow:0 1px 3px #071322,0 0 10px #071322c9; }
+.in-room .room-view { display:grid; grid-template-columns:52px minmax(0,1fr) 52px; grid-template-rows:44px minmax(140px,1fr) 112px; grid-template-areas:'head head head' 'left scene right' 'settings settings settings'; column-gap:6px; row-gap:6px; width:100%; max-width:none; height:100dvh; min-height:0; margin:0; padding:env(safe-area-inset-top,0px) calc(8px + env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) calc(8px + env(safe-area-inset-left,0px)); }
+.room-toolbar { grid-area:head; position:relative; z-index:3; display:flex; justify-content:flex-end; align-items:center; gap:12px; min-width:0; height:44px; margin:0; padding:0 0 0 140px; }
+#room-name { font-size:17px; white-space:nowrap; }
+.room-population { white-space:nowrap; font-size:11px; letter-spacing:.04em; }
+.room-population,#room-name,.room-switch .text-button { color:#f2f3ed; text-shadow:0 1px 3px #071322,0 0 9px #071322e0; }
+.in-room .canvas-shell { position:fixed; inset:0; z-index:0; width:100vw; height:100dvh; max-width:none; min-width:0; min-height:0; margin:0; padding:0; border:0; border-radius:0; box-shadow:none; }
+.in-room .scene { position:absolute; inset:0; aspect-ratio:auto; width:100%; height:100%; min-height:0; container-type:size; }
+.glass-button { display:inline-grid; place-items:center; flex:0 0 44px; width:44px; height:44px; min-width:44px; min-height:44px; padding:12px; border-radius:50%; color:#d4e0ded9; border:1px solid #e6f4ff26; background:linear-gradient(145deg,#d9edff10,#b2c6ef05),#12283c8c; backdrop-filter:blur(16px) saturate(115%); -webkit-backdrop-filter:blur(16px) saturate(115%); box-shadow:inset 0 1px 0 #ffffff16,0 3px 12px #04101e18; transition:background .25s,border-color .25s,box-shadow .25s; }
+.glass-button svg { width:18px; height:18px; display:block; opacity:.8; fill:none; stroke:currentColor; pointer-events:none; }
+.glass-button:hover { background-color:#819eae28; border-color:#e6f4ff60; }
+.glass-button[aria-pressed='true'],.glass-button[aria-expanded='true'] { background:linear-gradient(145deg,#edf5df29,#c5d6f31a),#3b526e50; border-color:#e7f3df70; color:#fff9e5; box-shadow:inset 0 1px 0 #ffffff30; }
+.glass-button:disabled { opacity:.4; cursor:default; }
+.glass-button:focus-visible,.timer-choice:focus-visible { outline:2px solid #f3ead4; outline-offset:2px; }
+.room-controls { display:contents; }
+.side-controls { position:relative; z-index:3; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:4px; min-width:0; min-height:140px; }
+.side-left { grid-area:left; }
+.side-right { grid-area:right; }
+.side-controls .control-group { display:flex; flex-direction:column; flex-wrap:nowrap; gap:4px; }
+.settings-zone { grid-area:settings; position:relative; z-index:3; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:68px 44px; height:112px; min-width:0; min-height:0; }
+.settings-content { display:grid; grid-template-columns:minmax(0,1fr); place-items:center; min-width:0; min-height:0; }
+.control-popover { position:static; display:flex; justify-content:center; align-items:center; width:280px; max-width:100%; min-height:0; height:60px; margin:0; padding:8px 14px; border:1px solid #e7f1ff28; border-radius:22px; background:linear-gradient(150deg,#d7edff17,#b4cbe508),#182b40b0; backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); box-shadow:inset 0 1px 0 #ffffff16; }
+.control-popover input[type='range'] { width:100%; margin:0; accent-color:#d8e4d7; cursor:pointer; min-height:28px; }
+.sound-options { width:292px; }
+.icon-options { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; }
+.timer-panel { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:16px 44px; gap:4px; width:min(340px,100%); height:66px; padding:0 8px; border-radius:16px; }
+.timer-panel h2 { margin:0; text-align:center; font-size:12px; font-weight:400; line-height:16px; color:#d5e1de; }
+.timer-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; width:100%; }
+.timer-choice { height:44px; min-height:44px; min-width:44px; padding:4px 7px; border-radius:18px; border:1px solid #dcebf335; background:#bdd8e60c; color:#dce7e4; font-size:12px; white-space:nowrap; }
+.timer-choice[aria-pressed='true'] { border-color:#e7f3df90; background:#c5d6f32a; color:#fff8e6; }
+.settings-footer { display:grid; grid-template-columns:52px minmax(0,1fr) 52px; align-items:center; gap:6px; min-width:0; }
+.room-switch { position:static; display:flex; justify-content:center; align-items:center; margin:0; min-width:0; }
+.room-switch .text-button { min-height:44px; white-space:nowrap; color:#d8e3de; font-size:12px; letter-spacing:.08em; text-decoration:none; padding:8px 6px; }
+.room-feedback { position:static; display:flex; align-items:center; justify-content:center; gap:4px; min-width:0; }
+.wake-controls.glass-button { position:static; justify-self:center; margin:0; padding:12px; }
+body.controls-resting .wake-controls { opacity:.65; }
+.orientation-dialog { width:min(360px,calc(100vw - 32px)); max-height:calc(100dvh - 32px); padding:26px 20px; color:#edf0e7; border:1px solid #d6e6ec40; border-radius:24px; background:#15283cf5; box-shadow:0 20px 70px #0005; }
+.orientation-dialog::backdrop { background:#081320cc; }
+.orientation-dialog h2 { font-size:18px; font-weight:400; line-height:1.7; text-align:center; margin:0 0 24px; }
+.orientation-actions { display:flex; justify-content:center; gap:12px; }
+.orientation-actions button { min-height:44px; }
+.orientation-actions button:disabled { opacity:.4; cursor:default; }
+@media(prefers-reduced-motion:reduce) { .glass-button { transition:none; } }
+

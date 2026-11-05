@@ -1,0 +1,17 @@
+{
+  "name": "dream-house-v1",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local",
+    "deploy": "wrangler deploy",
+    "test": "node --test",
+    "test:runtime": "node tools/runtime-check.mjs",
+    "test:runtime:full": "node tools/runtime-check.mjs --slow",
+    "check": "node --check src/index.js && node --check src/rules.js && node --check public/app.js && node --check tools/runtime-check.mjs && npm test"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

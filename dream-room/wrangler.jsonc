@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "dream-house-v1",
+  "account_id": "6f344c1712209d9e76fc5a70fb5b9243",
+  "main": "src/index.js",
+  "compatibility_date": "2026-11-04",
+  "routes": [
+    {
+      "pattern": "raindeercoffee.com/dream-room",
+      "zone_id": "69b113d85dfcd30ae957224c347cd979"
+    },
+    {
+      "pattern": "raindeercoffee.com/dream-room/*",
+      "zone_id": "69b113d85dfcd30ae957224c347cd979"
+    }
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "durable_objects": {
+    "bindings": [
+      { "name": "ROOM", "class_name": "DreamRoom" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["DreamRoom"] }
+  ]
+}
