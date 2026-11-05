@@ -48,7 +48,7 @@ function inspect(buffer) {
 
 const buffers = new Map();
 const measurements = {};
-for (const kind of ['fire', 'ocean', 'rain', 'stream']) {
+for (const kind of ['fire', 'ocean', 'rain', 'stream', 'noise']) {
   const started = performance.now();
   const buffer = createAmbientBuffer(context, kind);
   const generatedMs = performance.now() - started;
@@ -56,8 +56,13 @@ for (const kind of ['fire', 'ocean', 'rain', 'stream']) {
   assert(buffer.duration >= 20 && buffer.duration <= 40, '循環應介於20至40秒');
   assert.equal(buffer.length, Math.round(buffer.duration * buffer.sampleRate));
   const result = inspect(buffer);
-  assert(result.peak <= 2 && result.peak > .4, `${kind}峰值異常`);
-  assert(result.rms >= .28 && result.rms <= .36, `${kind}音量異常`);
+  if (kind === 'noise') {
+    assert(result.peak > .02 && result.peak < .05, '低音量白噪音峰值異常');
+    assert(result.rms > .014 && result.rms < .016, '低音量白噪音音量異常');
+  } else {
+    assert(result.peak <= 2 && result.peak > .4, `${kind}峰值異常`);
+    assert(result.rms >= .28 && result.rms <= .36, `${kind}音量異常`);
+  }
   assert(Math.abs(result.dc) < .00001, `${kind}直流偏移過大`);
   assert(result.seamJump < .00001, `${kind}循環接縫不連續`);
   assert(result.stepRms > .01 && result.stepRms < .6, `${kind}缺乏聲音細節或變化過於尖銳`);
@@ -65,7 +70,9 @@ for (const kind of ['fire', 'ocean', 'rain', 'stream']) {
   buffers.set(kind, buffer);
 }
 
-const levels = Object.values(measurements).map(result => result.rms);
+assert(Math.abs(measurements.noise.stepRms / measurements.noise.rms - Math.SQRT2) < .03, '白噪音相鄰樣本應近乎不相關');
+assert(Math.abs(measurements.noise.rms - .015) < .001, '白噪音應與低音量原聲相近');
+const levels = ['fire','ocean','rain','stream'].map(kind => measurements[kind].rms);
 assert(Math.max(...levels) - Math.min(...levels) < .025, '切換聲音時音量落差過大');
 assert(measurements.fire.lowFraction > measurements.rain.lowFraction * 2, '柴火應比細雨有更厚的低頻底聲');
 assert(measurements.ocean.envelopeVariation > measurements.rain.envelopeVariation * 2, '海浪應有明顯而緩慢的起伏');
@@ -88,4 +95,4 @@ for (const [kind, buffer] of buffers) {
 assert.throws(() => createAmbientBuffer(context, 'unknown'), RangeError);
 console.table(Object.fromEntries(Object.entries(measurements).map(([kind, result]) => [kind,
   Object.fromEntries(Object.entries(result).map(([key, value]) => [key, Number(value.toFixed(6))]))])));
-console.log('四種合成聲景的樣本、音量、接縫與差異檢查通過；聽感尚待瀏覽器試聽。');
+console.log('五種合成聲景的樣本、音量、接縫與差異檢查通過；聽感尚待瀏覽器試聽。');

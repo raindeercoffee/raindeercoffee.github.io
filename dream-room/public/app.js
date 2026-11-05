@@ -1,10 +1,12 @@
 import { createAmbientBuffer } from './audio-engine.js';
 
-// 圖片與場景沿用原檔；null 聲音由環境音模組產生，並非實地錄音。
-// 收到並放好音檔後，在清單加入 { id: '自訂代號', label: '實際名稱', url: '/assets/實際檔名.mp3' }。
+// 三段聲音完整提取自使用者提供的影片；白噪音由瀏覽器合成。
+// 聲音檔路徑相對於夢屋入口，根目錄與子路徑都能使用。
 const SOUNDS = [
-  { id: 'fire', label: '柴火', url: null }, { id: 'ocean', label: '海浪', url: null },
-  { id: 'rain', label: '雨聲', url: null }, { id: 'stream', label: '流水', url: null }
+  { id: 'stream', label: '水流聲', url: 'assets/audio/stream.mp3' },
+  { id: 'ocean', label: '海浪聲', url: 'assets/audio/ocean.mp3' },
+  { id: 'fire', label: '柴火聲', url: 'assets/audio/fire.mp3' },
+  { id: 'noise', label: '白噪音', url: null }
 ];
 let selectedSoundId = SOUNDS[0].id;
 const $ = selector => document.querySelector(selector);
@@ -365,7 +367,7 @@ async function toggleNoise() {
     await context.resume();
     if (epoch !== audioEpoch || room !== thisRoom) return;
     if (sound.url) {
-      const res = await fetch(sound.url, { signal: controller.signal });
+      const res = await fetch(appUrl(sound.url), { signal: controller.signal });
       if (!res.ok) throw new Error('Sound unavailable');
       source.buffer = await context.decodeAudioData(await res.arrayBuffer());
       source.connect(gain);

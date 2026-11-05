@@ -1,7 +1,7 @@
-// 四種程序合成聲景，並非現場錄音。前端仍負責音量、淡出與停止。
+// 白噪音及舊合成聲景。前端負責音量、淡出與停止；三種環境聲改用實際音檔。
 const SAMPLE_RATE = 22_050;
 const DURATION = 32;
-const SEEDS = { fire: 0x41c6ce57, ocean: 0x29a47d13, rain: 0x56e38b91, stream: 0x73d185ab };
+const SEEDS = { noise: 0x6d2b79f5, fire: 0x41c6ce57, ocean: 0x29a47d13, rain: 0x56e38b91, stream: 0x73d185ab };
 const TAU = Math.PI * 2;
 
 function randomSource(seed) {
@@ -77,7 +77,9 @@ export function createAmbientBuffer(context, kind) {
     air += airRate * (noise - air);
     const cycle = TAU * i / length;
 
-    if (kind === 'fire') {
+    if (kind === 'noise') {
+      raw[i] = noise;
+    } else if (kind === 'fire') {
       if (i >= nextDetail) {
         detailTarget = .2 + random() * .55;
         detailDecay = Math.exp(-1 / (SAMPLE_RATE * (.008 + random() * .018)));
@@ -132,5 +134,10 @@ export function createAmbientBuffer(context, kind) {
 
   const buffer = context.createBuffer(1, length, SAMPLE_RATE);
   finishLoop(raw, buffer.getChannelData(0), overlap);
+  // 原影片環境聲較輕，白噪音保持相近音量，避免換音突然變大。
+  if (kind === 'noise') {
+    const samples = buffer.getChannelData(0);
+    for (let i = 0; i < samples.length; i++) samples[i] *= .046875;
+  }
   return buffer;
 }
