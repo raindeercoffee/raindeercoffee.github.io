@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111e32" />
-  <meta name="description" content="夢的部屋：不必交談，也可以安靜地待在一起。" />
+  <meta name="description" content="夢の部屋：不必交談，也可以安靜地待在一起。" />
   <title>夢の部屋</title>
   <link rel="icon" href="./assets/icons/favicon.ico" sizes="any" />
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/icons/favicon-32.png" />
@@ -27,24 +27,24 @@
 <body>
   <div id="app">
     <header class="site-header quiet-ui">
-      <button type="button" class="brand" id="go-home" data-home-text="brand" style="--home-item-scale:1;--home-item-color:#bec8cf" aria-label="離開房間，返回入口">夢的部屋</button>
+      <button type="button" class="brand" id="go-home" data-home-text="brand" style="--home-item-scale:1;--home-item-color:#bec8cf" aria-label="離開房間，返回入口">夢の部屋</button>
     </header>
     <main id="lobby" class="lobby">
       <div class="intro">
-        <h1 data-home-text="intro" style="--home-item-scale:1;--home-item-color:#eef0e8">什麼都不用說，只是靜靜地相伴。</h1>
+        <h1 data-home-text="intro" style="--home-item-scale:1;--home-item-color:#eef0e8"><span class="phrase">什麼都不用說，</span><span class="phrase">只是靜靜地相伴。</span></h1>
       </div>
       <div class="room-cards">
         <button class="room-card" type="button" data-room="dream-a">
           <div class="room-card-art night-art"></div>
-          <div class="room-card-info"><div><h2 data-home-text="night-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">夜潮</h2><p data-home-text="night-description" style="--home-item-scale:1;--home-item-color:#bec8cf">讓心事，慢慢沉入夜色。</p></div><span class="count" id="dream-a-count" data-home-text="night-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
+          <div class="room-card-info"><div><h2 data-home-text="night-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">夜潮</h2><p data-home-text="night-description" style="--home-item-scale:1;--home-item-color:#bec8cf"><span class="phrase">讓心事，</span><span class="phrase">慢慢沉入夜色。</span></p></div><span class="count" id="dream-a-count" data-home-text="night-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
         </button>
         <button class="room-card" type="button" data-room="dream-b">
           <div class="room-card-art mist-art"></div>
-          <div class="room-card-info"><div><h2 data-home-text="mist-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">霧藍</h2><p data-home-text="mist-description" style="--home-item-scale:1;--home-item-color:#bec8cf">在淡淡的藍裡，安穩休息。</p></div><span class="count" id="dream-b-count" data-home-text="mist-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
+          <div class="room-card-info"><div><h2 data-home-text="mist-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">霧藍</h2><p data-home-text="mist-description" style="--home-item-scale:1;--home-item-color:#bec8cf"><span class="phrase">在淡淡的藍裡，</span><span class="phrase">安穩休息。</span></p></div><span class="count" id="dream-b-count" data-home-text="mist-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
         </button>
       </div>
       <p id="lobby-message" class="sr-only" role="status" aria-live="polite">正在看看房間裡有多少人……</p>
-      <p class="lobby-footnote" data-home-text="footnote" style="--home-item-scale:1.05;--home-item-color:#bec8cf">隨機成為一顆夢球 · 不用帳號，也沒有聊天，但每一個都是真實的陪伴</p>
+      <p class="lobby-footnote" data-home-text="footnote" style="--home-item-scale:1.05;--home-item-color:#bec8cf"><span class="phrase">隨機成為一顆夢球 ·</span> <span class="phrase">不用帳號，</span><span class="phrase">也沒有聊天，</span><span class="phrase">但每一個都是真實的陪伴</span></p>
     </main>
     <main id="room-view" class="room-view hidden">
       <section class="room-toolbar quiet-ui" aria-label="房間資訊">

@@ -101,3 +101,52 @@ body.controls-resting .wake-controls { opacity:.68; }
 @keyframes gentle-float { 0%,100% { transform:translateY(-65%); } 50% { transform:translateY(calc(-65% - 8px)); } }
 @media(prefers-reduced-motion:reduce) { body[data-float-motion='on'] .visitor-slot.is-mine.floating .visitor-anchor { animation:gentle-float 8s ease-in-out infinite!important; } }
 
+
+/* 文字只在逗號等詞組之間換行，避免手機把一句話從中間切斷。 */
+.phrase { display:inline-block; }
+
+/* 橫的螢幕（電腦、手機橫拿）改用 GPT 畫的 16:9 橫圖；手機直拿照舊用直圖。首頁卡片本來就是橫的，一律用橫圖。 */
+.night-art { background-image:url('./assets/dream-a-wide.jpg'); }
+.mist-art { background-image:url('./assets/dream-b-wide.jpg'); }
+@media (orientation:landscape) {
+  .scene[data-room='dream-a'] { background-image:url('./assets/dream-a-wide.jpg'); }
+  .scene[data-room='dream-b'] { background-image:url('./assets/dream-b-wide.jpg'); }
+}
+
+/* ===== 使用者 2026-11-06 調整台定稿（球、文字；電腦與手機各一組）。數字照她親手挑的，不要順手改。 ===== */
+/* 電腦的球 */
+.visitor-slot { width:clamp(22px,11.5cqmin,106px)!important; }
+.visitor { opacity:0.98!important; filter:drop-shadow(0 3px 5px rgba(17,28,57,0.35)) drop-shadow(0 0 26px #f2f3ed42)!important; mix-blend-mode:screen!important; }
+.visitor img { clip-path:none!important; -webkit-mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 7.5%),transparent 93.9%); mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 7.5%),transparent 93.9%); }
+.visitor img[src$='/ball-4.png'] { clip-path:none!important; -webkit-mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 7.5%),transparent 97.9%); mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 7.5%),transparent 97.9%); }
+/* 手機的球（窄或矮的螢幕） */
+@media (max-width:900px),(max-height:550px) {
+.visitor-slot { width:clamp(22px,11.5cqmin,74px)!important; }
+.visitor { opacity:0.80!important; filter:drop-shadow(0 3px 5px rgba(17,28,57,0.00)) drop-shadow(0 0 17px #fff1dc8f)!important; mix-blend-mode:normal!important; }
+.visitor img { clip-path:none!important; -webkit-mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 3.5%),transparent 93.9%); mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 3.5%),transparent 93.9%); }
+.visitor img[src$='/ball-4.png'] { -webkit-mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 3.5%),transparent 97.9%); mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 3.5%),transparent 97.9%); }
+}
+/* 電腦的字 */
+body.in-room .brand { font-size:33px!important; color:#f2f3ed!important; }
+body.in-room #room-name { font-size:23px!important; color:#c9d6e8!important; }
+body.in-room .room-population { font-size:14px!important; color:#f2f3ed!important; }
+body.in-room .room-switch .text-button { font-size:16px!important; color:#d8e3de!important; }
+body:not(.in-room) .brand { font-size:35px!important; color:#bec8cf!important; }
+.lobby .intro h1 { font-size:22px!important; color:#eef0e8!important; }
+.lobby .room-card h2 { font-size:24px!important; color:#eef0e8!important; }
+.lobby .room-card p { font-size:20px!important; color:#bec8cf!important; }
+.lobby .count { font-size:17px!important; color:#bec8cf!important; }
+.lobby .lobby-footnote { font-size:18px!important; color:#bec8cf!important; }
+/* 手機的字（窄或矮的螢幕）；房間左上品牌、房名、人數手機維持原本 17/17/11px */
+@media (max-width:900px),(max-height:550px) {
+body.in-room .brand { font-size:17px!important; color:#f2f3ed!important; }
+body.in-room #room-name { font-size:17px!important; color:#f2f3ed!important; }
+body.in-room .room-population { font-size:11px!important; color:#f2f3ed!important; }
+body.in-room .room-switch .text-button { font-size:10px!important; color:#d8e3de!important; }
+body:not(.in-room) .brand { font-size:22px!important; color:#bec8cf!important; }
+.lobby .intro h1 { font-size:15px!important; color:#eef0e8!important; }
+.lobby .room-card h2 { font-size:17px!important; color:#eef0e8!important; }
+.lobby .room-card p { font-size:13px!important; color:#bec8cf!important; }
+.lobby .count { font-size:10px!important; color:#bec8cf!important; }
+.lobby .lobby-footnote { font-size:13px!important; color:#bec8cf!important; }
+}
