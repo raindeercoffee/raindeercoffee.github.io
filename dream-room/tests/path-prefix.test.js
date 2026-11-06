@@ -167,8 +167,11 @@ test('client actual asset, icon, room-list, connect and leave paths follow root 
       replaceChildren(...children) { this.children = children; }
     });
     const button = element();
+    // 球圖依螢幕挑手機或電腦柔邊版；用可切換的替身檢查兩種路徑。
+    const media = { phone: false };
     const context = vm.createContext({
       URL, AbortController, setTimeout, clearTimeout, location: new URL(href), button,
+      matchMedia: query => ({ get matches() { return query.includes('max-width: 900px') ? media.phone : false; } }),
       document: {
         hidden: false,
         createElementNS() { return element(); },
@@ -181,7 +184,11 @@ test('client actual asset, icon, room-list, connect and leave paths follow root 
     });
     const token = randomUUID();
     vm.runInContext(`${header}\nconst token = ${JSON.stringify(token)}; let room = null; let countsRequest = null;\n${functions}`, context);
-    assert.deepEqual(Array.from(vm.runInContext('BALLS', context)), [1, 2, 3, 4].map(number => `${base}assets/ball-${number}.png`));
+    for (const [phone, tag] of [[false, 'd'], [true, 'p']]) {
+      media.phone = phone;
+      assert.deepEqual([0, 1, 2, 3].map(index => vm.runInContext(`ballUrl(${index})`, context)), [1, 2, 3, 4].map(number => `${base}assets/ball-${number}-soft-${tag}.png`));
+      assert.equal(vm.runInContext('ballUrl(undefined)', context), `${base}assets/ball-1-soft-${tag}.png`);
+    }
     vm.runInContext("setButtonIcon(button, 'float', '漂浮')", context);
     assert.equal(button.children[0].children[0].attributes.get('href'), `${base}assets/controls-icons.svg#icon-float`);
     const socket = new URL(vm.runInContext("socketUrl('dream-a')", context));
