@@ -6,9 +6,9 @@ import { t, applyStaticText, setLanguage } from './i18n.js';
 // 用無壓縮 WAV，避免壓縮檔頭尾補靜音造成接縫；播放時不可再交疊一次。
 // 聲音檔路徑相對於夢屋入口，根目錄與子路徑都能使用。
 const SOUNDS = [
-  { id: 'stream', label: '水流聲', url: 'assets/audio/stream-loop.wav', preLooped: true },
-  { id: 'ocean', label: '海浪聲', url: 'assets/audio/ocean-loop.wav', preLooped: true },
-  { id: 'fire', label: '柴火聲', url: 'assets/audio/fire-loop.wav', preLooped: true },
+  { id: 'stream', label: '水流聲', url: 'assets/audio/stream-loop.wav', flac: 'assets/audio/stream-loop.flac', preLooped: true },
+  { id: 'ocean', label: '海浪聲', url: 'assets/audio/ocean-loop.wav', flac: 'assets/audio/ocean-loop.flac', preLooped: true },
+  { id: 'fire', label: '柴火聲', url: 'assets/audio/fire-loop.wav', flac: 'assets/audio/fire-loop.flac', preLooped: true },
   { id: 'noise', label: '白噪音', url: null }
 ];
 let selectedSoundId = SOUNDS[0].id;
@@ -29,6 +29,11 @@ const PORTRAIT_SEATS = Array.from({ length: 10 }, (_, i) => [i % 2 ? 72 : 28, 12
 const SEATS = [[15, 39], [32, 39], [49, 39], [66, 39], [83, 39],
   [15, 76], [32, 76], [49, 76], [66, 76], [83, 76]];
 const MODES = [{ value: 'sleep' }, { value: 'float' }];
+// 漂浮有兩種飄法：float＝原地小圈圈（原本的飄法）、roam＝隨意飄（在房間裡慢慢逛一大圈）。
+const FLOAT_STYLES = ['float', 'roam'];
+const FLOAT_STYLE_KEY = 'dream-house-float-style';
+let floatStyle = (() => { try { return FLOAT_STYLES.includes(localStorage.getItem(FLOAT_STYLE_KEY)) ? localStorage.getItem(FLOAT_STYLE_KEY) : 'float'; } catch { return 'float'; } })();
+const isFloating = mode => mode === 'float' || mode === 'roam';
 const portraitEntryMedia = matchMedia('(max-width: 900px) and (orientation: portrait)');
 
 function anonymousToken() {
@@ -161,18 +166,58 @@ function renderVisitors() {
     }
     element.style.left = `${pos[0]}%`;
     element.style.top = `${pos[1]}%`;
-    element.classList.toggle('floating', member.mode === 'float');
+    // 隨意飄從自己的座位出發、繞一大圈再回來。
+    element.style.setProperty('--seat-x', `${pos[0]}%`);
+    element.style.setProperty('--seat-y', `${pos[1]}%`);
+    element.style.setProperty('--roam-duration', `${64 + member.seat * 7}s`);
+    element.classList.toggle('floating', isFloating(member.mode));
+    element.classList.toggle('roaming', member.mode === 'roam');
     element.classList.toggle('sleeping', member.mode === 'sleep');
     element.classList.toggle('reconnecting', Boolean(member.reconnecting));
     element.classList.toggle('is-mine', member.id === myId);
-    element.setAttribute('aria-label', t('visitor', member.id === myId, member.mode === 'float', Boolean(member.reconnecting)));
+    element.setAttribute('aria-label', t('visitor', member.id === myId, isFloating(member.mode), Boolean(member.reconnecting)));
   }
   for (const [id, element] of visitorNodes) {
     if (!present.has(id)) { element.remove(); visitorNodes.delete(id); }
   }
+  updateModeButtons();
+}
+function updateModeButtons() {
+  // 「漂浮」按鈕在兩種飄法時都算按下。
   for (const button of document.querySelectorAll('#modes button')) {
-    button.setAttribute('aria-pressed', String(button.dataset.mode === myMode));
+    const on = button.dataset.mode === 'float' ? isFloating(myMode) : button.dataset.mode === myMode;
+    button.setAttribute('aria-pressed', String(on));
   }
+  for (const button of document.querySelectorAll('[data-float-style]')) {
+    button.setAttribute('aria-pressed', String(button.dataset.floatStyle === floatStyle));
+  }
+  $('#float-style-toggle')?.setAttribute('aria-label', t('floatStyle.aria', t(`floatStyle.${floatStyle}`)));
+}
+function sendMode(value) {
+  if (!connected || ws?.readyState !== WebSocket.OPEN) return;
+  if (isFloating(value)) document.body.dataset.floatMotion = 'on';
+  else delete document.body.dataset.floatMotion;
+  ws.send(JSON.stringify({ type: 'mode', room, value }));
+}
+function renderFloatStyleOptions() {
+  $('#float-style-options').replaceChildren();
+  for (const style of FLOAT_STYLES) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'timer-choice';
+    button.dataset.floatStyle = style;
+    button.textContent = t(`floatStyle.${style}`);
+    button.addEventListener('click', () => {
+      floatStyle = style;
+      try { localStorage.setItem(FLOAT_STYLE_KEY, style); } catch { /* 記不住也照常切換 */ }
+      // 正在漂浮就馬上換飄法；躺著的話，下次按漂浮時才用。
+      if (isFloating(myMode) && myMode !== style) sendMode(style);
+      updateModeButtons();
+      closePopovers({ restoreFocus: true });
+    });
+    $('#float-style-options').append(button);
+  }
+  updateModeButtons();
 }
 function renderControls() {
   $('#modes').replaceChildren();
@@ -184,13 +229,7 @@ function renderControls() {
     setButtonIcon(button, mode.value, t(`mode.${mode.value}`));
     button.setAttribute('aria-pressed', 'false');
     button.disabled = !connected;
-    button.addEventListener('click', () => {
-      if (connected && ws?.readyState === WebSocket.OPEN) {
-        if (mode.value === 'float') document.body.dataset.floatMotion = 'on';
-        else delete document.body.dataset.floatMotion;
-        ws.send(JSON.stringify({ type: 'mode', room, value: mode.value }));
-      }
-    });
+    button.addEventListener('click', () => sendMode(mode.value === 'float' ? floatStyle : mode.value));
     $('#modes').append(button);
   }
   $('#switch-room').setAttribute('aria-label', t('switch.aria', ROOMS[otherRoom()].title));
@@ -321,6 +360,7 @@ function updateSoundUI(extra = '') {
   const active = Boolean(audio) || audioLoading;
   $('#noise-toggle').setAttribute('aria-label', t('noise.aria', active, t(`sound.${sound.id}`), audioLoading));
   $('#noise-toggle').setAttribute('aria-pressed', String(active));
+  $('#noise-toggle').classList.toggle('is-loading', audioLoading);
   $('#volume-value').textContent = `${$('#volume').value}%`;
   for (const button of document.querySelectorAll('[data-sound]')) {
     button.setAttribute('aria-pressed', String(active ? button.dataset.sound === sound.id : button.dataset.sound === 'mute'));
@@ -361,6 +401,44 @@ function scheduleSoundFade(restart = false) {
     updateSoundUI(t('status.faded'));
   }, remaining * 1000);
 }
+// 只開一個播放器並重複使用：iPhone 每次新開、關掉播放器，點多次之後會不出聲。
+let sharedContext = null;
+// 下載過、解好的聲音記起來，第二次點馬上有聲音；切換時也不取消下載中的檔案。
+const soundBytes = new Map();
+const soundBuffers = new Map();
+function soundSources(sound) {
+  // 先用無損壓縮的 FLAC（約一半大小、解開後與原檔逐格相同），不支援就退回 WAV。
+  return sound.flac ? [sound.flac, sound.url] : [sound.url];
+}
+function fetchSoundBytes(url) {
+  if (!soundBytes.has(url)) {
+    const request = fetch(appUrl(url)).then(res => {
+      if (!res.ok) throw new Error('Sound unavailable');
+      return res.arrayBuffer();
+    });
+    request.catch(() => soundBytes.delete(url));
+    soundBytes.set(url, request);
+  }
+  return soundBytes.get(url);
+}
+function prefetchSound(sound = currentSound()) {
+  if (sound?.url) void fetchSoundBytes(soundSources(sound)[0]).catch(() => {});
+}
+async function loadSoundBuffer(context, sound) {
+  if (soundBuffers.has(sound.id)) return soundBuffers.get(sound.id);
+  let lastError;
+  for (const url of soundSources(sound)) {
+    try {
+      // 解碼會用掉原本的資料，所以複製一份交給解碼器。
+      const bytes = (await fetchSoundBytes(url)).slice(0);
+      const decoded = await context.decodeAudioData(bytes);
+      const buffer = sound.preLooped ? decoded : createSeamlessLoop(context, decoded);
+      soundBuffers.set(sound.id, buffer);
+      return buffer;
+    } catch (error) { lastError = error; }
+  }
+  throw lastError || new Error('Sound unavailable');
+}
 function stopNoise() {
   audioEpoch++;
   audioLoading = false;
@@ -368,9 +446,10 @@ function stopNoise() {
   const old = audio;
   audio = null;
   if (old) {
-    old.controller?.abort();
-    try { old.source?.stop(); } catch { /* 已停止 */ }
-    void old.context.close().catch(() => {});
+    try { old.source?.stop(); } catch { /* 已停止或還沒開始 */ }
+    try { old.gain?.disconnect(); } catch { /* 已斷開 */ }
+    // 不關掉播放器，只讓它休息，下次點可以馬上再用。
+    if (old.context.state === 'running') void old.context.suspend().catch(() => {});
   }
   updateSoundUI();
 }
@@ -381,31 +460,21 @@ async function toggleNoise() {
   if (!Context) { updateSoundUI(t('status.unsupported')); return; }
   const epoch = ++audioEpoch;
   const thisRoom = room;
-  let context;
   audioLoading = true;
   updateSoundUI();
   try {
-    context = new Context();
+    const context = sharedContext && sharedContext.state !== 'closed' ? sharedContext : (sharedContext = new Context());
     const source = context.createBufferSource();
     const gain = context.createGain();
     gain.gain.value = 0;
-    const controller = new AbortController();
-    const current = { context, source, gain, controller };
-    audio = current;
+    audio = { context, source, gain };
     // 必須在點擊當下喚醒，避免手機瀏覽器擋住聲音。
-    await context.resume();
+    const waking = context.resume();
+    const buffer = sound.url ? await loadSoundBuffer(context, sound) : createAmbientBuffer(context, sound.id);
+    await waking;
     if (epoch !== audioEpoch || room !== thisRoom) return;
-    if (sound.url) {
-      const res = await fetch(appUrl(sound.url), { signal: controller.signal });
-      if (!res.ok) throw new Error('Sound unavailable');
-      const decoded = await context.decodeAudioData(await res.arrayBuffer());
-      source.buffer = sound.preLooped ? decoded : createSeamlessLoop(context, decoded);
-      source.connect(gain);
-    } else {
-      source.buffer = createAmbientBuffer(context, sound.id);
-      source.connect(gain);
-    }
-    if (epoch !== audioEpoch || room !== thisRoom) return;
+    source.buffer = buffer;
+    source.connect(gain);
     source.loop = true;
     gain.connect(context.destination);
     source.start();
@@ -416,10 +485,9 @@ async function toggleNoise() {
     if (epoch === audioEpoch) {
       stopNoise();
       updateSoundUI(sound.url ? t('status.fileFailed') : t('status.synthFailed'));
-    } else if (context && context.state !== 'closed') { void context.close().catch(() => {}); }
+    }
   }
 }
-
 function clearConnectionTimers() {
   clearTimeout(retryTimer);
   clearTimeout(connectTimer);
@@ -634,6 +702,7 @@ function enter(roomId) {
   window.scrollTo(0, 0);
   connectSocket(epoch);
   if (suggestLandscape) showOrientationHint();
+  prefetchSound();
 }
 let orientationHintTimer = null;
 function showOrientationHint() {
@@ -758,10 +827,10 @@ for (const button of document.querySelectorAll('[data-lang]')) button.addEventLi
 document.addEventListener('dream-language-change', () => {
   renderSoundOptions();
   renderTimerOptions();
+  renderFloatStyleOptions();
   updateSoundUI();
   if (room) {
     renderControls();
-    for (const button of document.querySelectorAll('#modes button')) button.setAttribute('aria-pressed', String(button.dataset.mode === myMode));
     renderVisitors();
     setPopulation(populationCount);
     $('#scene').setAttribute('aria-label', t('scene.aria', ROOMS[room].title));
@@ -772,6 +841,7 @@ document.addEventListener('dream-language-change', () => {
 });
 renderSoundOptions();
 renderTimerOptions();
+renderFloatStyleOptions();
 updateSoundUI();
 startLobbyPolling();
 

@@ -14,6 +14,7 @@ const JA_STATIC = {
   'mist-description': p('淡い青のなかで、', 'やすらかに。'),
   'footnote': `${p('ランダムで夢の玉になります ·')} ${p('アカウントも、', 'おしゃべりもありません。', 'でも、ひとつひとつが本当のぬくもりです')}`,
   'timer-title': '音の時間',
+  'float-style-title': 'ただよい方',
   'switch-room': '別の場所で眠る',
   'scene-note': 'ひとつひとつの玉が、いまここにいる人です。',
   'orientation-hint': '横向きにすると、より美しく見られます',
@@ -55,6 +56,7 @@ const JA_ARIA = {
   'help': 'よくある質問',
   'sound-panel': '環境音を選ぶ',
   'volume': '音量',
+  'float-style': 'ただよい方を選ぶ',
   'settings': '部屋の設定',
   'retry': '再接続',
   'orientation-hint': 'ヒント：横向きにすると、より美しく見られます。タップで閉じる',
@@ -100,6 +102,8 @@ const DYNAMIC = {
     'room.entering': '正在輕輕推開房門……',
     'room.reentering': '正在重新推開房門……',
     'scene.aria': title => `${title}陪睡房`,
+    'floatStyle.float': '原地小圈圈', 'floatStyle.roam': '隨意飄',
+    'floatStyle.aria': current => `漂浮的飄法，目前${current}`,
     'meta.description': '夢の部屋：不必交談，也可以安靜地待在一起。'
   },
   ja: {
@@ -139,6 +143,8 @@ const DYNAMIC = {
     'room.entering': 'そっと扉を開けています……',
     'room.reentering': 'もう一度、扉を開けています……',
     'scene.aria': title => `${title}の添い寝ルーム`,
+    'floatStyle.float': 'その場でくるくる', 'floatStyle.roam': '気ままにただよう',
+    'floatStyle.aria': current => `ただよい方。いまは${current}`,
     'meta.description': '夢の部屋：話さなくても、静かにそばにいられる場所。'
   }
 };

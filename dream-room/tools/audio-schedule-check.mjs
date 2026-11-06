@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import vm from 'node:vm';
+import { t } from '../public/i18n.js';
 
 // Execute the product's actual functions; only browser facilities are replaced.
 // This file never starts a browser, opens a socket, or changes product files.
@@ -29,22 +30,23 @@ const controls = new Map([
 const automation = [];
 const timers = new Map();
 const ui = [];
-const effects = { sourceStop: 0, contextClose: 0, abort: 0, socketSend: 0, socketClose: 0, roomLeave: 0 };
+const effects = { sourceStop: 0, contextClose: 0, contextSuspend: 0, gainDisconnect: 0, socketSend: 0, socketClose: 0, roomLeave: 0 };
 let virtualTime = 100;
 let nextTimer = 1;
 const audioFixture = {
   context: {
     currentTime: virtualTime,
-    close() { effects.contextClose++; return Promise.resolve(); }
+    state: 'running',
+    close() { effects.contextClose++; return Promise.resolve(); },
+    suspend() { effects.contextSuspend++; this.state = 'suspended'; return Promise.resolve(); }
   },
-  gain: { gain: {
+  gain: { disconnect() { effects.gainDisconnect++; }, gain: {
     value: 0.01,
     cancelScheduledValues(time) { automation.push({ operation: 'cancel', time }); },
     setValueAtTime(value, time) { automation.push({ operation: 'set', value, time }); },
     linearRampToValueAtTime(value, time) { automation.push({ operation: 'linear', value, time }); }
   } },
-  source: { stop() { effects.sourceStop++; } },
-  controller: { abort() { effects.abort++; } }
+  source: { stop() { effects.sourceStop++; } }
 };
 const socketFixture = {
   readyState: 1,
@@ -53,6 +55,7 @@ const socketFixture = {
 };
 const sandbox = vm.createContext({
   fixture: audioFixture,
+  t,
   socketFixture,
   $(selector) { assert(controls.has(selector), `非預期畫面控制項：${selector}`); return controls.get(selector); },
   setTimeout(callback, milliseconds) {
@@ -137,8 +140,10 @@ deadlineTimer.callback();
 await Promise.resolve();
 equal(run('audio'), null, '到期釋放聲音物件');
 equal(effects.sourceStop, 1, '到期停止音源一次');
-equal(effects.contextClose, 1, '到期關閉聲音環境一次');
-equal(effects.abort, 1, '到期中止舊音源工作');
+// 11/06 起播放器重複使用：到期只讓它休息一次、切斷這次的音量節點，不可關掉（iPhone 反覆開關會不出聲）。
+equal(effects.contextSuspend, 1, '到期讓聲音環境休息一次');
+equal(effects.contextClose, 0, '到期不關閉共用聲音環境');
+equal(effects.gainDisconnect, 1, '到期切斷這次的音量節點');
 equal(timers.size, 0, '到期清除停止計時器');
 equal(run('soundTimer'), null, '到期清除計時器參照');
 equal(run('audioEpoch'), 1, '到期使舊聲音工作失效');

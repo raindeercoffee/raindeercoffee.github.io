@@ -69,3 +69,12 @@ body.controls-resting .wake-controls { opacity:.65; }
 .lang-button[aria-pressed='true'] { background:#e9dfc8; color:#19263c; }
 .in-room .site-header .lang-switch { display:none; }
 .help-language { display:flex; justify-content:center; align-items:center; gap:10px; margin-top:16px; color:#cfdad8; font-size:13px; }
+
+/* 聲音下載、準備中：音樂按鈕輕輕一明一暗（減少動態時不閃）。 */
+@keyframes sound-loading { 0%,100% { opacity:1; } 50% { opacity:.45; } }
+#noise-toggle.is-loading svg { animation:sound-loading 1.2s ease-in-out infinite; }
+
+/* 飄法選單：兩個選項，沿用定時選單的外觀。 */
+.float-style-panel .timer-options { grid-template-columns:repeat(2,minmax(0,1fr)); }
+/* 矮的橫向畫面右邊放不下四顆：飄法按鈕移到右下角、收起鈕左邊。 */
+@media(max-height:380px) { .side-right { z-index:4; } .side-right #float-style-toggle { position:fixed; right:calc(20px + 52px + env(safe-area-inset-right,0px)); bottom:calc(8px + env(safe-area-inset-bottom,0px)); } }

@@ -8,7 +8,7 @@ export function isRoomId(value) {
 }
 
 export function allowedModes(room) {
-  return isRoomId(room) ? ['sleep', 'float'] : [];
+  return isRoomId(room) ? ['sleep', 'float', 'roam'] : [];
 }
 
 export function defaultMode(room) {

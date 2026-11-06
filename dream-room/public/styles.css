@@ -159,3 +159,19 @@ html:lang(ja) .brand, html:lang(ja) .intro h1, html:lang(ja) .room-card h2, html
 /* iPhone 會在帶「模糊濾鏡」的雲朵外框畫出紫紅色線（使用者 11/06 兩次截圖，位置與雲框完全吻合）。
    雲圖縮得很小、本來就柔，拿掉 0.35～0.9px 的模糊肉眼幾乎看不出差別。 */
 .dream-bed, .floating .dream-bed, .scene[data-room] .dream-bed, .scene[data-room] .floating .dream-bed { filter:none!important; }
+
+/* 光暈墊到柔邊下面：球邊緣變透明的那一圈，原本沒有光暈，夜潮深色背景會透出一圈暗邊（看起來像殘影）。
+   電腦柔邊 7.5% → 光暈圓半徑 42.3%；手機柔邊 3.5% → 44.3%（圓心同球 50%／49%）。 */
+.visitor::before { left:7.7%!important; top:6.7%!important; width:84.6%!important; height:84.6%!important; background:radial-gradient(circle,transparent 70%,#f2f3ed14 100%); }
+@media (max-width:900px),(max-height:550px) { .visitor::before { left:5.7%!important; top:4.7%!important; width:88.6%!important; height:88.6%!important; background:radial-gradient(circle,transparent 70%,#fff1dc1f 100%); } }
+
+/* 霧藍漂浮時不再用灰暗雲（使用者 11/06：不搭），改用同一朵淡色雲床、更透明，像球剛離開的雲。 */
+.scene[data-room='dream-b'] .floating .dream-bed { background-image:url('./assets/mist-cloud-light.png')!important; opacity:.5!important; }
+
+/* 隨意飄：整顆球（連同光暈）從座位出發，在房間裡慢慢逛一大圈再回來；雲床留在原地看不到。
+   路線經過左上、左下與中間，不同座位速度不同，會和別的球擦身而過。 */
+@keyframes roam-a { 0%,100% { left:var(--seat-x); top:var(--seat-y); } 18% { left:10%; top:14%; } 36% { left:22%; top:82%; } 54% { left:56%; top:58%; } 72% { left:86%; top:22%; } 88% { left:48%; top:30%; } }
+@keyframes roam-b { 0%,100% { left:var(--seat-x); top:var(--seat-y); } 20% { left:84%; top:78%; } 40% { left:44%; top:16%; } 58% { left:12%; top:46%; } 76% { left:30%; top:88%; } 90% { left:66%; top:48%; } }
+.visitor-slot.roaming { animation:roam-a var(--roam-duration,70s) ease-in-out infinite; z-index:3; }
+.visitor-slot.roaming:nth-child(even) { animation-name:roam-b; }
+.visitor-slot.roaming .dream-bed { opacity:0!important; }

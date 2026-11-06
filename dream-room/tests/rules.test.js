@@ -8,7 +8,7 @@ test('two room IDs and modes are isolated', () => {
   assert.deepEqual(ROOM_IDS, ['dream-a', 'dream-b']);
   for (const room of ROOM_IDS) {
     assert.equal(isRoomId(room), true);
-    assert.deepEqual(allowedModes(room), ['sleep', 'float']);
+    assert.deepEqual(allowedModes(room), ['sleep', 'float', 'roam']);
     assert.equal(defaultMode(room), 'sleep');
   }
   for (const room of ['dream', 'reading', 'chat', null, undefined]) {
@@ -178,6 +178,12 @@ test('both rooms validate modes against the stored room and do not affect one an
   assert.equal(first.snapshot().members[0].mode, 'float');
   assert.equal(second.snapshot().members[0].mode, 'sleep');
   await second.webSocketMessage(b.socket, JSON.stringify({ type: 'mode', room: 'dream-b', value: 'float' }));
+  assert.equal(second.snapshot().members[0].mode, 'float');
+  // 隨意飄（11/06 新增）也會同步給大家；其他亂寫的姿勢仍被擋掉。
+  await first.webSocketMessage(a.socket, JSON.stringify({ type: 'mode', room: 'dream-a', value: 'roam' }));
+  assert.equal(first.snapshot().members[0].mode, 'roam');
+  await first.webSocketMessage(a.socket, JSON.stringify({ type: 'mode', room: 'dream-a', value: 'fly' }));
+  assert.equal(first.snapshot().members[0].mode, 'roam');
   assert.equal(second.snapshot().members[0].mode, 'float');
 });
 

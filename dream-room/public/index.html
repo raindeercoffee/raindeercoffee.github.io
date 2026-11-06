@@ -66,6 +66,7 @@
           <button type="button" id="noise-toggle" class="glass-button" data-panel-toggle="sound-panel" aria-label="選擇環境聲音，目前靜音" aria-controls="sound-panel" aria-expanded="false" aria-pressed="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-sound"></use></svg></button>
           <button type="button" id="volume-toggle" class="glass-button" data-panel-toggle="volume-panel" aria-label="聲音音量" data-i18n-aria="volume" aria-controls="volume-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-volume"></use></svg></button>
           <button type="button" id="timer-toggle" class="glass-button" data-panel-toggle="timer-panel" aria-label="聲音定時，目前持續播放" aria-controls="timer-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-timer"></use></svg></button>
+          <button type="button" id="float-style-toggle" class="glass-button" data-panel-toggle="float-style-panel" aria-label="漂浮的飄法" aria-controls="float-style-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-drift"></use></svg></button>
         </div>
       </section>
       <section class="settings-zone" aria-label="房間設定" data-i18n-aria="settings">
@@ -74,6 +75,7 @@
           <div id="sound-panel" class="control-popover sound-options hidden" role="group" aria-label="選擇環境聲音" data-i18n-aria="sound-panel"><div id="sound-options" class="icon-options"></div><label id="sound-source-control" class="hidden" for="sound-source">環境聲音<select id="sound-source"></select></label></div>
           <div id="volume-panel" class="control-popover hidden" role="group" aria-label="聲音音量" data-i18n-aria="volume"><label class="sr-only" for="volume" data-i18n="volume-label">音量</label><input id="volume" type="range" min="0" max="100" value="35" /><output class="sr-only" id="volume-value" for="volume">35%</output></div>
           <div id="timer-panel" class="control-popover timer-panel hidden" role="group" aria-labelledby="timer-panel-title"><h2 id="timer-panel-title" data-i18n="timer-title">聲音時間</h2><div id="timer-options" class="timer-options"></div><label class="hidden" for="sound-timer">播放時間<select id="sound-timer"><option value="0">持續</option><option value="15">15分鐘</option><option value="30">30分鐘</option><option value="60">60分鐘</option></select></label></div>
+          <div id="float-style-panel" class="control-popover timer-panel float-style-panel hidden" role="group" aria-labelledby="float-style-title" data-i18n-aria="float-style" aria-label="選擇漂浮的飄法"><h2 id="float-style-title" data-i18n="float-style-title">漂浮的飄法</h2><div id="float-style-options" class="timer-options"></div></div>
           <p id="sound-status" class="sr-only" role="status" aria-live="polite">聲音預設關閉。</p>
         </div>
         <div class="settings-footer">
