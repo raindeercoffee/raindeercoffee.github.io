@@ -103,7 +103,7 @@ const DYNAMIC = {
     'room.reentering': '正在重新推開房門……',
     'scene.aria': title => `${title}陪睡房`,
     'floatStyle.float': '原地小圈圈', 'floatStyle.roam': '隨意飄',
-    'floatStyle.aria': current => `漂浮的飄法，目前${current}`,
+    'floatStyle.aria': current => `漂浮型態，目前${current}`,
     'meta.description': '夢の部屋：不必交談，也可以安靜地待在一起。'
   },
   ja: {

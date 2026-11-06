@@ -75,6 +75,11 @@ body.controls-resting .wake-controls { opacity:.65; }
 #noise-toggle.is-loading svg { animation:sound-loading 1.2s ease-in-out infinite; }
 
 /* 飄法選單：兩個選項，沿用定時選單的外觀。 */
-.float-style-panel .timer-options { grid-template-columns:repeat(2,minmax(0,1fr)); }
+
 /* 矮的橫向畫面右邊放不下四顆：飄法按鈕移到右下角、收起鈕左邊。 */
-@media(max-height:380px) { .side-right { z-index:4; } .side-right #float-style-toggle { position:fixed; right:calc(20px + 52px + env(safe-area-inset-right,0px)); bottom:calc(8px + env(safe-area-inset-bottom,0px)); } }
+@media(max-height:380px) { .side-right { z-index:4; } .side-right #brightness-toggle { position:fixed; right:calc(20px + 52px + env(safe-area-inset-right,0px)); bottom:calc(8px + env(safe-area-inset-bottom,0px)); } }
+
+/* 定時、漂浮型態兩個選單：字大小不變，按鈕邊框貼近字；外框只包住標題和按鈕（使用者 11/06）。 */
+.timer-panel { width:auto!important; max-width:100%; height:auto!important; padding:6px 10px 8px!important; grid-template-rows:auto auto!important; }
+.timer-options { display:flex!important; justify-content:center; flex-wrap:wrap; gap:6px; width:auto!important; }
+.timer-choice { height:auto!important; min-height:34px!important; min-width:0!important; padding:4px 12px!important; border-radius:17px!important; }
