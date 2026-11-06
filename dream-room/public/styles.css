@@ -155,3 +155,7 @@ body:not(.in-room) .brand { font-size:22px!important; color:#bec8cf!important; }
 @font-face { font-family:'Noto Serif JP'; font-style:normal; font-weight:400; font-display:swap; src:url('./assets/fonts/noto-serif-jp-ui.ttf') format('truetype'); }
 html:lang(ja) body { font-family:'Noto Sans JP','Hiragino Sans','Yu Gothic',sans-serif; }
 html:lang(ja) .brand, html:lang(ja) .intro h1, html:lang(ja) .room-card h2, html:lang(ja) #room-name { font-family:'Noto Serif JP','Hiragino Mincho ProN','Yu Mincho',serif; }
+
+/* iPhone 會在帶「模糊濾鏡」的雲朵外框畫出紫紅色線（使用者 11/06 兩次截圖，位置與雲框完全吻合）。
+   雲圖縮得很小、本來就柔，拿掉 0.35～0.9px 的模糊肉眼幾乎看不出差別。 */
+.dream-bed, .floating .dream-bed, .scene[data-room] .dream-bed, .scene[data-room] .floating .dream-bed { filter:none!important; }
