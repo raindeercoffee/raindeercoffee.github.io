@@ -114,17 +114,16 @@ body.controls-resting .wake-controls { opacity:.68; }
 }
 
 /* ===== 使用者 2026-11-06 調整台定稿（球、文字；電腦與手機各一組）。數字照她親手挑的，不要順手改。 ===== */
-/* 電腦的球 */
+/* 電腦的球：柔邊已畫進 ball-N-soft-d.png；光暈與影子用圓形陰影，不用濾鏡與遮罩 */
 .visitor-slot { width:clamp(22px,11.5cqmin,106px)!important; }
-.visitor { opacity:0.98!important; filter:drop-shadow(0 3px 5px rgba(17,28,57,0.35)) drop-shadow(0 0 26px #f2f3ed42)!important; mix-blend-mode:screen!important; }
-.visitor img { clip-path:none!important; -webkit-mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 7.5%),transparent 93.9%); mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 7.5%),transparent 93.9%); }
-.visitor img[src$='/ball-4.png'] { clip-path:none!important; -webkit-mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 7.5%),transparent 97.9%); mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 7.5%),transparent 97.9%); }
-/* 手機的球（窄或矮的螢幕） */
+.visitor { opacity:0.98!important; filter:none!important; mix-blend-mode:screen!important; }
+.visitor img { position:relative; clip-path:none!important; }
+.visitor::before { content:''; position:absolute; left:4%; top:3%; width:92%; height:92%; border-radius:50%; box-shadow:0 3px 5px rgba(17,28,57,0.35),0 0 26px #f2f3ed42; pointer-events:none; }
+/* 手機的球（窄或矮的螢幕）：柔邊在 ball-N-soft-p.png */
 @media (max-width:900px),(max-height:550px) {
 .visitor-slot { width:clamp(22px,11.5cqmin,74px)!important; }
-.visitor { opacity:0.80!important; filter:drop-shadow(0 3px 5px rgba(17,28,57,0.00)) drop-shadow(0 0 17px #fff1dc8f)!important; mix-blend-mode:normal!important; }
-.visitor img { clip-path:none!important; -webkit-mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 3.5%),transparent 93.9%); mask-image:radial-gradient(circle closest-side at 50% 49%,#000 calc(93.9% - 3.5%),transparent 93.9%); }
-.visitor img[src$='/ball-4.png'] { -webkit-mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 3.5%),transparent 97.9%); mask-image:radial-gradient(circle closest-side at 47% 49%,#000 calc(97.9% - 3.5%),transparent 97.9%); }
+.visitor { opacity:0.80!important; filter:none!important; mix-blend-mode:normal!important; }
+.visitor::before { box-shadow:0 0 17px #fff1dc8f; }
 }
 /* 電腦的字 */
 body.in-room .brand { font-size:33px!important; color:#f2f3ed!important; }

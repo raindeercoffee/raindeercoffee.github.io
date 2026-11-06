@@ -1,7 +1,7 @@
 import { createAmbientBuffer } from './audio-engine.js';
 import { createSeamlessLoop } from './audio-loop.js';
 
-// 三段聲音取自使用者提供的影片，已事先做成無縫循環（使用者 11/06 試聽通過）；白噪音由瀏覽器合成。
+// 三段聲音取自使用者提供的影片，已事先做成無縫循環（使用者 11/06 試聽通過；水流 11/06 下午改用「小小溪流」約 10 秒慢慢起伏版）；白噪音由瀏覽器合成。
 // 用無壓縮 WAV，避免壓縮檔頭尾補靜音造成接縫；播放時不可再交疊一次。
 // 聲音檔路徑相對於夢屋入口，根目錄與子路徑都能使用。
 const SOUNDS = [
@@ -18,7 +18,13 @@ const CAPACITY = 10;
 const RECONNECT_MS = 30_000;
 const ROOMS = { 'dream-a': { title: '夜潮' }, 'dream-b': { title: '霧藍' } };
 const ROOM_IDS = Object.keys(ROOMS);
-const BALLS = [1, 2, 3, 4].map(n => appUrl(`assets/ball-${n}.png`));
+// 球的柔邊事先畫進圖片（手機 3.5%、電腦 7.5%，使用者 11/06 調整台定稿），
+// 不用 CSS 遮罩與濾鏡：iPhone 上那兩種特效曾畫出紫紅色雜線。
+const phoneLayoutMedia = matchMedia('(max-width: 900px), (max-height: 550px)');
+const portraitSceneMedia = matchMedia('(orientation: portrait)');
+const ballUrl = index => appUrl(`assets/ball-${(index in [0, 1, 2, 3] ? index : 0) + 1}-soft-${phoneLayoutMedia.matches ? 'p' : 'd'}.png`);
+// 手機直拿時畫面窄，改排成兩欄五列，球才不會擠在一起。
+const PORTRAIT_SEATS = Array.from({ length: 10 }, (_, i) => [i % 2 ? 72 : 28, 12 + Math.floor(i / 2) * 18]);
 const SEATS = [[15, 39], [32, 39], [49, 39], [66, 39], [83, 39],
   [15, 76], [32, 76], [49, 76], [66, 76], [83, 76]];
 const MODES = [{ value: 'sleep', label: '準備睡了 · 躺下' }, { value: 'float', label: '正在做夢 · 漂浮' }];
@@ -120,7 +126,7 @@ function clearVisitors() { visitorNodes.clear(); $('#visitors').replaceChildren(
 function renderVisitors() {
   const present = new Set();
   for (const member of members) {
-    const pos = SEATS[member.seat];
+    const pos = (portraitSceneMedia.matches ? PORTRAIT_SEATS : SEATS)[member.seat];
     if (!pos) continue;
     present.add(member.id);
     let element = visitorNodes.get(member.id);
@@ -133,7 +139,8 @@ function renderVisitors() {
       const ball = document.createElement('span');
       ball.className = 'visitor';
       const img = document.createElement('img');
-      img.src = BALLS[member.ball] || BALLS[0];
+      img.dataset.ball = String(member.ball);
+      img.src = ballUrl(member.ball);
       img.alt = '';
       img.draggable = false;
       ball.append(img);
@@ -657,6 +664,11 @@ $('#orientation-dialog').addEventListener('close', () => {
   if (pendingRoom) clearPendingEntry();
 });
 portraitEntryMedia.addEventListener('change', updateOrientationGate);
+// 轉向或換尺寸時，重排座位、換對應的柔邊球圖。
+portraitSceneMedia.addEventListener('change', () => { if (room) renderVisitors(); });
+phoneLayoutMedia.addEventListener('change', () => {
+  for (const img of document.querySelectorAll('#visitors img[data-ball]')) img.src = ballUrl(Number(img.dataset.ball));
+});
 window.addEventListener('resize', updateOrientationGate);
 window.addEventListener('orientationchange', updateOrientationGate);
 $('#back-btn').addEventListener('click', () => leaveRoom());
