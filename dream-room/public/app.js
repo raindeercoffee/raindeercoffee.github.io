@@ -1,5 +1,6 @@
 import { createAmbientBuffer } from './audio-engine.js';
 import { createSeamlessLoop } from './audio-loop.js';
+import { t, applyStaticText, setLanguage } from './i18n.js';
 
 // 三段聲音取自使用者提供的影片，已事先做成無縫循環（使用者 11/06 試聽通過；水流 11/06 下午改用「小小溪流」約 10 秒慢慢起伏版）；白噪音由瀏覽器合成。
 // 用無壓縮 WAV，避免壓縮檔頭尾補靜音造成接縫；播放時不可再交疊一次。
@@ -27,7 +28,7 @@ const ballUrl = index => appUrl(`assets/ball-${(index in [0, 1, 2, 3] ? index : 
 const PORTRAIT_SEATS = Array.from({ length: 10 }, (_, i) => [i % 2 ? 72 : 28, 12 + Math.floor(i / 2) * 18]);
 const SEATS = [[15, 39], [32, 39], [49, 39], [66, 39], [83, 39],
   [15, 76], [32, 76], [49, 76], [66, 76], [83, 76]];
-const MODES = [{ value: 'sleep', label: '準備睡了 · 躺下' }, { value: 'float', label: '正在做夢 · 漂浮' }];
+const MODES = [{ value: 'sleep' }, { value: 'float' }];
 const portraitEntryMedia = matchMedia('(max-width: 900px) and (orientation: portrait)');
 
 function anonymousToken() {
@@ -109,6 +110,11 @@ function closeHelp() {
   if (dialog?.open) dialog.close();
 }
 
+let populationCount = null;
+function setPopulation(count) {
+  populationCount = count;
+  $('#population').textContent = count == null ? t('population.unknown') : t('population', count);
+}
 function message(text) { $('#room-message').textContent = text || ''; }
 function otherRoom() { return ROOM_IDS.find(id => id !== room); }
 function setConnected(value) {
@@ -159,8 +165,7 @@ function renderVisitors() {
     element.classList.toggle('sleeping', member.mode === 'sleep');
     element.classList.toggle('reconnecting', Boolean(member.reconnecting));
     element.classList.toggle('is-mine', member.id === myId);
-    const who = member.id === myId ? '我的夢球' : '另一位訪客';
-    element.setAttribute('aria-label', `${who}，${member.mode === 'float' ? '正在漂浮' : '已經躺下'}${member.reconnecting ? '，暫時斷線' : ''}`);
+    element.setAttribute('aria-label', t('visitor', member.id === myId, member.mode === 'float', Boolean(member.reconnecting)));
   }
   for (const [id, element] of visitorNodes) {
     if (!present.has(id)) { element.remove(); visitorNodes.delete(id); }
@@ -176,7 +181,7 @@ function renderControls() {
     button.type = 'button';
     button.className = 'glass-button';
     button.dataset.mode = mode.value;
-    setButtonIcon(button, mode.value, mode.label);
+    setButtonIcon(button, mode.value, t(`mode.${mode.value}`));
     button.setAttribute('aria-pressed', 'false');
     button.disabled = !connected;
     button.addEventListener('click', () => {
@@ -188,8 +193,8 @@ function renderControls() {
     });
     $('#modes').append(button);
   }
-  $('#switch-room').setAttribute('aria-label', `換個地方入眠，前往${ROOMS[otherRoom()].title}`);
-  $('#alternate-room').setAttribute('aria-label', `試試${ROOMS[otherRoom()].title}`);
+  $('#switch-room').setAttribute('aria-label', t('switch.aria', ROOMS[otherRoom()].title));
+  $('#alternate-room').setAttribute('aria-label', t('alternate.aria', ROOMS[otherRoom()].title));
   $('#brightness').value = '85';
   updateBrightness();
   $('#sound-timer').value = '0';
@@ -215,15 +220,15 @@ async function refreshCounts() {
     if (!ROOM_IDS.every(id => Number.isInteger(counts?.[id]?.count))) throw new Error('Invalid counts');
     for (const id of ROOM_IDS) {
       const count = counts[id].count;
-      $(`#${id}-count`).textContent = `${count} / ${CAPACITY}${count >= CAPACITY ? ' · 已滿' : ''}`;
+      $(`#${id}-count`).textContent = t('count', count, CAPACITY);
       document.querySelector(`[data-room="${id}"]`).classList.toggle('is-full', count >= CAPACITY);
     }
     $('#lobby-message').textContent = ROOM_IDS.every(id => counts[id].count >= CAPACITY)
-      ? '兩間房目前都滿了。可以稍後再來看看。' : '房門開著。挑一間，慢慢進來。';
+      ? t('lobby.allFull') : t('lobby.open');
     return counts;
   } catch (error) {
     if (!room && countsRequest === controller) {
-      $('#lobby-message').textContent = '暫時讀不到最新人數。可以直接選房。';
+      $('#lobby-message').textContent = t('lobby.error');
       for (const id of ROOM_IDS) $(`#${id}-count`).textContent = '— / 10';
     }
     return null;
@@ -243,7 +248,7 @@ function hideControls() {
   idleTimer = null;
   if (!room || openPanel || controlsHaveFocus()) return;
   document.body.classList.add('controls-resting');
-  $('#wake-controls').setAttribute('aria-label', '顯示操作');
+  $('#wake-controls').setAttribute('aria-label', t('wake.show'));
   $('#wake-controls').setAttribute('aria-expanded', 'false');
 }
 function showControls(event) {
@@ -251,7 +256,7 @@ function showControls(event) {
   if (event?.target?.closest?.('#wake-controls')) return;
   if (!room) return;
   document.body.classList.remove('controls-resting');
-  $('#wake-controls').setAttribute('aria-label', '收起操作');
+  $('#wake-controls').setAttribute('aria-label', t('wake.hide'));
   $('#wake-controls').setAttribute('aria-expanded', 'true');
   clearTimeout(idleTimer);
   idleTimer = setTimeout(hideControls, 8000);
@@ -265,13 +270,13 @@ function renderSoundOptions() {
   for (const sound of SOUNDS) {
     const option = document.createElement('option');
     option.value = sound.id;
-    option.textContent = sound.label;
+    option.textContent = t(`sound.${sound.id}`);
     select.append(option);
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'glass-button';
     button.dataset.sound = sound.id;
-    setButtonIcon(button, sound.id, sound.label);
+    setButtonIcon(button, sound.id, t(`sound.${sound.id}`));
     button.addEventListener('click', () => { changeSound(sound.id, true); closePopovers({ restoreFocus: true }); });
     $('#sound-options').append(button);
   }
@@ -280,7 +285,7 @@ function renderSoundOptions() {
   mute.type = 'button';
   mute.className = 'glass-button';
   mute.dataset.sound = 'mute';
-  setButtonIcon(mute, 'mute', '靜音');
+  setButtonIcon(mute, 'mute', t('sound.mute'));
   mute.addEventListener('click', () => { stopNoise(); closePopovers({ restoreFocus: true }); });
   $('#sound-options').append(mute);
 }
@@ -295,14 +300,14 @@ function changeSound(nextId = $('#sound-source').value, play = false) {
   if (play || shouldPlay) void toggleNoise();
 }
 function renderTimerOptions() {
-  const options = [ ['0', '持續'], ['15', '15分鐘'], ['30', '30分鐘'], ['60', '60分鐘'] ];
-  for (const [value, label] of options) {
+  $('#timer-options').replaceChildren();
+  for (const value of ['0', '15', '30', '60']) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'timer-choice';
     button.dataset.timer = value;
-    button.textContent = label;
-    button.setAttribute('aria-label', value === '0' ? '持續播放聲音' : `${value}分鐘後淡出聲音`);
+    button.textContent = t('timer.option', value);
+    button.setAttribute('aria-label', t('timer.optionAria', value));
     button.addEventListener('click', () => {
       $('#sound-timer').value = value;
       $('#sound-timer').dispatchEvent(new Event('change'));
@@ -314,21 +319,21 @@ function renderTimerOptions() {
 function updateSoundUI(extra = '') {
   const sound = currentSound();
   const active = Boolean(audio) || audioLoading;
-  $('#noise-toggle').setAttribute('aria-label', `選擇環境聲音，目前${active ? `${sound.label}${audioLoading ? '準備中' : '播放中'}` : '靜音'}`);
+  $('#noise-toggle').setAttribute('aria-label', t('noise.aria', active, t(`sound.${sound.id}`), audioLoading));
   $('#noise-toggle').setAttribute('aria-pressed', String(active));
   $('#volume-value').textContent = `${$('#volume').value}%`;
   for (const button of document.querySelectorAll('[data-sound]')) {
     button.setAttribute('aria-pressed', String(active ? button.dataset.sound === sound.id : button.dataset.sound === 'mute'));
   }
-  const source = sound.url ? '聲音來自自備音檔。' : `${sound.label}由瀏覽器合成。`;
+  const source = sound.url ? t('source.file') : t('source.synth', t(`sound.${sound.id}`));
   const minutes = Number($('#sound-timer').value);
-  $('#timer-toggle').setAttribute('aria-label', `聲音定時，目前${minutes ? `${minutes} 分鐘定時` : '持續播放'}`);
+  $('#timer-toggle').setAttribute('aria-label', t('timer.aria', minutes));
   for (const button of document.querySelectorAll('[data-timer]')) {
     button.setAttribute('aria-pressed', String(button.dataset.timer === String(minutes)));
   }
-  let status = audioLoading ? '正在準備聲音。選靜音可以取消。' : active
-    ? `${source}${minutes ? `本次設定 ${minutes} 分鐘定時，最後 30 秒慢慢淡出。` : '持續播放，選靜音就能停止。'}`
-    : `聲音已關閉。${source}`;
+  let status = audioLoading ? t('status.loading') : active
+    ? `${source}${minutes ? t('status.timer', minutes) : t('status.continuous')}`
+    : t('status.off', source);
   if (extra) status = extra;
   $('#sound-status').textContent = status;
 }
@@ -353,7 +358,7 @@ function scheduleSoundFade(restart = false) {
   soundTimer = setTimeout(() => {
     if (audio !== owner) return;
     stopNoise();
-    updateSoundUI('聲音已慢慢淡出。你可以繼續留在房間裡。');
+    updateSoundUI(t('status.faded'));
   }, remaining * 1000);
 }
 function stopNoise() {
@@ -373,7 +378,7 @@ async function toggleNoise() {
   if (audio || audioLoading) { stopNoise(); return; }
   const sound = currentSound();
   const Context = window.AudioContext || window.webkitAudioContext;
-  if (!Context) { updateSoundUI('這個瀏覽器無法播放聲音。房間仍然可以使用。'); return; }
+  if (!Context) { updateSoundUI(t('status.unsupported')); return; }
   const epoch = ++audioEpoch;
   const thisRoom = room;
   let context;
@@ -410,7 +415,7 @@ async function toggleNoise() {
   } catch (error) {
     if (epoch === audioEpoch) {
       stopNoise();
-      updateSoundUI(sound.url ? '這個音檔暫時無法播放。請確認檔案與格式。' : '暫時無法播放聲音。再按一次可以重試。');
+      updateSoundUI(sound.url ? t('status.fileFailed') : t('status.synthFailed'));
     } else if (context && context.state !== 'closed') { void context.close().catch(() => {}); }
   }
 }
@@ -430,6 +435,7 @@ function leaveRoom({ focus = true } = {}) {
   if (!room) return;
   delete document.body.dataset.floatMotion;
   closeHelp();
+  hideOrientationHint();
   closePopovers();
   const oldRoom = room;
   const oldConnectionId = ownConnectionId;
@@ -482,8 +488,8 @@ function handleReplaced(socket) {
   myId = myMode = null;
   members = [];
   clearVisitors();
-  $('#population').textContent = '—人在這裡';
-  showTerminal('你已在另一個分頁進入這間房。這裡已停止，不會搶回位置。');
+  setPopulation(null);
+  showTerminal(t('terminal.takeover'));
   clearTimeout(idleTimer);
   idleTimer = null;
   $('#retry-connect').classList.add('hidden');
@@ -527,8 +533,8 @@ function connectSocket(epoch) {
     }
     if (data.type === 'full') {
       full = true;
-      $('#population').textContent = `${CAPACITY}人在這裡`;
-      showTerminal('這間房剛好住滿了。可以試試另一間，或返回入口。', { full: true });
+      setPopulation(CAPACITY);
+      showTerminal(t('terminal.full'), { full: true });
       return;
     }
     if (data.type === 'welcome' && data.you) {
@@ -540,14 +546,14 @@ function connectSocket(epoch) {
       retryCount = 0;
       disconnectedAt = null;
       setConnected(true);
-      message('已進入房間。操作會在閒置後收起。');
+      message(t('room.entered'));
       $('#retry-connect').classList.add('hidden');
     }
     if (data.type === 'state' && Array.isArray(data.members)) {
       members = data.members;
       const mine = members.find(item => item.id === myId);
       if (mine) myMode = mine.mode;
-      $('#population').textContent = `${data.count}人在這裡`;
+      setPopulation(data.count);
       renderVisitors();
     }
   });
@@ -564,7 +570,7 @@ function connectSocket(epoch) {
     scheduleReconnect(epoch);
   });
   socket.addEventListener('error', () => {
-    if (isCurrent() && !terminal) message('連線暫時不穩定，正在試著回到房間……');
+    if (isCurrent() && !terminal) message(t('room.unstable'));
   });
 }
 function scheduleReconnect(epoch) {
@@ -573,11 +579,11 @@ function scheduleReconnect(epoch) {
   if (disconnectedAt === null) disconnectedAt = Date.now();
   const remaining = RECONNECT_MS - (Date.now() - disconnectedAt);
   if (remaining < 1000) {
-    showTerminal('暫時沒能重新連線。可以重新連線，或返回入口再選房。');
+    showTerminal(t('terminal.failed'));
     return;
   }
   retryCount++;
-  message('連線暫時中斷，正在找回位置。斷線的位置最多保留 30 秒。');
+  message(t('room.interrupted'));
   members = members.map(member => member.id === myId ? { ...member, reconnecting: true } : member);
   renderVisitors();
   retryTimer = setTimeout(() => connectSocket(epoch), Math.min(1000 * retryCount, 4000, remaining - 500));
@@ -595,16 +601,8 @@ function clearPendingEntry({ restoreFocus = true } = {}) {
 function enter(roomId) {
   if (!ROOMS[roomId]) return;
   delete document.body.dataset.floatMotion;
-  // 入口先提醒，還未建立連線，也不占用房間名額；轉橫不會自動進入。
-  if (!room && portraitEntryMedia.matches) {
-    pendingRoom = roomId;
-    if (!$('#orientation-dialog').open) {
-      pendingEntryFocus = document.activeElement;
-      updateOrientationGate();
-      $('#orientation-dialog').showModal();
-    }
-    return;
-  }
+  // 使用者 11/06 決定：直拿也可以直接進房，不再強制轉橫；只溫柔提醒一次。
+  const suggestLandscape = !room && portraitEntryMedia.matches;
   if (room) leaveRoom({ focus: false });
   clearInterval(countTimer);
   countTimer = null;
@@ -623,18 +621,30 @@ function enter(roomId) {
   $('#lobby').classList.add('hidden');
   $('#room-view').classList.remove('hidden');
   $('#room-name').textContent = ROOMS[room].title;
-  $('#population').textContent = '—人在這裡';
+  setPopulation(null);
   $('#scene').dataset.room = room;
-  $('#scene').setAttribute('aria-label', `${ROOMS[room].title}陪睡房`);
+  $('#scene').setAttribute('aria-label', t('scene.aria', ROOMS[room].title));
   $('#alternate-room').classList.add('hidden');
   $('#retry-connect').classList.add('hidden');
   clearVisitors();
   renderControls();
   showControls();
-  message('正在輕輕推開房門……');
+  message(t('room.entering'));
   $('#room-name').focus({ preventScroll: true });
   window.scrollTo(0, 0);
   connectSocket(epoch);
+  if (suggestLandscape) showOrientationHint();
+}
+let orientationHintTimer = null;
+function showOrientationHint() {
+  const hint = $('#orientation-hint');
+  hint.classList.remove('hidden');
+  clearTimeout(orientationHintTimer);
+  orientationHintTimer = setTimeout(hideOrientationHint, 5000);
+}
+function hideOrientationHint() {
+  clearTimeout(orientationHintTimer);
+  $('#orientation-hint')?.classList.add('hidden');
 }
 function retryConnection() {
   if (!room) return;
@@ -642,7 +652,7 @@ function retryConnection() {
   disconnectedAt = Date.now();
   retryCount = 0;
   $('#retry-connect').classList.add('hidden');
-  message('正在重新推開房門……');
+  message(t('room.reentering'));
   connectSocket(++connectEpoch);
 }
 
@@ -663,7 +673,7 @@ $('#orientation-dialog').addEventListener('cancel', event => {
 $('#orientation-dialog').addEventListener('close', () => {
   if (pendingRoom) clearPendingEntry();
 });
-portraitEntryMedia.addEventListener('change', updateOrientationGate);
+portraitEntryMedia.addEventListener('change', () => { updateOrientationGate(); if (!portraitEntryMedia.matches) hideOrientationHint(); });
 // 轉向或換尺寸時，重排座位、換對應的柔邊球圖。
 portraitSceneMedia.addEventListener('change', () => { if (room) renderVisitors(); });
 phoneLayoutMedia.addEventListener('change', () => {
@@ -673,6 +683,7 @@ window.addEventListener('resize', updateOrientationGate);
 window.addEventListener('orientationchange', updateOrientationGate);
 $('#back-btn').addEventListener('click', () => leaveRoom());
 $('#help-toggle').addEventListener('click', openHelp);
+$('#orientation-hint').addEventListener('click', hideOrientationHint);
 $('#help-close').addEventListener('click', () => { closeHelp(); $('#help-toggle').focus({ preventScroll: true }); });
 // 點視窗外的暗處也能關閉。
 $('#help-dialog').addEventListener('click', event => {
@@ -717,7 +728,7 @@ document.addEventListener('visibilitychange', () => {
     showControls();
     if (audio?.deadline != null && audio.context.currentTime >= audio.deadline) {
       stopNoise();
-      updateSoundUI('聲音已慢慢淡出。你可以繼續留在房間裡。');
+      updateSoundUI(t('status.faded'));
     }
   }
 });
@@ -740,6 +751,24 @@ window.addEventListener('pageshow', event => {
   if (!event.persisted) return;
   if (room && !terminal) retryConnection();
   else if (!room) startLobbyPolling();
+});
+applyStaticText();
+for (const button of document.querySelectorAll('[data-lang]')) button.addEventListener('click', () => setLanguage(button.dataset.lang));
+// 換語言時，把程式畫出來的按鈕與說明重畫一次。
+document.addEventListener('dream-language-change', () => {
+  renderSoundOptions();
+  renderTimerOptions();
+  updateSoundUI();
+  if (room) {
+    renderControls();
+    for (const button of document.querySelectorAll('#modes button')) button.setAttribute('aria-pressed', String(button.dataset.mode === myMode));
+    renderVisitors();
+    setPopulation(populationCount);
+    $('#scene').setAttribute('aria-label', t('scene.aria', ROOMS[room].title));
+  } else {
+    $('#lobby-message').textContent = t('lobby.loading');
+    void refreshCounts();
+  }
 });
 renderSoundOptions();
 renderTimerOptions();

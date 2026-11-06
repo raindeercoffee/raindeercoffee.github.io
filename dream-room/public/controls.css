@@ -55,7 +55,17 @@ body.controls-resting .wake-controls { opacity:.65; }
 .help-actions { display:flex; justify-content:center; margin-top:18px; }
 .help-actions button { min-height:44px; min-width:120px; }
 /* 矮的橫向畫面放不下左側四顆：問號改放左下角，與右下收起鈕對稱；連線提示出現時讓位。 */
-@media(max-height:380px) { .side-left #help-toggle { position:fixed; left:calc(20px + env(safe-area-inset-left,0px)); bottom:calc(8px + env(safe-area-inset-bottom,0px)); } body:has(#retry-connect:not(.hidden)) #help-toggle,body:has(#alternate-room:not(.hidden)) #help-toggle { display:none; } }
+@media(max-height:380px) { .side-left { z-index:4; } .side-left #help-toggle { position:fixed; left:calc(20px + env(safe-area-inset-left,0px)); bottom:calc(8px + env(safe-area-inset-bottom,0px)); } body:has(#retry-connect:not(.hidden)) #help-toggle,body:has(#alternate-room:not(.hidden)) #help-toggle { display:none; } }
 @media(max-height:340px) { .side-controls { top:6px; } }
 @media(prefers-reduced-motion:reduce) { .glass-button { transition:none; } }
 
+
+/* 直拿時的溫柔提示：不擋畫面、5 秒後自己消失，點一下也能關。 */
+.orientation-hint { position:fixed; left:50%; top:calc(68px + env(safe-area-inset-top,0px)); transform:translateX(-50%); z-index:6; max-width:calc(100vw - 32px); padding:8px 16px; border-radius:20px; border:1px solid #e6f4ff30; background:#12283ccc; -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); color:#f2f3ed; font-size:13px; letter-spacing:.04em; white-space:nowrap; }
+
+/* 語言切換：首頁右上一組，房間裡在「常見問題」裡一組。 */
+.lang-switch { display:flex; gap:4px; padding:3px; border:1px solid #e6f4ff26; border-radius:20px; background:#12283c80; }
+.lang-button { min-height:32px; padding:4px 12px; border:0; border-radius:16px; background:none; color:#cfd9de; font-size:13px; letter-spacing:.04em; }
+.lang-button[aria-pressed='true'] { background:#e9dfc8; color:#19263c; }
+.in-room .site-header .lang-switch { display:none; }
+.help-language { display:flex; justify-content:center; align-items:center; gap:10px; margin-top:16px; color:#cfdad8; font-size:13px; }

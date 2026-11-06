@@ -1,3 +1,4 @@
+import { t } from '../public/i18n.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -170,7 +171,7 @@ test('client actual asset, icon, room-list, connect and leave paths follow root 
     // 球圖依螢幕挑手機或電腦柔邊版；用可切換的替身檢查兩種路徑。
     const media = { phone: false };
     const context = vm.createContext({
-      URL, AbortController, setTimeout, clearTimeout, location: new URL(href), button,
+      URL, AbortController, setTimeout, clearTimeout, location: new URL(href), button, t,
       matchMedia: query => ({ get matches() { return query.includes('max-width: 900px') ? media.phone : false; } }),
       document: {
         hidden: false,

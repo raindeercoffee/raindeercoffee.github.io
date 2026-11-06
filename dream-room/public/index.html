@@ -27,71 +27,75 @@
 <body>
   <div id="app">
     <header class="site-header quiet-ui">
-      <button type="button" class="brand" id="go-home" data-home-text="brand" style="--home-item-scale:1;--home-item-color:#bec8cf" aria-label="離開房間，返回入口">夢の部屋</button>
+      <button type="button" class="brand" id="go-home" data-home-text="brand" style="--home-item-scale:1;--home-item-color:#bec8cf" aria-label="離開房間，返回入口" data-i18n-aria="go-home">夢の部屋</button>
+      <div class="lang-switch" role="group" aria-label="選擇語言" data-i18n-aria="lang-switch"><button type="button" class="lang-button" data-lang="zh-Hant" lang="zh-Hant">中文</button><button type="button" class="lang-button" data-lang="ja" lang="ja">日本語</button></div>
     </header>
     <main id="lobby" class="lobby">
       <div class="intro">
-        <h1 data-home-text="intro" style="--home-item-scale:1;--home-item-color:#eef0e8"><span class="phrase">什麼都不用說，</span><span class="phrase">只是靜靜地相伴。</span></h1>
+        <h1 data-i18n="intro" data-home-text="intro" style="--home-item-scale:1;--home-item-color:#eef0e8"><span class="phrase">什麼都不用說，</span><span class="phrase">只是靜靜地相伴。</span></h1>
       </div>
       <div class="room-cards">
         <button class="room-card" type="button" data-room="dream-a">
           <div class="room-card-art night-art"></div>
-          <div class="room-card-info"><div><h2 data-home-text="night-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">夜潮</h2><p data-home-text="night-description" style="--home-item-scale:1;--home-item-color:#bec8cf"><span class="phrase">讓心事，</span><span class="phrase">慢慢沉入夜色。</span></p></div><span class="count" id="dream-a-count" data-home-text="night-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
+          <div class="room-card-info"><div><h2 data-home-text="night-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">夜潮</h2><p data-i18n="night-description" data-home-text="night-description" style="--home-item-scale:1;--home-item-color:#bec8cf"><span class="phrase">讓心事，</span><span class="phrase">慢慢沉入夜色。</span></p></div><span class="count" id="dream-a-count" data-home-text="night-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
         </button>
         <button class="room-card" type="button" data-room="dream-b">
           <div class="room-card-art mist-art"></div>
-          <div class="room-card-info"><div><h2 data-home-text="mist-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">霧藍</h2><p data-home-text="mist-description" style="--home-item-scale:1;--home-item-color:#bec8cf"><span class="phrase">在淡淡的藍裡，</span><span class="phrase">安穩休息。</span></p></div><span class="count" id="dream-b-count" data-home-text="mist-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
+          <div class="room-card-info"><div><h2 data-home-text="mist-name" style="--home-item-scale:0.85;--home-item-color:#eef0e8">霧藍</h2><p data-i18n="mist-description" data-home-text="mist-description" style="--home-item-scale:1;--home-item-color:#bec8cf"><span class="phrase">在淡淡的藍裡，</span><span class="phrase">安穩休息。</span></p></div><span class="count" id="dream-b-count" data-home-text="mist-count" style="--home-item-scale:0.85;--home-item-color:#bec8cf">— / 10</span></div>
         </button>
       </div>
       <p id="lobby-message" class="sr-only" role="status" aria-live="polite">正在看看房間裡有多少人……</p>
-      <p class="lobby-footnote" data-home-text="footnote" style="--home-item-scale:1.05;--home-item-color:#bec8cf"><span class="phrase">隨機成為一顆夢球 ·</span> <span class="phrase">不用帳號，</span><span class="phrase">也沒有聊天，</span><span class="phrase">但每一個都是真實的陪伴</span></p>
+      <p class="lobby-footnote" data-i18n="footnote" data-home-text="footnote" style="--home-item-scale:1.05;--home-item-color:#bec8cf"><span class="phrase">隨機成為一顆夢球 ·</span> <span class="phrase">不用帳號，</span><span class="phrase">也沒有聊天，</span><span class="phrase">但每一個都是真實的陪伴</span></p>
     </main>
     <main id="room-view" class="room-view hidden">
-      <section class="room-toolbar quiet-ui" aria-label="房間資訊">
+      <section class="room-toolbar quiet-ui" aria-label="房間資訊" data-i18n-aria="room-info">
         <h1 id="room-name" tabindex="-1">夜潮</h1>
         <span class="room-population" id="population">—人在這裡</span>
-        <button type="button" class="glass-button" id="back-btn" aria-label="離開房間"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-exit"></use></svg></button>
+        <button type="button" class="glass-button" id="back-btn" aria-label="離開房間" data-i18n-aria="leave"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-exit"></use></svg></button>
       </section>
       <div class="canvas-shell">
         <div id="scene" class="scene" data-room="dream-a" role="group" aria-label="夜潮陪睡房"><div id="visitors" class="visitors"></div></div>
       </div>
-      <section class="room-controls" aria-label="動作、亮度與聲音">
+      <section class="room-controls" aria-label="動作、亮度與聲音" data-i18n-aria="room-controls">
         <div class="side-controls side-left quiet-ui">
-          <div class="control-group" id="modes" aria-label="我的姿態"></div>
-          <button type="button" id="brightness-toggle" class="glass-button" data-panel-toggle="brightness-panel" aria-label="場景亮度" aria-controls="brightness-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-brightness"></use></svg></button>
-          <button type="button" id="help-toggle" class="glass-button" aria-label="常見問題" aria-haspopup="dialog" aria-controls="help-dialog"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-help"></use></svg></button>
+          <div class="control-group" id="modes" aria-label="我的姿態" data-i18n-aria="modes"></div>
+          <button type="button" id="brightness-toggle" class="glass-button" data-panel-toggle="brightness-panel" aria-label="場景亮度" data-i18n-aria="brightness" aria-controls="brightness-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-brightness"></use></svg></button>
+          <button type="button" id="help-toggle" class="glass-button" aria-label="常見問題" data-i18n-aria="help" aria-haspopup="dialog" aria-controls="help-dialog"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-help"></use></svg></button>
         </div>
         <div class="side-controls side-right quiet-ui">
           <button type="button" id="noise-toggle" class="glass-button" data-panel-toggle="sound-panel" aria-label="選擇環境聲音，目前靜音" aria-controls="sound-panel" aria-expanded="false" aria-pressed="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-sound"></use></svg></button>
-          <button type="button" id="volume-toggle" class="glass-button" data-panel-toggle="volume-panel" aria-label="聲音音量" aria-controls="volume-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-volume"></use></svg></button>
+          <button type="button" id="volume-toggle" class="glass-button" data-panel-toggle="volume-panel" aria-label="聲音音量" data-i18n-aria="volume" aria-controls="volume-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-volume"></use></svg></button>
           <button type="button" id="timer-toggle" class="glass-button" data-panel-toggle="timer-panel" aria-label="聲音定時，目前持續播放" aria-controls="timer-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-timer"></use></svg></button>
         </div>
       </section>
-      <section class="settings-zone" aria-label="房間設定">
+      <section class="settings-zone" aria-label="房間設定" data-i18n-aria="settings">
         <div class="settings-content quiet-ui">
-          <div id="brightness-panel" class="control-popover hidden" role="group" aria-label="場景亮度"><label class="sr-only" for="brightness">場景亮度</label><input id="brightness" type="range" min="35" max="100" value="85" /><output class="sr-only" id="brightness-value" for="brightness">85%</output></div>
-          <div id="sound-panel" class="control-popover sound-options hidden" role="group" aria-label="選擇環境聲音"><div id="sound-options" class="icon-options"></div><label id="sound-source-control" class="hidden" for="sound-source">環境聲音<select id="sound-source"></select></label></div>
-          <div id="volume-panel" class="control-popover hidden" role="group" aria-label="聲音音量"><label class="sr-only" for="volume">音量</label><input id="volume" type="range" min="0" max="100" value="35" /><output class="sr-only" id="volume-value" for="volume">35%</output></div>
-          <div id="timer-panel" class="control-popover timer-panel hidden" role="group" aria-labelledby="timer-panel-title"><h2 id="timer-panel-title">聲音時間</h2><div id="timer-options" class="timer-options"></div><label class="hidden" for="sound-timer">播放時間<select id="sound-timer"><option value="0">持續</option><option value="15">15分鐘</option><option value="30">30分鐘</option><option value="60">60分鐘</option></select></label></div>
+          <div id="brightness-panel" class="control-popover hidden" role="group" aria-label="場景亮度" data-i18n-aria="brightness"><label class="sr-only" for="brightness" data-i18n="brightness-label">場景亮度</label><input id="brightness" type="range" min="35" max="100" value="85" /><output class="sr-only" id="brightness-value" for="brightness">85%</output></div>
+          <div id="sound-panel" class="control-popover sound-options hidden" role="group" aria-label="選擇環境聲音" data-i18n-aria="sound-panel"><div id="sound-options" class="icon-options"></div><label id="sound-source-control" class="hidden" for="sound-source">環境聲音<select id="sound-source"></select></label></div>
+          <div id="volume-panel" class="control-popover hidden" role="group" aria-label="聲音音量" data-i18n-aria="volume"><label class="sr-only" for="volume" data-i18n="volume-label">音量</label><input id="volume" type="range" min="0" max="100" value="35" /><output class="sr-only" id="volume-value" for="volume">35%</output></div>
+          <div id="timer-panel" class="control-popover timer-panel hidden" role="group" aria-labelledby="timer-panel-title"><h2 id="timer-panel-title" data-i18n="timer-title">聲音時間</h2><div id="timer-options" class="timer-options"></div><label class="hidden" for="sound-timer">播放時間<select id="sound-timer"><option value="0">持續</option><option value="15">15分鐘</option><option value="30">30分鐘</option><option value="60">60分鐘</option></select></label></div>
           <p id="sound-status" class="sr-only" role="status" aria-live="polite">聲音預設關閉。</p>
         </div>
         <div class="settings-footer">
-          <div class="room-feedback"><p id="room-message" class="sr-only" role="status" aria-live="polite"></p><button type="button" id="alternate-room" class="glass-button hidden" aria-label="試試另一間房"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-exit"></use></svg></button><button type="button" id="retry-connect" class="glass-button hidden" aria-label="重新連線"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-retry"></use></svg></button></div>
-          <div class="room-switch quiet-ui"><button type="button" id="switch-room" class="text-button">換個地方入眠</button></div>
+          <div class="room-feedback"><p id="room-message" class="sr-only" role="status" aria-live="polite"></p><button type="button" id="alternate-room" class="glass-button hidden" aria-label="試試另一間房"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-exit"></use></svg></button><button type="button" id="retry-connect" class="glass-button hidden" aria-label="重新連線" data-i18n-aria="retry"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-retry"></use></svg></button></div>
+          <div class="room-switch quiet-ui"><button type="button" id="switch-room" class="text-button" data-i18n="switch-room">換個地方入眠</button></div>
           <button type="button" id="wake-controls" class="wake-controls glass-button" aria-label="收起操作" aria-controls="room-view" aria-expanded="true"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-panel"></use></svg></button>
         </div>
       </section>
-      <p class="scene-note sr-only">每顆球，都是此刻在這裡的人。</p>
+      <p class="scene-note sr-only" data-i18n="scene-note">每顆球，都是此刻在這裡的人。</p>
+      <button type="button" id="orientation-hint" class="orientation-hint hidden" aria-label="提示：建議把手機橫過來，觀賞更佳。點一下關閉" data-i18n-aria="orientation-hint" data-i18n="orientation-hint">建議把手機橫過來，觀賞更佳</button>
     </main>
     <dialog id="orientation-dialog" class="orientation-dialog" aria-labelledby="orientation-title">
       <h2 id="orientation-title">請先將手機轉為橫向</h2>
       <div class="orientation-actions"><button type="button" id="orientation-cancel" class="soft-button">取消</button><button type="button" id="orientation-enter" class="primary-button" disabled>進入房間</button></div>
     </dialog>
     <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
-      <h2 id="help-title">常見問題</h2>
-      <dl class="help-list">
+      <h2 id="help-title" data-i18n="help-title">常見問題</h2>
+      <dl class="help-list" data-i18n="help-list">
         <dt>球不會漂浮、極光好像不動？</dt>
         <dd>你的手機可能開了「減少動態效果」，畫面會停住。開著的時候，只有你自己的球會輕輕飄。<br />iPhone：設定 → 輔助使用 → 動作 → 關閉「減少動態效果」。<br />Android：設定 → 協助工具 → 關閉「移除動畫」（名稱依手機不同）。<br />改完回來重新整理這一頁。</dd>
+        <dt>一定要橫著拿手機嗎？</dt>
+        <dd>不用，直的也可以進房間。只是橫著看，星空和夢球的畫面比較完整，觀賞更佳。</dd>
         <dt>按了聲音卻聽不到？</dt>
         <dd>iPhone 開著靜音模式時，網頁也可能沒有聲音，請先關掉靜音。也可以點右邊的喇叭，把音量調大一點。</dd>
         <dt>鎖螢幕或切到別的 App，聲音停了？</dt>
@@ -109,7 +113,8 @@
         <dt>房間滿了？</dt>
         <dd>每間最多 10 人。可以試試另一間，或晚一點再來。</dd>
       </dl>
-      <div class="help-actions"><button type="button" id="help-close" class="primary-button">知道了</button></div>
+      <div class="help-language"><span data-i18n="lang-label">語言 · 言語</span><div class="lang-switch" role="group" aria-label="選擇語言" data-i18n-aria="lang-switch"><button type="button" class="lang-button" data-lang="zh-Hant" lang="zh-Hant">中文</button><button type="button" class="lang-button" data-lang="ja" lang="ja">日本語</button></div></div>
+      <div class="help-actions"><button type="button" id="help-close" class="primary-button" data-i18n="help-close">知道了</button></div>
     </dialog>
     <noscript><p class="lobby-message">請開啟瀏覽器的網頁程式功能，才能進入陪睡房。</p></noscript>
   </div>
