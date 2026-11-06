@@ -1,12 +1,13 @@
 import { createAmbientBuffer } from './audio-engine.js';
 import { createSeamlessLoop } from './audio-loop.js';
 
-// 三段聲音完整提取自使用者提供的影片；白噪音由瀏覽器合成。
+// 三段聲音取自使用者提供的影片，已事先做成無縫循環（使用者 11/06 試聽通過）；白噪音由瀏覽器合成。
+// 用無壓縮 WAV，避免壓縮檔頭尾補靜音造成接縫；播放時不可再交疊一次。
 // 聲音檔路徑相對於夢屋入口，根目錄與子路徑都能使用。
 const SOUNDS = [
-  { id: 'stream', label: '水流聲', url: 'assets/audio/stream.mp3' },
-  { id: 'ocean', label: '海浪聲', url: 'assets/audio/ocean.mp3' },
-  { id: 'fire', label: '柴火聲', url: 'assets/audio/fire.mp3' },
+  { id: 'stream', label: '水流聲', url: 'assets/audio/stream-loop.wav', preLooped: true },
+  { id: 'ocean', label: '海浪聲', url: 'assets/audio/ocean-loop.wav', preLooped: true },
+  { id: 'fire', label: '柴火聲', url: 'assets/audio/fire-loop.wav', preLooped: true },
   { id: 'noise', label: '白噪音', url: null }
 ];
 let selectedSoundId = SOUNDS[0].id;
@@ -89,6 +90,19 @@ function togglePopover(panelId) {
   panel.querySelector('input, button')?.focus({ preventScroll: true });
 }
 
+function openHelp() {
+  closePopovers();
+  const dialog = $('#help-dialog');
+  if (!dialog.open) dialog.showModal();
+  $('#help-close').focus({ preventScroll: true });
+  // 開啟時會自動聚焦「知道了」而捲到底；拉回最上面，從第一題開始讀。
+  dialog.scrollTop = 0;
+}
+function closeHelp() {
+  const dialog = $('#help-dialog');
+  if (dialog?.open) dialog.close();
+}
+
 function message(text) { $('#room-message').textContent = text || ''; }
 function otherRoom() { return ROOM_IDS.find(id => id !== room); }
 function setConnected(value) {
@@ -160,6 +174,8 @@ function renderControls() {
     button.disabled = !connected;
     button.addEventListener('click', () => {
       if (connected && ws?.readyState === WebSocket.OPEN) {
+        if (mode.value === 'float') document.body.dataset.floatMotion = 'on';
+        else delete document.body.dataset.floatMotion;
         ws.send(JSON.stringify({ type: 'mode', room, value: mode.value }));
       }
     });
@@ -371,7 +387,7 @@ async function toggleNoise() {
       const res = await fetch(appUrl(sound.url), { signal: controller.signal });
       if (!res.ok) throw new Error('Sound unavailable');
       const decoded = await context.decodeAudioData(await res.arrayBuffer());
-      source.buffer = createSeamlessLoop(context, decoded);
+      source.buffer = sound.preLooped ? decoded : createSeamlessLoop(context, decoded);
       source.connect(gain);
     } else {
       source.buffer = createAmbientBuffer(context, sound.id);
@@ -405,6 +421,8 @@ function sendExplicitLeave(roomId, connectionId) {
 }
 function leaveRoom({ focus = true } = {}) {
   if (!room) return;
+  delete document.body.dataset.floatMotion;
+  closeHelp();
   closePopovers();
   const oldRoom = room;
   const oldConnectionId = ownConnectionId;
@@ -440,6 +458,8 @@ function leaveRoom({ focus = true } = {}) {
   if (focus) document.querySelector('.room-card')?.focus({ preventScroll: true });
 }
 function showTerminal(text, { full = false } = {}) {
+  delete document.body.dataset.floatMotion;
+  closeHelp();
   closePopovers();
   terminal = true;
   setConnected(false);
@@ -567,6 +587,7 @@ function clearPendingEntry({ restoreFocus = true } = {}) {
 }
 function enter(roomId) {
   if (!ROOMS[roomId]) return;
+  delete document.body.dataset.floatMotion;
   // 入口先提醒，還未建立連線，也不占用房間名額；轉橫不會自動進入。
   if (!room && portraitEntryMedia.matches) {
     pendingRoom = roomId;
@@ -639,6 +660,15 @@ portraitEntryMedia.addEventListener('change', updateOrientationGate);
 window.addEventListener('resize', updateOrientationGate);
 window.addEventListener('orientationchange', updateOrientationGate);
 $('#back-btn').addEventListener('click', () => leaveRoom());
+$('#help-toggle').addEventListener('click', openHelp);
+$('#help-close').addEventListener('click', () => { closeHelp(); $('#help-toggle').focus({ preventScroll: true }); });
+// 點視窗外的暗處也能關閉。
+$('#help-dialog').addEventListener('click', event => {
+  if (event.target !== event.currentTarget) return;
+  const box = event.currentTarget.getBoundingClientRect();
+  const inside = event.clientX >= box.left && event.clientX <= box.right && event.clientY >= box.top && event.clientY <= box.bottom;
+  if (!inside) closeHelp();
+});
 $('#go-home').addEventListener('click', () => leaveRoom());
 $('#switch-room').addEventListener('click', () => enter(otherRoom()));
 $('#alternate-room').addEventListener('click', () => enter(otherRoom()));
@@ -680,6 +710,7 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 window.addEventListener('pagehide', () => {
+  delete document.body.dataset.floatMotion;
   clearPendingEntry({ restoreFocus: false });
   closePopovers();
   // 重新整理保留後端的 30 秒回位機會；只有按離開才立即釋位。

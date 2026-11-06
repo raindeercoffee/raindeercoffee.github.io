@@ -46,6 +46,7 @@
         <div class="side-controls side-left quiet-ui">
           <div class="control-group" id="modes" aria-label="我的姿態"></div>
           <button type="button" id="brightness-toggle" class="glass-button" data-panel-toggle="brightness-panel" aria-label="場景亮度" aria-controls="brightness-panel" aria-expanded="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-brightness"></use></svg></button>
+          <button type="button" id="help-toggle" class="glass-button" aria-label="常見問題" aria-haspopup="dialog" aria-controls="help-dialog"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-help"></use></svg></button>
         </div>
         <div class="side-controls side-right quiet-ui">
           <button type="button" id="noise-toggle" class="glass-button" data-panel-toggle="sound-panel" aria-label="選擇環境聲音，目前靜音" aria-controls="sound-panel" aria-expanded="false" aria-pressed="false"><svg aria-hidden="true"><use href="./assets/controls-icons.svg#icon-sound"></use></svg></button>
@@ -72,6 +73,30 @@
     <dialog id="orientation-dialog" class="orientation-dialog" aria-labelledby="orientation-title">
       <h2 id="orientation-title">請先將手機轉為橫向</h2>
       <div class="orientation-actions"><button type="button" id="orientation-cancel" class="soft-button">取消</button><button type="button" id="orientation-enter" class="primary-button" disabled>進入房間</button></div>
+    </dialog>
+    <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+      <h2 id="help-title">常見問題</h2>
+      <dl class="help-list">
+        <dt>球不會漂浮、極光好像不動？</dt>
+        <dd>你的手機可能開了「減少動態效果」，畫面會停住。開著的時候，只有你自己的球會輕輕飄。<br />iPhone：設定 → 輔助使用 → 動作 → 關閉「減少動態效果」。<br />Android：設定 → 協助工具 → 關閉「移除動畫」（名稱依手機不同）。<br />改完回來重新整理這一頁。</dd>
+        <dt>按了聲音卻聽不到？</dt>
+        <dd>iPhone 開著靜音模式時，網頁也可能沒有聲音，請先關掉靜音。也可以點右邊的喇叭，把音量調大一點。</dd>
+        <dt>鎖螢幕或切到別的 App，聲音停了？</dt>
+        <dd>手機為了省電，可能會暫停背景裡的網頁聲音。想一直聽，請讓這一頁留在畫面上。</dd>
+        <dt>定時是什麼？</dt>
+        <dd>點右邊的時鐘選時間。時間快到時，聲音會慢慢變小再停下，你可以繼續留在房間。</dd>
+        <dt>畫面太亮睡不著？</dt>
+        <dd>點左邊的太陽，可以把畫面調暗。</dd>
+        <dt>按鈕不見了？</dt>
+        <dd>一陣子沒有動作，按鈕會自己藏起來。點一下畫面就會回來。</dd>
+        <dt>別人看得到我嗎？</dt>
+        <dd>大家只會看到一顆夢球。沒有名字、沒有帳號，也不能聊天。</dd>
+        <dt>不小心關掉或重新整理？</dt>
+        <dd>30 秒內回到這一頁，原本的位置還會幫你留著。</dd>
+        <dt>房間滿了？</dt>
+        <dd>每間最多 10 人。可以試試另一間，或晚一點再來。</dd>
+      </dl>
+      <div class="help-actions"><button type="button" id="help-close" class="primary-button">知道了</button></div>
     </dialog>
     <noscript><p class="lobby-message">請開啟瀏覽器的網頁程式功能，才能進入陪睡房。</p></noscript>
   </div>

@@ -97,4 +97,7 @@ body.controls-resting .wake-controls { opacity:.68; }
 @media(max-width:700px) { .room-cards { grid-template-columns:1fr; gap:18px; } .lobby { padding:20px 16px 40px; } .quiet-tag { display:none; } .room-card-art { height:180px; } .site-header { padding:17px; } .room-card-info { padding:18px; } .room-controls { gap:13px; } .control-row { justify-content:center; gap:12px; } .sound-row { justify-content:flex-start; } .sound-row .timer-control { flex-basis:100%; } .room-switch { justify-content:center; } .room-toolbar .soft-button { padding:8px 11px; font-size:12px; } #room-name { font-size:18px; } .room-population { font-size:12px; } .intro { margin-bottom:26px; } }
 @media(orientation:landscape) and (max-height:550px) { .site-header { padding:7px 16px; } .brand { font-size:15px; } .brand span,.quiet-tag { display:none; } .canvas-shell { max-width:calc((100dvh - 90px) * 1.33333); } .room-toolbar { margin-bottom:8px; } .room-controls { margin-top:12px; } }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } .visitor-slot.floating .visitor-anchor { transform:translateY(-65%); } .ambient-star { opacity:.72; transform:none; } }
+/* 只在本人明確點漂浮後，放行自己的小幅位移；背景與其他訪客仍尊重減少動態。 */
+@keyframes gentle-float { 0%,100% { transform:translateY(-65%); } 50% { transform:translateY(calc(-65% - 8px)); } }
+@media(prefers-reduced-motion:reduce) { body[data-float-motion='on'] .visitor-slot.is-mine.floating .visitor-anchor { animation:gentle-float 8s ease-in-out infinite!important; } }
 
