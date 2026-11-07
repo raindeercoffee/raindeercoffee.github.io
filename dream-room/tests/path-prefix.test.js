@@ -90,7 +90,9 @@ test('prefixed POST leave retains its body and connection ownership', async () =
 
 test('prefixed page and assets are forwarded using the stripped Request', async () => {
   for (const [suffix, expected] of [
-    ['/', '/'],
+    ['/', '/index.html'],
+    ['/about.html?via=guide', '/about.html?via=guide'],
+    ['/guide.md?via=a%2Fb', '/guide.md?via=a%2Fb'],
     ['/styles.css?theme=night', '/styles.css?theme=night'],
     ['/assets/ball-1.png?version=2', '/assets/ball-1.png?version=2'],
     ['/audio-engine.js', '/audio-engine.js']
@@ -106,6 +108,33 @@ test('prefixed page and assets are forwarded using the stripped Request', async 
     assert.equal(state.assets[0].headers.get('X-Test-Marker'), 'asset');
     assert.equal(state.roomCalls.length, 0);
   }
+});
+
+test('root and canonical subpath entries explicitly resolve index while retaining request details', async () => {
+  for (const prefix of ['', '/dream-room']) {
+    for (const method of ['GET', 'HEAD']) {
+      const state = environment();
+      const response = await worker.fetch(new Request(`https://example.test${prefix}/?via=a%2Fb`, {
+        method, headers: { 'X-Test-Marker': 'entry' }
+      }), state.env);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get('location'), null);
+      assert.equal(state.assets.length, 1);
+      assert.equal(state.assets[0].url, 'https://example.test/index.html?via=a%2Fb');
+      assert.equal(state.assets[0].method, method);
+      assert.equal(state.assets[0].headers.get('X-Test-Marker'), 'entry');
+      assert.equal(state.roomCalls.length, 0);
+    }
+  }
+});
+
+test('asset configuration disables HTML redirects without expanding production routes', async () => {
+  const config = JSON.parse(await readFile(new URL('../wrangler.jsonc', import.meta.url), 'utf8'));
+  assert.equal(config.assets.html_handling, 'none');
+  assert.equal(config.assets.run_worker_first, true);
+  assert.deepEqual(config.routes.map(route => route.pattern), [
+    'raindeercoffee.com/dream-room', 'raindeercoffee.com/dream-room/*'
+  ]);
 });
 
 test('similar prefixes and encoded separators do not become room API routes', async () => {

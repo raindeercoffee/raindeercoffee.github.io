@@ -55,6 +55,12 @@ export default {
       return roomStub(env, room).fetch(new Request(request, { headers }));
     }
     if (url.pathname.startsWith('/api/')) return json({ error: 'Not found' }, 404);
+    // HTML handling is disabled so asset redirects cannot escape /dream-room/.
+    // Resolve the entry explicitly while retaining the method, headers and query.
+    if (url.pathname === '/') {
+      url.pathname = '/index.html';
+      request = new Request(url, request);
+    }
     return env.ASSETS.fetch(request);
   }
 };
