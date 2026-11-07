@@ -22,31 +22,33 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="夢の部屋的夢幻星空與夢球陪伴空間" />
   <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preload" href="./assets/fonts/noto-serif-tc-about.ttf" as="font" type="font/ttf" crossorigin />
   <style>
-    :root { color-scheme:dark; font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif; color:#edf0ed; background:#101b2e; }
+    @font-face { font-family:"Noto Serif TC About"; font-style:normal; font-weight:400; font-display:swap; src:url("./assets/fonts/noto-serif-tc-about.ttf") format("truetype"); }
+    :root { color-scheme:dark; font-family:"Noto Serif TC About","Noto Serif TC","Songti TC","PMingLiU",serif; font-synthesis:none; color:#edf0ed; background:#101b2e; }
     * { box-sizing:border-box; }
-    body { margin:0; line-height:1.9; background:radial-gradient(ellipse at 10% 0,#29435d 0,transparent 55%); }
+    body { margin:0; font-weight:400; line-height:2; letter-spacing:.035em; background:radial-gradient(ellipse at 10% 0,#29435d 0,transparent 55%); }
     main { width:min(760px,100%); margin:auto; padding:40px 22px 64px; }
     nav { margin-bottom:36px; }
     a { color:#c9e5f1; text-underline-offset:4px; }
     a:focus-visible { outline:2px solid #f2dfb5; outline-offset:5px; }
-    h1,h2 { font-weight:500; line-height:1.5; }
-    h1 { font-size:clamp(27px,5vw,38px); margin:12px 0; }
+    h1,h2 { font-weight:400; line-height:1.65; letter-spacing:.08em; }
+    h1 { font-size:clamp(28px,5vw,40px); margin:12px 0; }
     h2 { font-size:22px; margin:34px 0 12px; }
-    p,li { font-size:16px; }
+    p,li,dd { font-size:17px; }
     .eyebrow { color:#b4c9dc; font-size:14px; letter-spacing:.12em; }
     .lead { font-size:19px; color:#d8e6ed; }
     figure { margin:30px 0; }
     figure img { display:block; width:100%; height:auto; border-radius:20px; }
     .rooms { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
     .room { border:1px solid #d4e7f02e; border-radius:20px; padding:18px; background:#d9e9ff06; }
-    .room h3 { margin:0; font-size:18px; font-weight:500; }
+    .room h3 { margin:0; font-size:20px; font-weight:400; letter-spacing:.08em; }
     .room p { margin-bottom:0; }
-    dt { margin-top:20px; font-weight:600; }
+    dt { margin-top:24px; font-weight:400; font-size:18px; color:#edf0ed; }
     dd { margin:6px 0 0; color:#d5e0e8; }
     .entry { display:inline-block; padding:10px 24px; border:1px solid #dce9e470; border-radius:30px; text-decoration:none; margin-top:12px; }
     footer { border-top:1px solid #c5d7e333; padding-top:20px; margin-top:40px; color:#b4c9dc; }
-    @media(max-width:480px) { main { padding:28px 20px 48px; } .rooms { grid-template-columns:1fr; } }
+    @media(max-width:480px) { main { padding:28px 22px 48px; } p,li,dd { font-size:16px; } .rooms { grid-template-columns:1fr; } }
     @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
   </style>
 </head>
