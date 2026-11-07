@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /dream-room/api/
 Disallow: /sacred-tarot/garden/admin.html
 
 Sitemap: https://raindeercoffee.com/sitemap.xml
 Sitemap: https://raindeercoffee.com/sacred-tarot/sitemap.xml
+
+Sitemap: https://raindeercoffee.com/dream-room/sitemap.xml

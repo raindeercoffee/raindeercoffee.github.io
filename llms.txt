@@ -34,3 +34,5 @@
 
 ## 同一個網址下的其他網站
 - [神聖抽牌 Sacred Thoth Tarot Oracle](https://raindeercoffee.com/sacred-tarot/):線上托特塔羅與能量牌抽牌。詳細介紹見 https://raindeercoffee.com/sacred-tarot/llms.txt
+
+- [夢的部屋（夢の部屋）](https://raindeercoffee.com/dream-room/llms.txt):療癒系星空陪伴型網頁 App。免下載、免帳號、沒有聊天；在夜潮與霧藍房間化身夢球，享受自然聲音與真實訪客的安靜陪伴。完整介紹見 https://raindeercoffee.com/dream-room/guide.md ，網頁入口為 https://raindeercoffee.com/dream-room/ 。
