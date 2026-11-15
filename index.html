@@ -6,6 +6,8 @@
   <title>雨鹿焙煎所｜二十年咖啡職人的沖煮系統</title>
   <meta name="description" content="雨鹿焙煎所：二十年資深咖啡職人領路。少量嚴選熟豆、實體手沖課，帶你建立一套越沖越準的咖啡沖煮系統。" />
   <link rel="canonical" href="https://raindeercoffee.com/" />
+  <!-- 給 AI 讀的純文字版（價格、運費、常見問答都在裡面） -->
+  <link rel="alternate" type="text/markdown" href="https://raindeercoffee.com/index.md" title="雨鹿焙煎所（純文字版）" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="雨鹿焙煎所 Raindeer Coffee" />
   <meta property="og:locale" content="zh_TW" />
@@ -75,6 +77,21 @@
           { "@type": "Syllabus", "name": "三層金字塔：找到問題真正卡在哪一層" },
           { "@type": "Syllabus", "name": "器材與標準 SOP：建立你的基準線" },
           { "@type": "Syllabus", "name": "打開五感：實作練習與味覺訓練" }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://raindeercoffee.com/#faq",
+        "inLanguage": "zh-TW",
+        "mainEntity": [
+          { "@type": "Question", "name": "雨鹿焙煎所的咖啡豆多少錢？", "acceptedAnswer": { "@type": "Answer", "text": "每包熟豆 100g。職人系列（職人1號～7號）每包 NT$300；限定系列的限定1號 Cantar Don Tito（巴拿馬藝伎）每包 NT$1,680，限定2號 La Piramide AAA 每包 NT$300。限定系列數量有限，售完為止。" } },
+          { "@type": "Question", "name": "運費怎麼算？", "acceptedAnswer": { "@type": "Answer", "text": "咖啡豆用超商店到店寄送（7-11、全家、萊爾富）。買豆滿 NT$1,000 免運，未滿收運費 NT$60。手沖課不收運費。" } },
+          { "@type": "Question", "name": "怎麼付款？", "acceptedAnswer": { "@type": "Answer", "text": "目前用銀行匯款。在網站加入購物車、填好資料後，會顯示應付金額和匯款帳號；轉帳後用 LINE 回報匯款末五碼，就完成訂購。" } },
+          { "@type": "Question", "name": "想買的豆子賣完了怎麼辦？", "acceptedAnswer": { "@type": "Answer", "text": "結帳時可以勾選「同意換成風味相近的豆子」；沒有勾選的話，我們會先聯絡你。" } },
+          { "@type": "Question", "name": "手沖課多少錢？上多久？", "acceptedAnswer": { "@type": "Answer", "text": "實體課，一堂 2 小時，每人 NT$2,500，由累積二十年手沖實戰的咖啡職人親自帶領。" } },
+          { "@type": "Question", "name": "手沖課適合誰？", "acceptedAnswer": { "@type": "Answer", "text": "已經有基本手沖器材、想用一套系統化方法理解咖啡的人。" } },
+          { "@type": "Question", "name": "手沖課教什麼？", "acceptedAnswer": { "@type": "Answer", "text": "認識咖啡豆（產地、風土與處理法）、萃取率觀念、用三層金字塔找出問題卡在哪、器材與標準 SOP，最後打開五感，做實作與味覺訓練。" } },
+          { "@type": "Question", "name": "怎麼報名手沖課？", "acceptedAnswer": { "@type": "Answer", "text": "在網站按「購買職人手沖課」加入購物車，用銀行匯款結帳，再用 LINE 回報匯款末五碼。" } }
         ]
       }
     ]
@@ -552,6 +569,11 @@
 
     .cream-section .section-title{color:var(--navy)}
     .cream-section .section-desc{color:rgba(61,43,31,.80)}
+
+    /* 常見問答：答案直接寫在畫面上，人和 AI 都讀得到 */
+    .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+    .faq-grid .info-card h3{font-size:17px;}
+    @media (max-width:760px){ .faq-grid{grid-template-columns:1fr;} }
 
     .grid-3{
       display:grid;
@@ -1139,6 +1161,50 @@
           <button class="btn btn-primary add-course" type="button">購買職人手沖課</button>
           <a class="btn btn-secondary" href="#about">回看品牌理念</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block cream-section" id="faq">
+    <div class="section-inner">
+      <div class="section-head">
+        <div class="section-kicker">FAQ · 常見問答</div>
+        <h2 class="section-title">買豆、上課之前，你可能想問的事。</h2>
+      </div>
+
+      <div class="faq-grid">
+        <article class="info-card">
+          <h3>咖啡豆多少錢？</h3>
+          <p>每包熟豆 100g。職人系列（職人1號～7號）每包 NT$300；限定系列的限定1號 Cantar Don Tito（巴拿馬藝伎）每包 NT$1,680，限定2號 La Piramide AAA 每包 NT$300。限定系列數量有限，售完為止。</p>
+        </article>
+        <article class="info-card">
+          <h3>運費怎麼算？</h3>
+          <p>咖啡豆用超商店到店寄送（7-11、全家、萊爾富）。買豆滿 NT$1,000 免運，未滿收運費 NT$60。手沖課不收運費。</p>
+        </article>
+        <article class="info-card">
+          <h3>怎麼付款？</h3>
+          <p>目前用銀行匯款。加入購物車、填好資料後，會顯示應付金額和匯款帳號；轉帳後用 LINE 回報匯款末五碼，就完成訂購。</p>
+        </article>
+        <article class="info-card">
+          <h3>想買的豆子賣完了怎麼辦？</h3>
+          <p>結帳時可以勾選「同意換成風味相近的豆子」；沒有勾選的話，我們會先聯絡你。</p>
+        </article>
+        <article class="info-card">
+          <h3>手沖課多少錢？上多久？</h3>
+          <p>實體課，一堂 2 小時，每人 NT$2,500，由累積二十年手沖實戰的咖啡職人親自帶領。</p>
+        </article>
+        <article class="info-card">
+          <h3>手沖課適合誰？</h3>
+          <p>已經有基本手沖器材、想用一套系統化方法理解咖啡的人。</p>
+        </article>
+        <article class="info-card">
+          <h3>手沖課教什麼？</h3>
+          <p>認識咖啡豆（產地、風土與處理法）、萃取率觀念、用三層金字塔找出問題卡在哪、器材與標準 SOP，最後打開五感，做實作與味覺訓練。</p>
+        </article>
+        <article class="info-card">
+          <h3>怎麼報名手沖課？</h3>
+          <p>按上方「購買職人手沖課」加入購物車，用銀行匯款結帳，再用 LINE 回報匯款末五碼。</p>
+        </article>
       </div>
     </div>
   </section>
